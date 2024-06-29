@@ -8,7 +8,7 @@ import java.util.List;
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 @Data
-public abstract class User {
+public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -44,5 +44,4 @@ public abstract class User {
     @Enumerated
     private Role role;
 
-    public abstract Role getRole();
 }
