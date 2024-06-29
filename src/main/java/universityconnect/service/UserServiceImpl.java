@@ -18,7 +18,8 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserRepository userRepository;
 
-    private final UserMapper userMapper = Mappers.getMapper(UserMapper.class);
+    @Autowired
+    private UserMapper userMapper;
 
     @Override
     public UserDTO createUser(UserDTO userDTO) {
@@ -61,6 +62,11 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("User not found with id: " + id));
         userRepository.delete(user);
+    }
+
+    @Override
+    public User findById(Long userId) {
+        return userRepository.findById(userId).orElse(null); // Example: Using UserRepository to find by ID
     }
 }
 

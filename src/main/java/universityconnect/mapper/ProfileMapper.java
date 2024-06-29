@@ -10,10 +10,9 @@ import universityconnect.dto.ProfileDTO;
 public interface ProfileMapper {
     ProfileMapper INSTANCE = Mappers.getMapper(ProfileMapper.class);
 
-    @Mapping(target = "userId", source = "user.id")
+    @Mapping(target = "userId", source = "profile.user.id")
     ProfileDTO profileToProfileDTO(Profile profile);
 
     @Mapping(target = "user", ignore = true)
     Profile profileDTOToProfile(ProfileDTO profileDTO);
 }
-
