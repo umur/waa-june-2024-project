@@ -1,2 +1,4 @@
-package edu.miu.cs545.project.service;public interface SurveyService {
+package edu.miu.cs545.project.service;
+
+public interface SurveyService {
 }
