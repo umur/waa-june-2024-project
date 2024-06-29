@@ -41,6 +41,7 @@ public class AuthServiceImpl implements AuthService {
     @Value("${block.attempts.login.minutes}")
     private int blockMinutes;
 
+    @Override
     public TokenDTO register(SignUpDTO request) {
         Boolean emailExisted = userRepository.existsByEmail(request.getEmail());
         if (emailExisted) return null;
@@ -59,6 +60,7 @@ public class AuthServiceImpl implements AuthService {
         return generateAndSaveAndResponseTokens(user);
     }
 
+    @Override
     public AuthResponseDTO signIn(LoginDTO request) {
         User user = userRepository.findByEmail(request.getEmail());
         if (user == null) return null;
@@ -160,6 +162,7 @@ public class AuthServiceImpl implements AuthService {
         tokenRepository.saveAll(validUserTokens);
     }
 
+    @Override
     public void refreshToken(
             HttpServletRequest request,
             HttpServletResponse response

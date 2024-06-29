@@ -9,7 +9,6 @@ import miu.waa.project1.common.TokenType;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 public class Token {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
