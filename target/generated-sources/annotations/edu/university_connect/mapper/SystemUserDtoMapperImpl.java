@@ -8,7 +8,7 @@ import javax.annotation.processing.Generated;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2024-06-28T17:44:06-0500",
+    date = "2024-06-29T06:42:22-0500",
     comments = "version: 1.5.5.Final, compiler: javac, environment: Java 21.0.2 (Oracle Corporation)"
 )
 public class SystemUserDtoMapperImpl implements SystemUserDtoMapper {
@@ -57,7 +57,7 @@ public class SystemUserDtoMapperImpl implements SystemUserDtoMapper {
         systemUserDto.setEmail( user.getEmail() );
         systemUserDto.setEnabled( user.isEnabled() );
         systemUserDto.setCreatedAt( user.getCreatedAt() );
-        systemUserDto.setLastModified( user.getLastModified() );
+        systemUserDto.setLastModifiedAt( user.getLastModifiedAt() );
 
         return systemUserDto;
     }

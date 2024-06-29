@@ -52,6 +52,7 @@ public class SystemUserServiceImpl implements SystemUserService {
 
     @Override
     public SystemUserDto create(SystemUserCreateRequest createRequest) {
+
         SystemUser user=SystemUserDtoMapper.MAPPER.dtoToEntity(createRequest);
         SystemUser savedUser=repository.save(user);
         return SystemUserDtoMapper.MAPPER.entityToDto(savedUser);

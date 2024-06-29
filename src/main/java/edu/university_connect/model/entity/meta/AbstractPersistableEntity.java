@@ -25,7 +25,7 @@ public abstract class AbstractPersistableEntity implements Serializable {
 
     @LastModifiedDate
     @Column(name = "last_modified_at",insertable=false)
-    LocalDateTime lastModified;
+    LocalDateTime lastModifiedAt;
 
     @LastModifiedBy
     @AttributeOverride(name = "username", column = @Column(name = "last_modified_by",insertable=false))

@@ -53,6 +53,10 @@ public class SystemActionServiceImpl implements SystemActionService {
 
     @Override
     public SystemActionDto create(SystemActionCreateRequest createRequest) {
+        Optional<SystemAction> actionWithCode=repository.findByCodeIgnoreCase(createRequest.getCode());
+        if(actionWithCode.isPresent()){
+            throw ServiceException.of(AppStatusCode.E40006,"sys-action","code="+createRequest.getCode());
+        }
         SystemAction action=SystemActionDtoMapper.MAPPER.dtoToEntity(createRequest);
         SystemAction savedAction=repository.save(action);
         return SystemActionDtoMapper.MAPPER.entityToDto(savedAction);

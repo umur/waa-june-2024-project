@@ -62,7 +62,7 @@ public class SystemUserController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ApiResponse<SystemUserDto>> getCourse(@PathVariable Long id) {
+    public ResponseEntity<ApiResponse<SystemUserDto>> get(@PathVariable Long id) {
         SystemUserDto response= service.getById(id);
         ApiResponse<SystemUserDto> apiResponse =  new ApiResponse<SystemUserDto>();
         apiResponse.setResponseData(response);

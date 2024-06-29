@@ -6,6 +6,7 @@ import edu.university_connect.model.AppStatusCode;
 import edu.university_connect.model.contract.dto.SystemRoleDto;
 import edu.university_connect.model.contract.request.role.SystemRoleCreateRequest;
 import edu.university_connect.model.contract.request.role.SystemRoleUpdateRequest;
+import edu.university_connect.model.entity.SystemAction;
 import edu.university_connect.model.entity.SystemRole;
 import edu.university_connect.repository.SystemRoleRepository;
 import edu.university_connect.service.SystemRoleService;
@@ -53,6 +54,11 @@ public class SystemRoleServiceImpl implements SystemRoleService {
 
     @Override
     public SystemRoleDto create(SystemRoleCreateRequest createRequest) {
+        Optional<SystemRole> roleWithCode=repository.findByCodeIgnoreCase(createRequest.getCode());
+        if(roleWithCode.isPresent()){
+            throw ServiceException.of(AppStatusCode.E40006,"sys-role","code="+createRequest.getCode());
+        }
+        //check valid action codes
         SystemRole role=SystemRoleDtoMapper.MAPPER.dtoToEntity(createRequest);
         SystemRole savedRole=repository.save(role);
         return SystemRoleDtoMapper.MAPPER.entityToDto(savedRole);
@@ -62,6 +68,7 @@ public class SystemRoleServiceImpl implements SystemRoleService {
     public SystemRoleDto update(Long id, SystemRoleUpdateRequest updateRequest) {
         Optional<SystemRole> sysRoleOpt= getSystemRoleById(id);
         if(sysRoleOpt.isPresent()){
+            //check valid action codes
             SystemRole role=sysRoleOpt.get();
             role.setName(updateRequest.getName());
             role.setCode(updateRequest.getCode());

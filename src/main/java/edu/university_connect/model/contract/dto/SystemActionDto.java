@@ -18,7 +18,7 @@ public class SystemActionDto {
 
     String createdBy;
 
-    LocalDateTime lastModified;
+    LocalDateTime lastModifiedAt;
 
     String lastModifiedBy;
 

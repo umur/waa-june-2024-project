@@ -62,7 +62,7 @@ public class SystemActionController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ApiResponse<SystemActionDto>> getCourse(@PathVariable Long id) {
+    public ResponseEntity<ApiResponse<SystemActionDto>> get(@PathVariable Long id) {
         SystemActionDto response= service.getById(id);
         ApiResponse<SystemActionDto> apiResponse =  new ApiResponse<SystemActionDto>();
         apiResponse.setResponseData(response);

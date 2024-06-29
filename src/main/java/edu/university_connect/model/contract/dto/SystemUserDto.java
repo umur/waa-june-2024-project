@@ -18,7 +18,7 @@ public class SystemUserDto {
 
     String createdBy;
 
-    LocalDateTime lastModified;
+    LocalDateTime lastModifiedAt;
 
     String lastModifiedBy;
 

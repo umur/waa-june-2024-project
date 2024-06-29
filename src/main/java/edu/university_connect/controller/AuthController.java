@@ -29,7 +29,7 @@ public class AuthController {
 
 
     @PostMapping("/sign-in")
-    public ResponseEntity<ApiResponse<AuthenticationResponse>> authenticate(@Valid @RequestBody AuthenticationRequest data) {
+    public ResponseEntity<ApiResponse<AuthenticationResponse>> signIn(@Valid @RequestBody AuthenticationRequest data) {
 
 
         AuthenticationResponse response = service.authenticate(new UsernamePasswordAuthenticationToken

@@ -21,7 +21,7 @@ public class SystemRoleDto {
 
     String createdBy;
 
-    LocalDateTime lastModified;
+    LocalDateTime lastModifiedAt;
 
     String lastModifiedBy;
 

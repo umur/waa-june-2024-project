@@ -1,10 +1,12 @@
 package edu.university_connect.controller;
 
+import edu.university_connect.exception.ServiceException;
 import edu.university_connect.model.AppStatusCode;
 import edu.university_connect.model.contract.dto.SystemRoleDto;
 import edu.university_connect.model.contract.request.role.SystemRoleCreateRequest;
 import edu.university_connect.model.contract.request.role.SystemRoleUpdateRequest;
 import edu.university_connect.model.contract.response.common.ApiResponse;
+import edu.university_connect.model.entity.SystemAction;
 import edu.university_connect.service.MessagingService;
 import edu.university_connect.service.SystemRoleService;
 import jakarta.validation.Valid;
@@ -16,6 +18,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1/system-role")
@@ -62,7 +65,7 @@ public class SystemRoleController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ApiResponse<SystemRoleDto>> getCourse(@PathVariable Long id) {
+    public ResponseEntity<ApiResponse<SystemRoleDto>> get(@PathVariable Long id) {
         SystemRoleDto response= service.getById(id);
         ApiResponse<SystemRoleDto> apiResponse =  new ApiResponse<SystemRoleDto>();
         apiResponse.setResponseData(response);
