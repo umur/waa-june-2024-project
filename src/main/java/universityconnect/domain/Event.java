@@ -20,6 +20,9 @@ public class Event {
     @JoinColumn(name = "event_id")
     private List<EventAttendance> eventAttendances;
 
+    @ManyToOne
+    private User organizer;
+
     public Event() {}
 
 }

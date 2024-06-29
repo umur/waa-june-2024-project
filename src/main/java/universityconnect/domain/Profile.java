@@ -18,5 +18,8 @@ public class Profile {
     @ElementCollection
     private List<String> activities;
 
+    @OneToOne
+    private User user;
+
     public Profile() {}
 }

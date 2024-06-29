@@ -2,6 +2,8 @@ package universityconnect.domain;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.util.List;
+
 @Entity
 @Data
 public class SurveyStudent {
@@ -14,4 +16,8 @@ public class SurveyStudent {
     @ManyToOne
     @JoinColumn(name = "student_id")
     private Student student;
+
+    @OneToMany
+    @JoinColumn(name = "survey_student_id")
+    private List<Answer> answers;
 }

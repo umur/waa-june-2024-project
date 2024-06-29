@@ -20,17 +20,29 @@ public abstract class User {
     @Embedded
     private AuditData auditData;
 
-    @OneToOne
-    @JoinColumn(name = "profile_id")
+    @OneToOne(mappedBy = "user")
     private Profile profile;
 
     @OneToMany
     @JoinColumn(name = "user_id")
-    List<Block> blocks;
+    private List<Block> blocks;
 
     @OneToMany
     @JoinColumn(name = "user_id")
-    List<Report> reportedLists;
+    private List<Report> reportedLists;
+
+    @OneToMany(mappedBy = "user")
+    private List<Discussion> discussions;
+
+    @OneToMany
+    @JoinColumn(name="user_id")
+    private List<Resource> resources;
+
+    @OneToMany(mappedBy = "organizer")
+    private List<Event> events;
+
+    @Enumerated
+    private Role role;
 
     public abstract Role getRole();
 }

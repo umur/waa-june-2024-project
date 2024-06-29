@@ -20,6 +20,9 @@ public class Discussion {
     @OneToMany(mappedBy = "discussion")
     private List<DiscussionThread> discussionThreads;
 
+    @ManyToOne
+    private User user;
+
     public Discussion(){}
 
 }

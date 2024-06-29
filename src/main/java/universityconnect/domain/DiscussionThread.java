@@ -20,9 +20,9 @@ public class DiscussionThread {
     private Discussion discussion;
 
     @ManyToMany
-    @JoinTable(name="NestedComments",
-            joinColumns = @JoinColumn(name="commentId"),
-            inverseJoinColumns = @JoinColumn(name="nestedCommentId"))
+    @JoinTable(name="NestedThread",
+            joinColumns = @JoinColumn(name="threadId"),
+            inverseJoinColumns = @JoinColumn(name="nestedThreadId"))
     private List<DiscussionThread> nestedThreads;
 
     public DiscussionThread() {}
