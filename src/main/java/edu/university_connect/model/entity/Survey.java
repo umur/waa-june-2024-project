@@ -12,6 +12,7 @@ public class Survey extends MetaData {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private  Long id;
+    @Column(nullable = false)
     private  String title;
 
     @ManyToOne(fetch = FetchType.LAZY)

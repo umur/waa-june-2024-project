@@ -10,6 +10,7 @@ public class SurveyResponse extends MetaData {
     @Id
     private int id;
 
+    @Column(nullable = false)
     private String response;
 
     @ManyToOne(fetch = FetchType.LAZY)

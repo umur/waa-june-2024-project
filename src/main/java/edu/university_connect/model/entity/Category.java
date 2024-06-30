@@ -12,6 +12,7 @@ public class Category extends MetaData {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(unique = true,nullable = false)
     private String title;
 
     @OneToMany

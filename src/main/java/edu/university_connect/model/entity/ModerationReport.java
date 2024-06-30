@@ -13,6 +13,7 @@ public class ModerationReport extends MetaData {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false)
     private String reason;
 
     @ManyToOne(fetch = FetchType.LAZY)

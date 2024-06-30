@@ -11,7 +11,8 @@ public class Post extends MetaData {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
+    @Lob
+    @Column(length = 5000,nullable = false)
     private String content;
 
     @ManyToOne(fetch=FetchType.LAZY)

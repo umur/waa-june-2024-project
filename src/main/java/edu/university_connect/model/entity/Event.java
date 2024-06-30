@@ -12,9 +12,16 @@ public class Event extends MetaData {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(nullable = false)
     private String name;
+
     private String description;
+
+    @Column(nullable = false)
     private String location;
+
+    @Column(nullable = false)
     private LocalDate date;
 
     @ManyToMany
