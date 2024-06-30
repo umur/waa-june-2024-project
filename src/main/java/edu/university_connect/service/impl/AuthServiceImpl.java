@@ -1,12 +1,12 @@
 package edu.university_connect.service.impl;
 
 import edu.university_connect.config.jwt.JwtTokenProvider;
+import edu.university_connect.exception.ServiceException;
 import edu.university_connect.model.AppStatusCode;
+import edu.university_connect.model.SecurityUser;
 import edu.university_connect.model.TokenType;
 import edu.university_connect.model.contract.request.auth.RefreshTokenRequest;
 import edu.university_connect.model.contract.response.common.AuthenticationResponse;
-import edu.university_connect.exception.ServiceException;
-import edu.university_connect.model.SecurityUser;
 import edu.university_connect.service.AuthService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,7 +18,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -32,8 +31,6 @@ public class AuthServiceImpl implements AuthService {
     @Value("${jwt_configs.refresh_token_validity_s}")
     private long refreshTokenValidity;
 
-    private final PasswordEncoder encoder;
-
     private final AuthenticationManager authenticationManager;
 
     private final JwtTokenProvider jwtTokenProvider;
@@ -46,7 +43,7 @@ public class AuthServiceImpl implements AuthService {
         String accessToken = jwtTokenProvider.createToken(authentication, TokenType.ACCESS, true);
         String refreshToken = jwtTokenProvider.createToken(authentication, TokenType.REFRESH, false);
         return new AuthenticationResponse(user.getUsername(),
-                accessToken, refreshToken, (int) (validity / 1000), (int) (refreshTokenValidity / 1000));
+                accessToken, refreshToken, (int) (validity), (int) (refreshTokenValidity));
     }
 
     public AuthenticationResponse authenticate(Authentication auth) {
@@ -62,6 +59,7 @@ public class AuthServiceImpl implements AuthService {
                 if (!user.isEnabled()) {
                     throw new DisabledException("account.not.active");
                 }
+
                 Authentication auth = new UsernamePasswordAuthenticationToken(user, data.getSecond(), user.getAuthorities());
                 SecurityContextHolder.getContext().setAuthentication(auth);
                 return generateTokens(auth);
