@@ -1,7 +1,7 @@
 package edu.university_connect.config.jwt;
 
 import edu.university_connect.model.SecurityUser;
-import edu.university_connect.model.TokenType;
+import edu.university_connect.model.enums.TokenType;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.JwtException;

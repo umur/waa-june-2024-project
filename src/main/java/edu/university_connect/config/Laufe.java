@@ -1,13 +1,15 @@
 package edu.university_connect.config;
 
-import edu.university_connect.model.entity.Action;
-import edu.university_connect.model.entity.Role;
-import edu.university_connect.model.entity.User;
+import edu.university_connect.domain.entity.Action;
+import edu.university_connect.domain.entity.Resource;
+import edu.university_connect.domain.entity.Role;
+import edu.university_connect.domain.entity.User;
 import edu.university_connect.repository.ActionRepository;
 import edu.university_connect.repository.RoleRepository;
 import edu.university_connect.repository.UserRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.stereotype.Component;
 
 import java.util.HashSet;
 import java.util.List;

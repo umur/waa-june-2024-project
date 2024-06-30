@@ -1,6 +1,7 @@
 package edu.university_connect.repository;
 
-import edu.university_connect.model.entity.User;
+import edu.university_connect.domain.entity.Resource;
+import edu.university_connect.domain.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

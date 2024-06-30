@@ -1,6 +1,6 @@
 package edu.university_connect.repository;
 
-import edu.university_connect.model.entity.Action;
+import edu.university_connect.domain.entity.Action;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

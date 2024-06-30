@@ -3,7 +3,7 @@ package edu.university_connect.mapper;
 import edu.university_connect.model.contract.request.action.ActionCreateRequest;
 import edu.university_connect.model.contract.request.action.ActionUpdateRequest;
 import edu.university_connect.model.contract.dto.ActionDto;
-import edu.university_connect.model.entity.Action;
+import edu.university_connect.domain.entity.Action;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.ReportingPolicy;
@@ -19,6 +19,4 @@ public interface ActionDtoMapper {
     @Mapping(target = "createdBy", ignore = true)
     @Mapping(target = "lastModifiedBy", ignore = true)
     ActionDto entityToDto(Action action);
-
-
 }

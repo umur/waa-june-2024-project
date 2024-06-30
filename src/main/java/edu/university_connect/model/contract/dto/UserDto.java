@@ -21,5 +21,4 @@ public class UserDto {
     LocalDateTime lastModifiedAt;
 
     String lastModifiedBy;
-
 }

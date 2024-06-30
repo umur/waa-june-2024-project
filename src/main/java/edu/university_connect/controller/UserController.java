@@ -1,12 +1,12 @@
 package edu.university_connect.controller;
 
-import edu.university_connect.model.AppStatusCode;
+import edu.university_connect.model.enums.AppStatusCode;
 import edu.university_connect.model.contract.dto.UserDto;
 import edu.university_connect.model.contract.request.user.UserCreateRequest;
 import edu.university_connect.model.contract.request.user.UserUpdateRequest;
-import edu.university_connect.model.contract.response.common.ApiResponse;
+import edu.university_connect.model.contract.response.ApiResponse;
 import edu.university_connect.service.MessagingService;
-import edu.university_connect.service.UserService;
+import edu.university_connect.service.user.UserService;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;

@@ -3,7 +3,7 @@ package edu.university_connect.mapper;
 import edu.university_connect.model.contract.request.role.RoleCreateRequest;
 import edu.university_connect.model.contract.request.role.RoleUpdateRequest;
 import edu.university_connect.model.contract.dto.RoleDto;
-import edu.university_connect.model.entity.Role;
+import edu.university_connect.domain.entity.Role;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.ReportingPolicy;
