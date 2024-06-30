@@ -1,5 +1,7 @@
 package edu.miu.cs545.project.service;
 
-public interface ThreadPostService {
+import edu.miu.cs545.project.model.entity.ThreadPost;
+
+public interface ThreadPostService extends CrudService<ThreadPost,Long>{
 
 }
