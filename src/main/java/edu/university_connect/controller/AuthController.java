@@ -1,12 +1,12 @@
 package edu.university_connect.controller;
 
-import edu.university_connect.model.AppStatusCode;
+import edu.university_connect.model.enums.AppStatusCode;
 import edu.university_connect.model.contract.request.auth.AuthenticationRequest;
 import edu.university_connect.model.contract.request.auth.RefreshTokenRequest;
-import edu.university_connect.model.contract.response.common.ApiResponse;
-import edu.university_connect.model.contract.response.common.AuthenticationResponse;
+import edu.university_connect.model.contract.response.ApiResponse;
+import edu.university_connect.model.contract.response.AuthenticationResponse;
 import edu.university_connect.service.MessagingService;
-import edu.university_connect.service.impl.AuthServiceImpl;
+import edu.university_connect.service.auth.AuthServiceImpl;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

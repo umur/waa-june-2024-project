@@ -1,11 +1,12 @@
 package edu.university_connect.config;
 
-import edu.university_connect.model.entity.SystemAction;
-import edu.university_connect.model.entity.SystemRole;
-import edu.university_connect.model.entity.SystemUser;
-import edu.university_connect.repository.SystemActionRepository;
-import edu.university_connect.repository.SystemRoleRepository;
-import edu.university_connect.repository.SystemUserRepository;
+import edu.university_connect.domain.entity.Action;
+import edu.university_connect.domain.entity.Resource;
+import edu.university_connect.domain.entity.Role;
+import edu.university_connect.domain.entity.User;
+import edu.university_connect.repository.ActionRepository;
+import edu.university_connect.repository.RoleRepository;
+import edu.university_connect.repository.UserRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
@@ -18,51 +19,52 @@ import java.util.stream.Collectors;
 
 //@Component
 public class Laufe implements CommandLineRunner {
-    SystemActionRepository systemActionRepository;
-    SystemRoleRepository systemRoleRepository;
-    SystemUserRepository systemUserRepository;
+    ActionRepository actionRepository;
+    RoleRepository roleRepository;
+    UserRepository userRepository;
 
-    public Laufe(SystemActionRepository systemActionRepository, SystemRoleRepository systemRoleRepository, SystemUserRepository systemUserRepository) {
-        this.systemActionRepository = systemActionRepository;
-        this.systemRoleRepository = systemRoleRepository;
-        this.systemUserRepository = systemUserRepository;
+    public Laufe(ActionRepository actionRepository, RoleRepository roleRepository, UserRepository userRepository) {
+        this.actionRepository = actionRepository;
+        this.roleRepository = roleRepository;
+        this.userRepository = userRepository;
     }
 
     @Override
     public void run(String... args) throws Exception {
-        SystemAction action1=new SystemAction("Create System User","create_user","Create System User");
-        SystemAction action2=new SystemAction("Read System User","view_user","Read System User");
-        SystemAction action3=new SystemAction("Update System User","modify_user","Update System User");
-        SystemAction action4=new SystemAction("Delete System User","delete_user","Delete System User");
-        SystemAction action5=new SystemAction("Read System User List","view_user_list","Read System User List");
+        Action action1=new Action("Create User","create_user","Create User");
+        Action action2=new Action("Read User","view_user","Read User");
+        Action action3=new Action("Update User","modify_user","Update User");
+        Action action4=new Action("Delete User","delete_user","Delete User");
+        Action action5=new Action("Read User List","view_user_list","Read User List");
 
-        SystemAction action11 = new SystemAction("Create System Role", "create_role", "Create new system roles");
-        SystemAction action12 = new SystemAction("Read System Role", "view_role", "View existing system roles");
-        SystemAction action13 = new SystemAction("Update System Role", "modify_role", "Modify system role details");
-        SystemAction action14 = new SystemAction("Delete System Role", "delete_role", "Delete system roles");
-        SystemAction action15=new SystemAction("Read System Action List","view_role_list","Read System role List");
+        Action action11 = new Action("Create Role", "create_role", "Create new roles");
+        Action action12 = new Action("Read Role", "view_role", "View existing roles");
+        Action action13 = new Action("Update Role", "modify_role", "Modify role details");
+        Action action14 = new Action("Delete Role", "delete_role", "Delete roles");
+        Action action15=new Action("Read Action List","view_role_list","Read role List");
 
-        SystemAction action6 = new SystemAction("Create System Action", "create_action", "Create new system actions");
-        SystemAction action7 = new SystemAction("Read System Action", "view_action", "View existing system actions");
-        SystemAction action8 = new SystemAction("Update System Action", "modify_action", "Modify system action details");
-        SystemAction action9 = new SystemAction("Delete System Action", "delete_action", "Delete system actions");
-        SystemAction action10=new SystemAction("Read System Action List","view_action_list","Read System action List");
+        Action action6 = new Action("Create Action", "create_action", "Create new actions");
+        Action action7 = new Action("Read Action", "view_action", "View existing actions");
+        Action action8 = new Action("Update Action", "modify_action", "Modify action details");
+        Action action9 = new Action("Delete Action", "delete_action", "Delete actions");
+        Action action10=new Action("Read Action List","view_action_list","Read action List");
 
 
-        systemActionRepository.saveAll(List.of(action1,action2,action3,action4,action5 ,action6,action7,action8,action9,action10 ,action11,action12,action13,action14,action15));
-        Set<SystemAction> systemActionSet=new HashSet<SystemAction>(systemActionRepository.findAll());
-        SystemRole role=new SystemRole("SuperUser","superuser","SuperUser",systemActionSet.stream().map(SystemAction::getCode).collect(Collectors.toSet()));
-        systemRoleRepository.save(role);
-      Optional<SystemRole> roleOpt=systemRoleRepository.findByCodeIgnoreCase("superuser");
+        actionRepository.saveAll(List.of(action1,action2,action3,action4,action5 ,action6,action7,action8,action9,action10 ,action11,action12,action13,action14,action15));
+        Set<Action> actionSet =new HashSet<Action>(actionRepository.findAll());
+        Role role=new Role("SuperUser","superuser","SuperUser", actionSet.stream().map(Action::getCode).collect(Collectors.toSet()));
+        roleRepository.save(role);
+      Optional<Role> roleOpt= roleRepository.findByCodeIgnoreCase("superuser");
       if(roleOpt.isPresent()){
-          Set<SystemRole> roles=new HashSet<>();
+          Set<Role> roles=new HashSet<>();
           roles.add(roleOpt.get());
-          // Create an encoder with strength 16
-          BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(16);
+          // Create an encoder with strength 10
+          BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(10);
           String password = encoder.encode("kush");
-          SystemUser user=new SystemUser("kush",password,"kushraj1204@gmail.com");
+          User user=new User("kush",password,"kushraj1204@gmail.com");
+          user.setEnabled(true);
           user.setRoles(roles);
-          systemUserRepository.save(user);
+          userRepository.save(user);
       }
     }
 }

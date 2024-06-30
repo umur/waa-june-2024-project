@@ -1,6 +1,6 @@
 package edu.university_connect.exception;
 
-import edu.university_connect.model.AppStatusCode;
+import edu.university_connect.model.enums.AppStatusCode;
 import lombok.Getter;
 
 @Getter
