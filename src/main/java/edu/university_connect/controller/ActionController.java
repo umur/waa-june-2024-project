@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/action")
+@RequestMapping("/api/v1/actions")
 @CrossOrigin
 @Slf4j
 public class ActionController {
