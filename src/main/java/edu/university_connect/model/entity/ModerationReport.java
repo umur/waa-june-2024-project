@@ -23,5 +23,9 @@ public class ModerationReport extends MetaData {
     @ManyToOne(fetch = FetchType.LAZY)
     private Post post;
 
+    private boolean actionTaken;
+
+    private String actionComment;
+
 
 }
