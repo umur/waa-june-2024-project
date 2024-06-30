@@ -26,11 +26,11 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class AuthServiceImpl implements AuthService {
 
-    @Value("${jwt_configs.access_token_validity_ms}")
-    private long validityInMs;
+    @Value("${jwt_configs.access_token_validity_s}")
+    private long validity;
 
-    @Value("${jwt_configs.refresh_token_validity_ms}")
-    private long refreshTokenValidityInMs;
+    @Value("${jwt_configs.refresh_token_validity_s}")
+    private long refreshTokenValidity;
 
     private final PasswordEncoder encoder;
 
@@ -46,7 +46,7 @@ public class AuthServiceImpl implements AuthService {
         String accessToken = jwtTokenProvider.createToken(authentication, TokenType.ACCESS, true);
         String refreshToken = jwtTokenProvider.createToken(authentication, TokenType.REFRESH, false);
         return new AuthenticationResponse(user.getUsername(),
-                accessToken, refreshToken, (int) (validityInMs / 1000), (int) (refreshTokenValidityInMs / 1000));
+                accessToken, refreshToken, (int) (validity / 1000), (int) (refreshTokenValidity / 1000));
     }
 
     public AuthenticationResponse authenticate(Authentication auth) {

@@ -32,11 +32,11 @@ public class JwtTokenProvider {
     private static final String AUTHORITIES_KEY = "authorities";
     @Value("${jwt_configs.secret}")
     private String jwtSecret;
-    @Value("${jwt_configs.access_token_validity_ms}")
-    private long accessTokenValidityInMs;
+    @Value("${jwt_configs.access_token_validity_s}")
+    private long accessTokenValidity;
 
-    @Value("${jwt_configs.refresh_token_validity_ms}")
-    private long refreshTokenValidityInMs;
+    @Value("${jwt_configs.refresh_token_validity_s}")
+    private long refreshTokenValidity;
     private SecretKey secretKey;
 
     @PostConstruct
@@ -65,7 +65,7 @@ public class JwtTokenProvider {
             claims = Jwts.claims().subject(username).build();
         }
         Date now = new Date();
-        long validityInMs = tokenType.equals(TokenType.REFRESH) ? refreshTokenValidityInMs : accessTokenValidityInMs;
+        long validityInMs = (tokenType.equals(TokenType.REFRESH) ? refreshTokenValidity : accessTokenValidity)*1000;
         Date validity = new Date(now.getTime() + validityInMs);
         return Jwts.builder().claims(claims).issuedAt(now).expiration(validity).signWith(this.secretKey, Jwts.SIG.HS256).compact();
     }
