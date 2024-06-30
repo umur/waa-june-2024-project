@@ -31,7 +31,11 @@ public class SecurityConfig {
             .authorizeHttpRequests(request -> request
                 .requestMatchers("/api/v1/auth/**").permitAll()
                 .requestMatchers("/api/v1/admin/**").hasAuthority(ADMIN.name())
-                .requestMatchers("/api/v1/users/**").hasAnyAuthority(ADMIN.name(), STUDENT.name())
+//                .requestMatchers("/api/v1/users/**").hasAnyAuthority(ADMIN.name(), STUDENT.name())
+                .requestMatchers("/api/v1/interests/**").hasAnyAuthority(ADMIN.name(), STUDENT.name())
+                .requestMatchers("/api/v1/achievements/**").hasAnyAuthority(ADMIN.name(), STUDENT.name())
+                .requestMatchers("/api/v1/achievements/**").hasAnyAuthority(ADMIN.name(), STUDENT.name())
+                .requestMatchers("/api/v1/users/**").permitAll()
                 .anyRequest().authenticated())
             .sessionManagement(session -> session.sessionCreationPolicy(STATELESS))
             .authenticationProvider(authenticationProvider)

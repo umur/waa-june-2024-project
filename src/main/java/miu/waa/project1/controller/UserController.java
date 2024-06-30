@@ -2,7 +2,9 @@ package miu.waa.project1.controller;
 
 import lombok.RequiredArgsConstructor;
 import miu.waa.project1.dto.UserDTO;
+import miu.waa.project1.model.Interest;
 import miu.waa.project1.model.User;
+import miu.waa.project1.service.impl.InterestServiceImpl;
 import miu.waa.project1.service.impl.UserServiceImpl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +20,7 @@ import java.util.List;
 @RequestMapping("/api/v1/users")
 public class UserController {
     private final UserServiceImpl userService;
+    private final InterestServiceImpl interestService;
 
     @GetMapping("/search")
     public List<User> searchByMajorEntryYearAndRelevant(
@@ -64,5 +67,32 @@ public class UserController {
             return ResponseEntity.ok(userDTO);
         }
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid token or user not found");
+    }
+
+    @GetMapping("/{id}/interests")
+    public ResponseEntity<?> getInterestsByUserId(@PathVariable Long id) {
+        User user = userService.getUserById(id);
+        if (user == null) return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found!");
+
+        List<Interest> interests = user.getInterests();
+        return ResponseEntity.ok(interests);
+    }
+
+    @PostMapping("/{id}/interests")
+    public ResponseEntity<?> createFavoriteProperty(@PathVariable Long id, @RequestBody Interest interest) {
+        User user = userService.getUserById(id);
+        if (user == null) return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found!");
+
+        Interest createdInterest = interestService.createInterestByUser(interest, user);
+        return ResponseEntity.ok(createdInterest);
+    }
+
+    @DeleteMapping("/{id}/interests/{interestId}")
+    public ResponseEntity<?> deleteInterestByUser(@PathVariable Long id, @PathVariable Long interestId) {
+        User user = userService.getUserById(id);
+        if (user == null) return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found!");
+
+        interestService.deleteInterest(id);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }
