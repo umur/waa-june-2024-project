@@ -11,7 +11,6 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @MappedSuperclass
-@Data
 public abstract class MetaData implements Serializable {
 
     @CreatedDate

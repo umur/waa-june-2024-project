@@ -9,6 +9,7 @@ import lombok.Data;
 public class SurveyResponse extends MetaData {
     @Id
     private int id;
+
     private String response;
 
     @ManyToOne(fetch = FetchType.LAZY)

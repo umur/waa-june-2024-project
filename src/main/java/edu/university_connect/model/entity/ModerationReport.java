@@ -19,7 +19,7 @@ public class ModerationReport extends MetaData {
     @JoinColumn(name = "reporter_id")
     private User reporter;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Post post;
 
 
