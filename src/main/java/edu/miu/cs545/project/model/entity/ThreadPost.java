@@ -1,8 +1,6 @@
 package edu.miu.cs545.project.model.entity;
 
-import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -22,10 +20,10 @@ public class ThreadPost {
     @Column( updatable = false)
     private LocalDateTime createdAt;
 
-    @ManyToOne(cascade = CascadeType.PERSIST,fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     private  Category  category;
 
-    @ManyToOne(cascade = CascadeType.PERSIST,fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     private  User user;
 
 
