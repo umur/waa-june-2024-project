@@ -1,5 +1,6 @@
 package universityconnect.service;
 
+import universityconnect.domain.User;
 import universityconnect.dto.UserDTO;
 
 import java.util.List;
@@ -10,5 +11,6 @@ public interface UserService {
     List<UserDTO> getAllUsers();
     UserDTO updateUser(Long id, UserDTO userDTO);
     void deleteUser(Long id);
+    User findById(Long userId);
 }
 
