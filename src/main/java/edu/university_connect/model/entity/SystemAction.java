@@ -28,4 +28,7 @@ public class SystemAction  extends AbstractPersistableEntity{
         this.code = code;
         this.description = description;
     }
+
+    public static class User {
+    }
 }
