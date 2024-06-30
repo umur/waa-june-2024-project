@@ -2,7 +2,6 @@ package edu.miu.cs545.project.model.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
-
 import java.time.LocalDateTime;
 
 @Entity
