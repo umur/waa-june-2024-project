@@ -1,49 +1,53 @@
 package edu.university_connect.model.entity;
 
+import edu.university_connect.model.entity.meta.MetaData;
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
+import java.util.Set;
+
 @Data
+@NoArgsConstructor
 @Entity
-public class User {
+@Table(name = "user")
+public class User extends MetaData {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(name = "username", unique = true, nullable = false)
     private String username;
+
+    @Column(name = "password")
     private String password;
+
+    @Column(name = "email", unique = true, nullable = false)
     private String email;
 
-    @OneToOne(mappedBy = "user",fetch = FetchType.LAZY)
-    private Student student;
+    @Column(name = "enabled", nullable = false)
+    private boolean enabled;
 
-    @OneToMany
-    @JoinColumn(name = "user_id")
-    private List<Post> posts;
-
-    @OneToMany(mappedBy = "user")
-    private List<Reply> replies;
-
-    @ManyToMany(mappedBy = "user")
-    private List<Role> roles;
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "user_role")
+    private Set<Role> roles;
 
     @OneToOne(mappedBy = "user",fetch = FetchType.LAZY)
     private Profile profile;
 
-    @OneToMany
-    @JoinColumn(name="user_id")
-    private  List<Resource> resources;
+//    @OneToMany(mappedBy = "user")
+//    private List<Post> posts;
 
-    @OneToMany(mappedBy = "creator")
-    private  List<Survey> createdSurveys;
+//    @OneToMany(mappedBy = "user")
+//    private List<Reply> replies;
 
-    @ManyToMany
-    @JoinTable(
-            name = "user_event_attendance",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "event_id")
-    )
-    private List<Event> events;
+//    @OneToMany(mappedBy="user")
+//    private  List<Resource> resources;
+
+//    @OneToMany(mappedBy = "creator")
+//    private  List<Survey> createdSurveys;
 
     @ManyToMany
     @JoinTable(
@@ -52,4 +56,13 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "blocked_user_id")
     )
     private List<User> blockedUsers;
+
+
+
+    public User(String username, String password, String email) {
+        super();
+        this.username = username;
+        this.password = password;
+        this.email = email;
+    }
 }

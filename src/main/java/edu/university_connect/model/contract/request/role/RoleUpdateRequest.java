@@ -5,8 +5,7 @@ import lombok.Data;
 import java.util.Set;
 
 @Data
-public class SystemRoleCreateRequest {
-
+public class RoleUpdateRequest {
 
     private String name;
 
@@ -15,5 +14,4 @@ public class SystemRoleCreateRequest {
     private String description;
 
     private Set<String> actions;
-
 }

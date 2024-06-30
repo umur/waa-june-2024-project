@@ -1,20 +1,15 @@
 package edu.university_connect.model.entity;
 
-import edu.university_connect.model.entity.meta.AbstractPersistableEntity;
-import io.hypersistence.utils.hibernate.type.json.JsonType;
+import edu.university_connect.model.entity.meta.MetaData;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.Type;
-
-import java.util.Set;
 
 @Data
-@NoArgsConstructor
 @Entity
-@Table(name = "system_role")
-public class SystemRole extends AbstractPersistableEntity {
-
+@NoArgsConstructor
+@Table(name = "action")
+public class Action extends MetaData {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -28,14 +23,10 @@ public class SystemRole extends AbstractPersistableEntity {
     @Column(name = "description")
     private String description;
 
-    @Type(JsonType.class)
-    @Column(name = "actions", columnDefinition = "json")
-    private Set<String> actions;
-
-    public SystemRole(String name, String code, String description, Set<String> actions) {
+    public Action(String name, String code, String description) {
         this.name = name;
         this.code = code;
         this.description = description;
-        this.actions = actions;
     }
+
 }

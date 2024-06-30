@@ -11,7 +11,7 @@ import java.io.Serializable;
 @Embeddable
 @AllArgsConstructor
 @NoArgsConstructor
-public class SystemUsername implements Serializable {
+public class Username implements Serializable {
 
     private String username;
 }

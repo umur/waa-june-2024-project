@@ -1,7 +1,7 @@
 package edu.university_connect.model;
 
-import edu.university_connect.model.entity.SystemRole;
-import edu.university_connect.model.entity.SystemUser;
+import edu.university_connect.model.entity.Role;
+import edu.university_connect.model.entity.User;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -24,21 +24,21 @@ public class SecurityUser implements UserDetails {
     private boolean credentialsNonExpired;
     private boolean enabled;
 
-    public SecurityUser(SystemUser systemUser){
-        Set<SystemRole> roles=systemUser.getRoles();
+    public SecurityUser(User user){
+        Set<Role> roles= user.getRoles();
         Set<String> actions=roles.stream()
                 .flatMap(role -> role.getActions().stream())
                 .collect(Collectors.toSet());
         Collection<SimpleGrantedAuthority> directAuthorities=actions.stream()
                 .map(SimpleGrantedAuthority::new).toList();
         Collection<SimpleGrantedAuthority> authorities = new ArrayList<>(directAuthorities);
-        this.id = systemUser.getId();
-        this.username = systemUser.getUsername();
-        this.password = systemUser.getPassword();
+        this.id = user.getId();
+        this.username = user.getUsername();
+        this.password = user.getPassword();
         this.accountNonExpired = true;
         this.accountNonLocked = true;
         this.credentialsNonExpired = true;
-        this.enabled = systemUser.isEnabled();
+        this.enabled = user.isEnabled();
         this.authorities =   authorities;
     }
 

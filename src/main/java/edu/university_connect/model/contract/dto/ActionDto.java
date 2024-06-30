@@ -5,14 +5,14 @@ import lombok.Data;
 import java.time.LocalDateTime;
 
 @Data
-public class SystemUserDto {
+public class ActionDto {
     private Long id;
 
-    private String username;
+    private String name;
 
-    private String email;
+    private String code;
 
-    private boolean enabled;
+    private String description;
 
     LocalDateTime createdAt;
 
@@ -22,4 +22,5 @@ public class SystemUserDto {
 
     String lastModifiedBy;
 
+    private boolean enabled;
 }

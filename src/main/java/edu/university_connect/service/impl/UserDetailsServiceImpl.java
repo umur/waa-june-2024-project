@@ -1,8 +1,8 @@
 package edu.university_connect.service.impl;
 
 import edu.university_connect.model.SecurityUser;
-import edu.university_connect.model.entity.SystemUser;
-import edu.university_connect.repository.SystemUserRepository;
+import edu.university_connect.model.entity.User;
+import edu.university_connect.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -17,14 +17,14 @@ import java.util.Optional;
 @Transactional
 public class UserDetailsServiceImpl implements UserDetailsService{
 
-    private final SystemUserRepository repository;
+    private final UserRepository repository;
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Optional<SystemUser> systemUserOpt= repository.findByUsername(username);
-        if(systemUserOpt.isPresent()){
-            SystemUser user=systemUserOpt.get();
+        Optional<User> userOpt= repository.findByUsername(username);
+        if(userOpt.isPresent()){
+            User user=userOpt.get();
             user.setRoles(user.getRoles());
-            return new SecurityUser(systemUserOpt.get());
+            return new SecurityUser(userOpt.get());
         }
         else throw new UsernameNotFoundException(username);
     }

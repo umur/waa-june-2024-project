@@ -1,12 +1,12 @@
 package edu.university_connect.model.entity;
 
+import edu.university_connect.model.entity.meta.MetaData;
 import jakarta.persistence.*;
 import lombok.Data;
 
-import java.util.List;
 @Data
 @Entity
-public class Student {
+public class Student extends MetaData {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -17,7 +17,6 @@ public class Student {
     private String major;
 
     @OneToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "user_id",nullable = true)
     @JoinColumn(name = "user_id")
     private User user;
 }

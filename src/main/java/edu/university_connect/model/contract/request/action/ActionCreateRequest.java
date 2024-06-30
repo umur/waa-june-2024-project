@@ -5,7 +5,7 @@ import jakarta.validation.constraints.NotEmpty;
 import lombok.Data;
 
 @Data
-public class SystemActionCreateRequest {
+public class ActionCreateRequest {
 
     @NotBlank
     @NotEmpty

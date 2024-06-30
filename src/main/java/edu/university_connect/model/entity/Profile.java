@@ -1,5 +1,6 @@
 package edu.university_connect.model.entity;
 
+import edu.university_connect.model.entity.meta.MetaData;
 import io.hypersistence.utils.hibernate.type.json.JsonType;
 import jakarta.persistence.*;
 import lombok.Data;
@@ -9,7 +10,7 @@ import java.util.Set;
 
 @Data
 @Entity
-public class Profile {
+public class Profile extends MetaData {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -28,5 +29,5 @@ public class Profile {
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="user_id")
-    private  User user;
+    private User user;
 }

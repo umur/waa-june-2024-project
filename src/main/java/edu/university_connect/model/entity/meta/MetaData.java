@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 
 @MappedSuperclass
 @Data
-public abstract class AbstractPersistableEntity implements Serializable {
+public abstract class MetaData implements Serializable {
 
     @CreatedDate
     @Column(name = "created_at", updatable=false)
@@ -21,7 +21,7 @@ public abstract class AbstractPersistableEntity implements Serializable {
     @CreatedBy
     @AttributeOverride(name = "username", column = @Column(name = "created_by", updatable=false))
     @Embedded
-    SystemUsername createdBy;
+    Username createdBy;
 
     @LastModifiedDate
     @Column(name = "last_modified_at",insertable=false)
@@ -30,18 +30,6 @@ public abstract class AbstractPersistableEntity implements Serializable {
     @LastModifiedBy
     @AttributeOverride(name = "username", column = @Column(name = "last_modified_by",insertable=false))
     @Embedded
-    SystemUsername lastModifiedBy;
+    Username lastModifiedBy;
 
-    @Column(name = "enabled", nullable = false)
-    private boolean enabled;
-
-    @Column(name = "deleted")
-    private boolean deleted;
-
-    @Version
-    private Long version;
-
-    public AbstractPersistableEntity() {
-        this.enabled=true;
-    }
 }
