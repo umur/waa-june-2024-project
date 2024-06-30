@@ -1,11 +1,9 @@
 package miu.waa.project1.controller;
 
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import miu.waa.project1.dto.UserDTO;
 import miu.waa.project1.model.User;
 import miu.waa.project1.service.impl.UserServiceImpl;
-import miu.waa.project1.util.JwtUtil;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -20,11 +18,13 @@ import java.util.List;
 @RequestMapping("/api/v1/users")
 public class UserController {
     private final UserServiceImpl userService;
-    private final JwtUtil jwtUtil;
 
-    @GetMapping
-    public List<User> getAllUsers() {
-        return userService.getAllUsers();
+    @GetMapping("/search")
+    public List<User> searchByMajorEntryYearAndRelevant(
+            @RequestParam(required = false) String major,
+            @RequestParam(required = false) Integer entryYear,
+            @RequestParam(required = false) String keyword) {
+        return userService.findByMajorEntryYearAndRelevant(major, entryYear, keyword);
     }
 
     @GetMapping("/{id}")

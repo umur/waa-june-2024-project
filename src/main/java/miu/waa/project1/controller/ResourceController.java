@@ -32,7 +32,7 @@ public class ResourceController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Resource> getResourceById(Long id) {
+    public ResponseEntity<Resource> getResourceById(@PathVariable Long id) {
         return ResponseEntity.ok(resourceService.getResourceById(id));
     }
 

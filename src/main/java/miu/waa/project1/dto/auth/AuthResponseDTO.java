@@ -1,14 +1,13 @@
 package miu.waa.project1.dto.auth;
 
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
 @Getter
 @Setter
-@RequiredArgsConstructor
+@AllArgsConstructor
+@NoArgsConstructor
 public class AuthResponseDTO {
     private TokenDTO tokenDTO;
     private Boolean isBlocked;

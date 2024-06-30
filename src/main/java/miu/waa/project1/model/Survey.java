@@ -1,7 +1,6 @@
 package miu.waa.project1.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -12,6 +11,7 @@ import java.time.LocalDate;
 @Setter
 public class Survey {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private LocalDate date;
     private String title;
@@ -20,4 +20,8 @@ public class Survey {
     private String comment;
     private String email;
     private String name;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 }

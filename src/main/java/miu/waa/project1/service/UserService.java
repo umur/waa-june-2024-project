@@ -5,7 +5,7 @@ import miu.waa.project1.model.User;
 import java.util.List;
 
 public interface UserService {
-    List<User> getAllUsers();
+    List<User> findByMajorEntryYearAndRelevant(String major, Integer entryYear, String keyword);
     User getUserById(Long id);
     User getUserByEmail(String email);
     User createUser(User user);
