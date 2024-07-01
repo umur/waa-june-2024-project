@@ -5,13 +5,15 @@ import lombok.Data;
 @Data
 public class ReportDTO {
     private Long id;
-    private Long reportedId;
+    private Long reportedUserId;
+    private Long reporterUserId;
 
     public ReportDTO() {}
 
-    public ReportDTO(Long id, Long reportedId) {
+    public ReportDTO(Long id, Long reportedUserId,Long reporterUserId) {
         this.id = id;
-        this.reportedId = reportedId;
+        this.reportedUserId = reportedUserId;
+        this.reporterUserId = reporterUserId;
     }
 }
 
