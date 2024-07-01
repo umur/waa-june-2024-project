@@ -5,7 +5,7 @@ import org.mapstruct.factory.Mappers;
 import universityconnect.domain.Answer;
 import universityconnect.dto.AnswerDTO;
 
-@Mapper
+@Mapper(componentModel = "spring")
 public interface AnswerMapper {
     AnswerMapper INSTANCE = Mappers.getMapper(AnswerMapper.class);
 

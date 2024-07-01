@@ -10,7 +10,7 @@ import universityconnect.dto.AdminDTO;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Mapper
+@Mapper(componentModel = "spring")
 public interface AdminMapper {
 
     AdminMapper INSTANCE = Mappers.getMapper(AdminMapper.class);

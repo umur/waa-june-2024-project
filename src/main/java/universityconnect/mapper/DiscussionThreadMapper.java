@@ -9,7 +9,7 @@ import universityconnect.dto.DiscussionThreadDTO;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Mapper
+@Mapper(componentModel = "spring")
 public interface DiscussionThreadMapper {
     DiscussionThreadMapper INSTANCE = Mappers.getMapper(DiscussionThreadMapper.class);
 

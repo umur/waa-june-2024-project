@@ -12,7 +12,7 @@ import universityconnect.service.StudentService;
 import java.util.List;
 
 @RestController
-@RequestMapping("/students")
+@RequestMapping("/api/students")
 public class StudentController {
 
     @Autowired
@@ -31,25 +31,42 @@ public class StudentController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<StudentDTO> getStudentById(@PathVariable long id){
+    public ResponseEntity<StudentDTO> getStudentById(@PathVariable long id) {
         StudentDTO studentDTO = studentService.getStudentById(id);
         return ResponseEntity.ok(studentDTO);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<StudentDTO> updateStudent(@PathVariable long id, @RequestBody StudentDTO studentDTO){
-        StudentDTO student = studentService.updateStudent(id,studentDTO);
+    public ResponseEntity<StudentDTO> updateStudent(@PathVariable long id, @RequestBody StudentDTO studentDTO) {
+        StudentDTO student = studentService.updateStudent(id, studentDTO);
         return ResponseEntity.ok(student);
     }
 
     @DeleteMapping("/{id}")
-    public void deleteStudent(@PathVariable long id){
+    public void deleteStudent(@PathVariable long id) {
         studentService.deleteStudent(id);
     }
 
     @GetMapping("/{id}/profiles")
-    public ResponseEntity<ProfileDTO> getProfileByStudentId(@PathVariable long id){
+    public ResponseEntity<ProfileDTO> getProfileByStudentId(@PathVariable long id) {
         ProfileDTO profileDTO = studentService.getProfileByStudentId(id);
         return ResponseEntity.ok(profileDTO);
     }
+
+    @GetMapping("/year/{year}")
+    public List<StudentDTO> getStudentsByYear(@PathVariable int year) {
+        return studentService.getStudentsByYear(year);
+    }
+
+    @GetMapping("/major/{major}")
+    public List<StudentDTO> getStudentsByMajor(@PathVariable String major) {
+        return studentService.getStudentsByMajor(major);
+    }
+
+    @GetMapping("/year/{year}/major/{major}")
+    public List<StudentDTO> getStudentsByYearAndMajor(@PathVariable int year, @PathVariable String major) {
+        return studentService.getStudentsByYearAndMajor(year, major);
+    }
+
+
 }
