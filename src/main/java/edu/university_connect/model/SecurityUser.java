@@ -1,6 +1,5 @@
 package edu.university_connect.model;
 
-import edu.university_connect.domain.entity.Resource;
 import edu.university_connect.domain.entity.Role;
 import edu.university_connect.domain.entity.User;
 import lombok.Data;

@@ -1,6 +1,7 @@
 package edu.university_connect.mapper;
 
 import edu.university_connect.domain.entity.User;
+import edu.university_connect.model.contract.request.auth.SignUpRequest;
 import edu.university_connect.model.contract.request.user.UserCreateRequest;
 import edu.university_connect.model.contract.request.user.UserUpdateRequest;
 import edu.university_connect.model.contract.dto.UserDto;
@@ -17,9 +18,8 @@ public interface UserDtoMapper {
 
     User dtoToEntity(UserCreateRequest request);
     User dtoToEntity(UserUpdateRequest request);
-    @Mapping(target = "createdBy", ignore = true)
-    @Mapping(target = "lastModifiedBy", ignore = true)
     UserDto entityToDto(User user);
+    User dtoToEntity(SignUpRequest request);
 
 
 }
