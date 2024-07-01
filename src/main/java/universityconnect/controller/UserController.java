@@ -4,6 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import universityconnect.domain.Report;
+import universityconnect.dto.ReportDTO;
 import universityconnect.dto.UserDTO;
 import universityconnect.service.UserService;
 
@@ -44,6 +46,18 @@ public class UserController {
     public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
         userService.deleteUser(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/{id}/reporters")
+    public ResponseEntity<List<UserDTO>> getAllReportersByReportedId(@PathVariable long id){
+        List<UserDTO> reports = userService.getAllReporterUsersByReportedUserId(id);
+        return ResponseEntity.ok(reports);
+    }
+
+    @GetMapping("/{id}/reporteds")
+    public ResponseEntity<List<UserDTO>> getAllReportedsByReporterId(@PathVariable long id){
+        List<UserDTO> reports = userService.getAllReportedUsersByReporterUserId(id);
+        return ResponseEntity.ok(reports);
     }
 }
 

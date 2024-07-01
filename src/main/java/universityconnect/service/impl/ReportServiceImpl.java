@@ -20,11 +20,19 @@ public class ReportServiceImpl implements ReportService {
 
     private final ReportRepository reportRepository;
     private final UserRepository userRepository;
-
     private final ReportMapper reportMapper;
+
     @Override
     public ReportDTO createReport(ReportDTO reportDTO) {
+        User reportedUser = userRepository.findById(reportDTO.getReportedUserId())
+                .orElseThrow(() -> new ResourceNotFoundException("Reported User ID is not found, id: " + reportDTO.getReportedUserId()));
+        User reporterUser = userRepository.findById(reportDTO.getReporterUserId())
+                .orElseThrow(() -> new ResourceNotFoundException("Reporter User ID is not found, id: " + reportDTO.getReporterUserId()));
+
         Report report = reportMapper.reportDTOToReport(reportDTO);
+        report.setReportedUser(reportedUser);
+        report.setReporterUser(reporterUser);
+
         Report createdReport = reportRepository.save(report);
         return reportMapper.reportToReportDTO(createdReport);
     }
@@ -40,26 +48,27 @@ public class ReportServiceImpl implements ReportService {
     @Override
     public ReportDTO getReportById(long id) {
         Report report = reportRepository.findById(id)
-                .orElseThrow(()-> new ResourceNotFoundException("Report ID is not found, id:  " + id));
+                .orElseThrow(() -> new ResourceNotFoundException("Report ID is not found, id: " + id));
         return reportMapper.reportToReportDTO(report);
     }
 
     @Override
     public ReportDTO updateReport(long id, ReportDTO reportDTO) {
         Report existingReport = reportRepository.findById(id)
-                .orElseThrow(()-> new ResourceNotFoundException("Report ID is not found, id:  " + id));
+                .orElseThrow(() -> new ResourceNotFoundException("Report ID is not found, id: " + id));
 
-       if(reportDTO.getReportedUserId() != null){
-           User user = userRepository.findById(reportDTO.getReportedUserId())
-                   .orElseThrow(()->new ResourceNotFoundException("Reported User ID is not found, id: " + id));
-           existingReport.setReportedUser(user);
-       }
-
-        if(reportDTO.getReporterUserId() != null){
-            User user = userRepository.findById(reportDTO.getReporterUserId())
-                    .orElseThrow(()->new ResourceNotFoundException("Reporting User ID is not found, id: " + id));
-            existingReport.setReportingUser(user);
+        if (reportDTO.getReportedUserId() != null) {
+            User reportedUser = userRepository.findById(reportDTO.getReportedUserId())
+                    .orElseThrow(() -> new ResourceNotFoundException("Reported User ID is not found, id: " + reportDTO.getReportedUserId()));
+            existingReport.setReportedUser(reportedUser);
         }
+
+        if (reportDTO.getReporterUserId() != null) {
+            User reporterUser = userRepository.findById(reportDTO.getReporterUserId())
+                    .orElseThrow(() -> new ResourceNotFoundException("Reporting User ID is not found, id: " + reportDTO.getReporterUserId()));
+            existingReport.setReporterUser(reporterUser);
+        }
+
         Report report = reportRepository.save(existingReport);
         return reportMapper.reportToReportDTO(report);
     }
@@ -67,7 +76,7 @@ public class ReportServiceImpl implements ReportService {
     @Override
     public void deleteReport(long id) {
         Report report = reportRepository.findById(id)
-                .orElseThrow(()-> new ResourceNotFoundException("Report ID is not found, id:  " + id));
+                .orElseThrow(() -> new ResourceNotFoundException("Report ID is not found, id: " + id));
         reportRepository.delete(report);
     }
 }

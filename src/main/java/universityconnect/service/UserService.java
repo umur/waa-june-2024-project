@@ -1,6 +1,7 @@
 package universityconnect.service;
 
 import universityconnect.domain.User;
+import universityconnect.dto.ReportDTO;
 import universityconnect.dto.UserDTO;
 
 import java.util.List;
@@ -12,5 +13,9 @@ public interface UserService {
     UserDTO updateUser(Long id, UserDTO userDTO);
     void deleteUser(Long id);
     User findById(Long userId);
+    List<UserDTO> getAllReportedUsersByReporterUserId(Long id);
+    List<UserDTO> getAllReporterUsersByReportedUserId(Long id);
+
+
 }
 

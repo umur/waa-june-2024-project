@@ -27,11 +27,11 @@ public class User {
     @JoinColumn(name = "user_id")
     private List<Block> blocks;
 
-    @OneToMany(mappedBy = "reportingUser")
-    private List<Report> reportedUserLists;
+    @OneToMany(mappedBy = "reporterUser")
+    private List<Report> reporterUserLists;
 
     @OneToMany(mappedBy = "reportedUser")
-    private List<Report> reportingUserLists;
+    private List<Report> reportedUserLists;
 
     @OneToMany(mappedBy = "user")
     private List<Discussion> discussions;
