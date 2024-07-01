@@ -24,6 +24,7 @@ public enum AppStatusCode {
     E40000("not.found", HttpStatus.NOT_FOUND),
     E40001("no.changes", HttpStatus.BAD_REQUEST),
     E40002("bad.values.supplied", HttpStatus.BAD_REQUEST),
+    E40003("password.confirm.no.atch", HttpStatus.BAD_REQUEST),
     E40005("invalid.username.password", HttpStatus.BAD_REQUEST),
     E40006("already.exist", HttpStatus.BAD_REQUEST),
     E40007("token.expired", HttpStatus.UNAUTHORIZED),
