@@ -5,11 +5,14 @@ import lombok.Data;
 
 @Entity
 @Data
+@Table(name = "discussions")
 public class Discussion {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(name = "title", nullable = false)
     private String title;
     private String body;
 
