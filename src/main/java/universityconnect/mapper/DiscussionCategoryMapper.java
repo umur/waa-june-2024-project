@@ -5,7 +5,7 @@ import org.mapstruct.factory.Mappers;
 import universityconnect.domain.DiscussionCategory;
 import universityconnect.dto.DiscussionCategoryDTO;
 
-@Mapper
+@Mapper(componentModel = "spring")
 public interface DiscussionCategoryMapper {
     DiscussionCategoryMapper INSTANCE = Mappers.getMapper(DiscussionCategoryMapper.class);
 

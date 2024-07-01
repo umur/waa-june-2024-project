@@ -10,7 +10,7 @@ import universityconnect.dto.SurveyDTO;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Mapper
+@Mapper(componentModel = "spring")
 public interface SurveyMapper {
 
     SurveyMapper INSTANCE = Mappers.getMapper(SurveyMapper.class);

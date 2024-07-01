@@ -5,7 +5,7 @@ import org.mapstruct.factory.Mappers;
 import universityconnect.domain.Student;
 import universityconnect.dto.StudentDTO;
 
-@Mapper
+@Mapper(componentModel = "spring")
 public interface StudentMapper {
     StudentMapper INSTANCE = Mappers.getMapper(StudentMapper.class);
 

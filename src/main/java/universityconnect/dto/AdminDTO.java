@@ -1,21 +1,17 @@
 package universityconnect.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import universityconnect.domain.Role;
 
 import java.util.List;
 
 @Data
+@AllArgsConstructor
 public class AdminDTO extends UserDTO {
     private String department;
     private List<Long> surveyIds;
 
-    public AdminDTO() {}
-
-    public AdminDTO(Long id, String username, String password, String email, String address, AuditDataDTO auditData, List<Long> blockIds, List<Long> reportedListIds, List<Long> discussionIds, List<Long> resourceIds, List<Long> eventIds, Role role, String department, List<Long> surveyIds) {
-        super(id, username, password, email, address, auditData, blockIds, reportedListIds, discussionIds, resourceIds, eventIds, role);
-        this.department = department;
-        this.surveyIds = surveyIds;
-    }
+    
 }
 

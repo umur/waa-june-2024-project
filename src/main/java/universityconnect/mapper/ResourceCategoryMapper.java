@@ -5,7 +5,7 @@ import org.mapstruct.factory.Mappers;
 import universityconnect.domain.ResourceCategory;
 import universityconnect.dto.ResourceCategoryDTO;
 
-@Mapper
+@Mapper(componentModel = "spring")
 public interface ResourceCategoryMapper {
     ResourceCategoryMapper INSTANCE = Mappers.getMapper(ResourceCategoryMapper.class);
 
