@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
 
@@ -15,17 +16,14 @@ public class Event {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String name;
-    private String body;
-    private LocalDate eventDate;
-    private LocalTime eventTime;
-    private String files;
+    private String title;
+    private String description;
+    private LocalDateTime dateTime;
+    // determine how files will be stored
+//    private String files;
 
 //    @ManyToOne
 //    private Admin createdByAdmin;
-
-    @ManyToOne
-    private DiscussionCategory category;
 
     @ManyToMany
     private List<Student> attendedStudents;
