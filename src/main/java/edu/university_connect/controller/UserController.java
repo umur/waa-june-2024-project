@@ -1,5 +1,8 @@
 package edu.university_connect.controller;
 
+import edu.university_connect.model.contract.dto.ProfileDto;
+import edu.university_connect.model.contract.request.action.ActionUpdateRequest;
+import edu.university_connect.model.contract.request.profile.ProfileRequest;
 import edu.university_connect.model.enums.AppStatusCode;
 import edu.university_connect.model.contract.dto.UserDto;
 import edu.university_connect.model.contract.request.user.UserCreateRequest;
@@ -13,6 +16,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PostAuthorize;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -87,6 +92,27 @@ public class UserController {
         ApiResponse<Boolean> apiResponse =  new ApiResponse<Boolean>();
         apiResponse.setResponseData(response);
         apiResponse.setMessage(messagingService.getResponseMessage(AppStatusCode.S20005,new String[]{"user"}));
+        return ResponseEntity.ok(apiResponse);
+    }
+
+    @GetMapping("/{id}/profile")
+    public ResponseEntity<ApiResponse<ProfileDto>> getProfile(@PathVariable Long id) {
+        ProfileDto response= service.getUserProfile(id);
+        ApiResponse<ProfileDto> apiResponse =  new ApiResponse<ProfileDto>();
+        apiResponse.setResponseData(response);
+        apiResponse.setMessage(messagingService.getResponseMessage(AppStatusCode.S20003,new String[]{"profile"}));
+        return ResponseEntity.ok(apiResponse);
+
+    }
+
+    @PostMapping("/{id}/profile")
+    @PreAuthorize("hasAuthority('update_profile')")
+    public ResponseEntity<ApiResponse<ProfileDto>> updateProfile(@Valid @RequestBody ProfileRequest updateRequest,
+                                                          @PathVariable Long id) {
+        ProfileDto response= service.updateUserProfile(id,updateRequest);
+        ApiResponse<ProfileDto> apiResponse =  new ApiResponse<ProfileDto>();
+        apiResponse.setResponseData(response);
+        apiResponse.setMessage(messagingService.getResponseMessage(AppStatusCode.S20004,new String[]{"profile"}));
         return ResponseEntity.ok(apiResponse);
     }
 
