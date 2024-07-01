@@ -7,12 +7,14 @@ import java.util.List;
 
 @Entity
 @Data
+@Table(name = "discussion_comments")
 public class DiscussionComments {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "comments", nullable = false)
     private String comment;
 
     @ManyToOne
@@ -22,6 +24,6 @@ public class DiscussionComments {
     private Student student;
 
     @OneToMany
-    @JoinTable(name = "subCommentList")
+    @JoinTable(name = "sub_comment_list")
     private List<DiscussionComments> commentsList;
 }

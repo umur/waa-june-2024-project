@@ -1,11 +1,14 @@
 package com.waa.project.entity;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Embedded;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
 import lombok.Data;
 
 @Entity
 @Data
-public class Admin extends User{
+@Table(name = "admins")
+public class Admin extends User {
 
 
     @Embedded

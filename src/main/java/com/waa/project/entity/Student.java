@@ -1,6 +1,7 @@
 package com.waa.project.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Size;
 import lombok.Data;
 
 import java.util.List;
@@ -8,10 +9,16 @@ import java.util.Set;
 
 @Entity
 @Data
-public class Student extends User{
+@Table(name = "students")
+public class Student extends User {
 
-    private String student_id;
-    private String academicYear;
+    @Column(name = "student_code")
+    @Size(min = 6, max = 6, message = "Student code should be 6 digits")
+    private String studentCode;
+
+    @Column(name = "academic_years")
+    private String academicYears;
+
     private String picture;
 
     @ElementCollection

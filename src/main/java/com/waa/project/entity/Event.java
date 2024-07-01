@@ -9,23 +9,32 @@ import java.util.List;
 
 @Entity
 @Data
+@Table(name = "events")
 public class Event {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "name", nullable = false)
     private String name;
+
+    @Column(name = "body", nullable = false)
     private String body;
+
+    @Column(nullable = false)
     private LocalDate eventDate;
+
+    @Column(nullable = false)
     private LocalTime eventTime;
+
     private String files;
 
 //    @ManyToOne
 //    private Admin createdByAdmin;
-
-    @ManyToOne
-    private DiscussionCategory category;
+//
+//    @ManyToOne
+//    private DiscussionCategory category;
 
     @ManyToMany
     private List<Student> attendedStudents;
