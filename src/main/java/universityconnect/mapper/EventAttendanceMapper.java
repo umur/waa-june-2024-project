@@ -6,7 +6,7 @@ import org.mapstruct.factory.Mappers;
 import universityconnect.domain.EventAttendance;
 import universityconnect.dto.EventAttendanceDTO;
 
-@Mapper
+@Mapper(componentModel = "spring")
 public interface EventAttendanceMapper {
     EventAttendanceMapper INSTANCE = Mappers.getMapper(EventAttendanceMapper.class);
 

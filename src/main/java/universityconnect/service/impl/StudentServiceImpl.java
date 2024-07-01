@@ -65,12 +65,6 @@ public class StudentServiceImpl implements StudentService {
                 .collect(Collectors.toList());
     }
 
-    @Override
-    public StudentDTO getStudentById(long id) {
-        Student student = studentRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Student Not Found with ID: " + id));
-        return studentMapper.studentToStudentDTO(student);
-    }
 
     @Override
     public StudentDTO updateStudent(long id, StudentDTO studentDTO) {
@@ -90,7 +84,7 @@ public class StudentServiceImpl implements StudentService {
             existingStudent.setBlocks(blocks);
         }
 
-        if(studentDTO.getEventIds() != null) {
+        if (studentDTO.getEventIds() != null) {
             List<Event> events = eventRepository.findAllById(studentDTO.getEventIds());
             existingStudent.setEvents(events);
         }
@@ -101,6 +95,14 @@ public class StudentServiceImpl implements StudentService {
         }
 
         Student student = studentRepository.save(existingStudent);
+        return studentMapper.studentToStudentDTO(student);
+
+    }
+
+    @Override
+    public StudentDTO getStudentById(Long id) {
+        Student student = studentRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Student Not Found with ID: " + id));
         return studentMapper.studentToStudentDTO(student);
     }
 
@@ -116,4 +118,27 @@ public class StudentServiceImpl implements StudentService {
         Profile profile = profileRepository.findByUserId(studentId);
         return profileMapper.profileToProfileDTO(profile);
     }
+
+    @Override
+    public List<StudentDTO> getStudentsByYear(int year) {
+        return studentRepository.findByYear(year).stream()
+                .map(studentMapper::studentToStudentDTO)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<StudentDTO> getStudentsByMajor(String major) {
+        return studentRepository.findByMajor(major).stream()
+                .map(studentMapper::studentToStudentDTO)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<StudentDTO> getStudentsByYearAndMajor(int year, String major) {
+        return studentRepository.findByYearAndMajor(year, major).stream()
+                .map(studentMapper::studentToStudentDTO)
+                .collect(Collectors.toList());
+    }
+
+
 }

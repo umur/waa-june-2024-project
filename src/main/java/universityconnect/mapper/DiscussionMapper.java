@@ -10,7 +10,7 @@ import universityconnect.dto.DiscussionDTO;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Mapper
+@Mapper(componentModel = "spring")
 public interface DiscussionMapper {
 
     DiscussionMapper INSTANCE = Mappers.getMapper(DiscussionMapper.class);

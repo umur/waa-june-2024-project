@@ -14,6 +14,7 @@ public class UserDTO {
     private String address;
     private AuditDataDTO auditData;
     private List<Long> blockIds;
+    private List<Long> reportedListIds;
     private List<Long> discussionIds;
     private List<Long> resourceIds;
     private List<Long> eventIds;
