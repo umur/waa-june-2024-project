@@ -13,17 +13,17 @@ public abstract class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long   id;
     private String username;
     private String password;
 
-    private String firstName;
-    private String lastName;
-    private String email;
+    private String    firstName;
+    private String    lastName;
+    private String    email;
     private LocalDate birthDate;
-    private String gender;
+    private String    gender;
 
-    private boolean acccount_Status;
+    private boolean account_Status;
 
     @Enumerated(EnumType.STRING)
     private RoleType roleType;
