@@ -28,6 +28,11 @@ public class ApiResponse<T> implements Serializable {
         this.data = data;
     }
 
+    public ApiResponse(String message, T data){
+        setMessage(message);
+        setData(data);
+    }
+
     public String getCode() {
         if(code==null && status){
             code= AppStatusCode.S20000.name();
