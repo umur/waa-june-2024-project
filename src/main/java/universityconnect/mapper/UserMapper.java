@@ -19,14 +19,12 @@ public interface UserMapper {
     UserMapper INSTANCE = Mappers.getMapper(UserMapper.class);
 
     @Mapping(target = "blockIds", expression = "java(mapIds(user.getBlocks()))")
-    @Mapping(target = "reportedListIds", expression = "java(mapIds(user.getReportedLists()))")
     @Mapping(target = "discussionIds", expression = "java(mapIds(user.getDiscussions()))")
     @Mapping(target = "resourceIds", expression = "java(mapIds(user.getResources()))")
     @Mapping(target = "eventIds", expression = "java(mapIds(user.getEvents()))")
     UserDTO userToUserDTO(User user);
 
     @Mapping(target = "blocks", ignore = true)
-    @Mapping(target = "reportedLists", ignore = true)
     @Mapping(target = "discussions", ignore = true)
     @Mapping(target = "resources", ignore = true)
     @Mapping(target = "events", ignore = true)
@@ -44,8 +42,6 @@ public interface UserMapper {
                         return ((universityconnect.domain.Report) entity).getId();
                     } else if (entity instanceof universityconnect.domain.Discussion) {
                         return ((universityconnect.domain.Discussion) entity).getId();
-                    } else if (entity instanceof universityconnect.domain.Resource) {
-                        return ((universityconnect.domain.Resource) entity).getId();
                     } else if (entity instanceof universityconnect.domain.Event) {
                         return ((universityconnect.domain.Event) entity).getId();
                     }

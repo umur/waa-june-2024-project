@@ -5,7 +5,7 @@ import org.mapstruct.factory.Mappers;
 import universityconnect.domain.Report;
 import universityconnect.dto.ReportDTO;
 
-@Mapper
+@Mapper(componentModel = "spring")
 public interface ReportMapper {
     ReportMapper INSTANCE = Mappers.getMapper(ReportMapper.class);
 

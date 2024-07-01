@@ -90,12 +90,7 @@ public class StudentServiceImpl implements StudentService {
             existingStudent.setBlocks(blocks);
         }
 
-        if (studentDTO.getReportedListIds() != null) {
-            List<Report> reports = reportRepository.findAllById(studentDTO.getReportedListIds());
-            existingStudent.setReportedLists(reports);
-        }
-
-        if (studentDTO.getEventIds() != null) {
+        if(studentDTO.getEventIds() != null) {
             List<Event> events = eventRepository.findAllById(studentDTO.getEventIds());
             existingStudent.setEvents(events);
         }

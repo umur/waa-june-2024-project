@@ -8,7 +8,14 @@ public class Report {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Long reportedId;
+
+    @ManyToOne
+    @JoinColumn(name = "reporting_user_id")
+    private User reportingUser;
+
+    @ManyToOne
+    @JoinColumn(name = "reported_user_id")
+    private User reportedUser;
 
     public Report() {}
 

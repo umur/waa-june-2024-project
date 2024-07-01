@@ -5,7 +5,7 @@ import org.mapstruct.factory.Mappers;
 import universityconnect.domain.Block;
 import universityconnect.dto.BlockDTO;
 
-@Mapper
+@Mapper( componentModel = "spring")
 public interface BlockMapper {
     BlockMapper INSTANCE = Mappers.getMapper(BlockMapper.class);
 

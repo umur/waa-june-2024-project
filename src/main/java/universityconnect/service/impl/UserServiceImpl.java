@@ -74,11 +74,6 @@ public class UserServiceImpl implements UserService {
             existingUser.setBlocks(blocks);
         }
 
-        if (userDTO.getReportedListIds() != null) {
-            List<Report> reports = reportRepository.findAllById(userDTO.getReportedListIds());
-            existingUser.setReportedLists(reports);
-        }
-
         if (userDTO.getDiscussionIds() != null) {
             List<Discussion> discussions = discussionRepository.findAllById(userDTO.getDiscussionIds());
             existingUser.setDiscussions(discussions);

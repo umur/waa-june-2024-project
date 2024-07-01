@@ -14,15 +14,15 @@ public class UserDTO {
     private String address;
     private AuditDataDTO auditData;
     private List<Long> blockIds;
-    private List<Long> reportedListIds;
     private List<Long> discussionIds;
     private List<Long> resourceIds;
     private List<Long> eventIds;
     private Role role;
 
+
     public UserDTO() {}
 
-    public UserDTO(Long id, String username, String password, String email, String address, AuditDataDTO auditData, List<Long> blockIds, List<Long> reportedListIds, List<Long> discussionIds, List<Long> resourceIds, List<Long> eventIds, Role role) {
+    public UserDTO(Long id, String username, String password, String email, String address, AuditDataDTO auditData, List<Long> blockIds, List<Long> discussionIds, List<Long> resourceIds, List<Long> eventIds, Role role) {
         this.id = id;
         this.username = username;
         this.password = password;
@@ -30,11 +30,11 @@ public class UserDTO {
         this.address = address;
         this.auditData = auditData;
         this.blockIds = blockIds;
-        this.reportedListIds = reportedListIds;
         this.discussionIds = discussionIds;
         this.resourceIds = resourceIds;
         this.eventIds = eventIds;
         this.role = role;
+
     }
 }
 
