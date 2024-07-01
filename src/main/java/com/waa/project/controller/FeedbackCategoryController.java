@@ -1,6 +1,6 @@
 package com.waa.project.controller;
 
-import com.waa.project.entity.FeedbackCategory;
+import com.waa.project.dto.FeedbackCategoryDto;
 import com.waa.project.service.FeedbackCategoryService;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
@@ -19,25 +19,25 @@ public class FeedbackCategoryController {
     private FeedbackCategoryService feedbackCategoryService;
 
     @GetMapping
-    public List<FeedbackCategory> getAllFeedCategory() {
+    public List<FeedbackCategoryDto> getAllFeedCategory() {
         return feedbackCategoryService.getAllCategories();
     }
 
     @GetMapping("/{catId}")
-    public FeedbackCategory getAllFeedCategory(@PathVariable Long catId) {
+    public FeedbackCategoryDto getAllFeedCategory(@PathVariable Long catId) {
         return feedbackCategoryService.getCategory(catId);
     }
 
     @PutMapping("/{catId}")
     public String getAllFeedCategory(
-            @RequestBody FeedbackCategory feedbackCategoryDto,
+            @RequestBody FeedbackCategoryDto feedbackCategoryDto,
             @PathVariable Long catId
                                     ) {
         return feedbackCategoryService.update(feedbackCategoryDto, catId);
     }
 
     @PostMapping
-    public String getAllFeedCategory(@RequestBody FeedbackCategory feedbackCategoryDto) {
+    public String getAllFeedCategory(@RequestBody FeedbackCategoryDto feedbackCategoryDto) {
         return feedbackCategoryService.save(feedbackCategoryDto);
     }
 
