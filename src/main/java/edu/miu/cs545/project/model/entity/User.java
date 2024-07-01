@@ -48,6 +48,9 @@ public class User {
     @ManyToMany
     private List<ExtracurricularActivity> activities;
 
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    private StudentDirectory studentDirectory;
+
     @OneToOne
     private Profile profile;
 }
