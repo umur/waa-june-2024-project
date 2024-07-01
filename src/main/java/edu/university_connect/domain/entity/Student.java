@@ -3,7 +3,9 @@ package edu.university_connect.domain.entity;
 import edu.university_connect.domain.meta.MetaData;
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
+@EqualsAndHashCode(callSuper = true)
 @Data
 @Entity
 public class Student extends MetaData {

@@ -1,6 +1,7 @@
 package edu.university_connect.domain.meta;
 
 import jakarta.persistence.*;
+import lombok.Getter;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
@@ -12,21 +13,22 @@ import java.time.LocalDateTime;
 
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
+@Getter
 public abstract class MetaData implements Serializable {
 
     @CreatedDate
     @Column(name = "created_at", updatable = false)
-    LocalDateTime createdAt;
+    private LocalDateTime createdAt;
 
     @CreatedBy
     @Column(name = "created_by", updatable = false)
-    String createdBy;
+    private String createdBy;
 
     @LastModifiedDate
     @Column(name = "last_modified_at", insertable = false)
-    LocalDateTime lastModifiedAt;
+    private LocalDateTime lastModifiedAt;
 
     @LastModifiedBy
     @Column(name = "last_modified_by", insertable = false)
-    String lastModifiedBy;
+    private String lastModifiedBy;
 }
