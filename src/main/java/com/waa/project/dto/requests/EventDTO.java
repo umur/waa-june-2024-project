@@ -1,4 +1,4 @@
-package com.waa.project.dto;
+package com.waa.project.dto.requests;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
