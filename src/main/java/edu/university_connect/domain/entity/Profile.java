@@ -7,12 +7,14 @@ import edu.university_connect.domain.meta.MetaData;
 import io.hypersistence.utils.hibernate.type.json.JsonType;
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import org.hibernate.annotations.Type;
 
 import java.util.Set;
 
 @Data
 @Entity
+@EqualsAndHashCode(callSuper = true)
 public class Profile extends MetaData {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

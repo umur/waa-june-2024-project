@@ -4,6 +4,7 @@ import edu.university_connect.domain.meta.MetaData;
 import io.hypersistence.utils.hibernate.type.json.JsonType;
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Type;
 
@@ -12,6 +13,7 @@ import java.util.Set;
 @Data
 @NoArgsConstructor
 @Entity
+@EqualsAndHashCode(callSuper = true)
 @Table(name = "role")
 public class Role extends MetaData {
 
