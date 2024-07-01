@@ -2,6 +2,7 @@ package miu.waa.project1.controller;
 
 import lombok.RequiredArgsConstructor;
 import miu.waa.project1.dto.UserDTO;
+import miu.waa.project1.exception.UserNotFound;
 import miu.waa.project1.model.Interest;
 import miu.waa.project1.model.User;
 import miu.waa.project1.service.impl.InterestServiceImpl;
@@ -94,5 +95,18 @@ public class UserController {
 
         interestService.deleteInterest(id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
+
+
+    @GetMapping("/{id}/report")
+    public ResponseEntity<?> reportUser(@PathVariable Long id) {
+        try {
+            userService.reportUser(id);
+            return ResponseEntity.status(HttpStatus.OK).build();
+        }
+        catch (UserNotFound ex) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+
     }
 }

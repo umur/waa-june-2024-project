@@ -45,4 +45,12 @@ public class ThreadService {
 		threadRepository.deleteById(id);
 		return Optional.of(item);
 	}
+
+	public Optional<Thread> findById(Long id) {
+		Thread item = threadRepository.findById(id).orElse(null);
+		if (item == null) {
+			return Optional.empty();
+		}
+		return Optional.of(item);
+	}
 }
