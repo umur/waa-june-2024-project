@@ -3,9 +3,11 @@ package universityconnect.service.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import universityconnect.domain.*;
+import universityconnect.dto.BlockDTO;
 import universityconnect.dto.ReportDTO;
 import universityconnect.dto.UserDTO;
 import universityconnect.exception.ResourceNotFoundException;
+import universityconnect.mapper.BlockMapper;
 import universityconnect.mapper.ReportMapper;
 import universityconnect.mapper.UserMapper;
 import universityconnect.repository.*;
@@ -27,8 +29,6 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private ReportRepository reportRepository;
 
-    @Autowired
-    private BlockRepository blockRepository;
 
     @Autowired
     private DiscussionRepository discussionRepository;
@@ -40,7 +40,13 @@ public class UserServiceImpl implements UserService {
     private ResourceRepository resourceRepository;
 
     @Autowired
+    private BlockRepository blockRepository;
+
+    @Autowired
     private ReportMapper reportMapper;
+
+    @Autowired
+    private BlockMapper blockMapper;
 
     @Override
     public UserDTO createUser(UserDTO userDTO) {
@@ -74,11 +80,6 @@ public class UserServiceImpl implements UserService {
         existingUser.setAddress(userDTO.getAddress());
         existingUser.setPassword(userDTO.getPassword());
         existingUser.setRole(userDTO.getRole());
-
-        if (userDTO.getBlockIds() != null) {
-            List<Block> blocks = blockRepository.findAllById(userDTO.getBlockIds());
-            existingUser.setBlocks(blocks);
-        }
 
         if (userDTO.getDiscussionIds() != null) {
             List<Discussion> discussions = discussionRepository.findAllById(userDTO.getDiscussionIds());
@@ -126,4 +127,23 @@ public class UserServiceImpl implements UserService {
                 .map(userMapper::userToUserDTO)
                 .collect(Collectors.toList());
      }
+
+    @Override
+    public List<UserDTO> getAllBlockedUsersByBlockerUserId(Long id) {
+        List<User> blockedUsers = blockRepository.findBlockedUsersByBlockerUserId(id);
+        return blockedUsers.stream()
+                .map(userMapper::userToUserDTO)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<UserDTO> getAllBlockerUsersByBlockedUserId(Long id) {
+        List<User> blockingUsers = blockRepository.findBlockerUsersByBlockedUserId(id);
+        return blockingUsers.stream()
+                .map(userMapper::userToUserDTO)
+                .collect(Collectors.toList());
+    }
+
+
+
 }

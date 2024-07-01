@@ -8,7 +8,13 @@ public class Block {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String name;
+    @ManyToOne
+    @JoinColumn(name = "blocker_user_id")
+    private User blockerUser;
+
+    @ManyToOne
+    @JoinColumn(name = "blocked_user_id")
+    private User blockedUser;
 
     public Block(){}
 }

@@ -59,5 +59,19 @@ public class UserController {
         List<UserDTO> reports = userService.getAllReportedUsersByReporterUserId(id);
         return ResponseEntity.ok(reports);
     }
+
+    @GetMapping("/{id}/blockers")
+    public ResponseEntity<List<UserDTO>> getAllBlockersByBlockedId(@PathVariable long id) {
+        List<UserDTO> blockedUsers = userService.getAllBlockerUsersByBlockedUserId(id);
+        return ResponseEntity.ok(blockedUsers);
+    }
+
+    @GetMapping("/{id}/blockeds")
+    public ResponseEntity<List<UserDTO>> getAllBlockedsByBlockerId(@PathVariable long id) {
+        List<UserDTO> blockingUsers = userService.getAllBlockedUsersByBlockerUserId(id);
+        return ResponseEntity.ok(blockingUsers);
+    }
+
+
 }
 

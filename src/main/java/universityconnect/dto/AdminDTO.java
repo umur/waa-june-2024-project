@@ -13,8 +13,8 @@ public class AdminDTO extends UserDTO {
 
     public AdminDTO() {}
 
-    public AdminDTO(Long id, String username, String password, String email, String address, AuditDataDTO auditData, List<Long> blockIds,List<Long> discussionIds, List<Long> resourceIds, List<Long> eventIds, Role role, String department, List<Long> surveyIds) {
-        super(id, username, password, email, address, auditData, blockIds,discussionIds, resourceIds, eventIds, role);
+    public AdminDTO(Long id, String username, String password, String email, String address, AuditDataDTO auditData,List<Long> discussionIds, List<Long> resourceIds, List<Long> eventIds, Role role, String department, List<Long> surveyIds) {
+        super(id, username, password, email, address, auditData,discussionIds, resourceIds, eventIds, role);
         this.department = department;
         this.surveyIds = surveyIds;
     }
