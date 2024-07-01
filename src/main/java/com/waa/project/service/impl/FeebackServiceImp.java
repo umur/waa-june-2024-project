@@ -1,11 +1,14 @@
 package com.waa.project.service.impl;
 
+import com.waa.project.dto.FeedbackDto;
 import com.waa.project.entity.Feedback;
 import com.waa.project.repository.FeedbackRepository;
 import com.waa.project.service.FeedbackService;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -15,24 +18,30 @@ public class FeebackServiceImp implements FeedbackService {
     @Autowired
     private FeedbackRepository feedbackRepository;
 
+    @Autowired
+    private ModelMapper modelMapper;
+
     @Override
-    public List<Feedback> getAllFeedbacks() {
-        return feedbackRepository.findAll();
+    public List<FeedbackDto> getAllFeedbacks() {
+        List<FeedbackDto> list = new ArrayList<>();
+        feedbackRepository.findAll().forEach(feed -> list.add(modelMapper.map(feed, FeedbackDto.class)));
+        return list;
     }
 
     @Override
-    public Feedback getFeedback(Long feedId) {
-        return feedbackRepository.findById(feedId).get();
+    public FeedbackDto getFeedback(Long feedId) {
+        Feedback feedback = feedbackRepository.findById(feedId).get();
+        return modelMapper.map(feedback, FeedbackDto.class);
     }
 
     @Override
-    public String save(Feedback feedback) {
-        feedbackRepository.save(feedback);
+    public String save(FeedbackDto feedback) {
+        feedbackRepository.save(modelMapper.map(feedback, Feedback.class));
         return "Feedback saved successfully.";
     }
 
     @Override
-    public String update(Feedback feedback, Long fid) {
+    public String update(FeedbackDto feedback, Long fid) {
         Feedback feedToUpdate = feedbackRepository.findById(fid)
                                                   .orElseThrow(
                                                           () -> new NoSuchElementException("No feedback was found."));

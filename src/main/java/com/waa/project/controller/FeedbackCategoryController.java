@@ -12,7 +12,7 @@ import java.util.List;
 @RestController
 @AllArgsConstructor
 @NoArgsConstructor
-@RequestMapping("/feedbackcategories")
+@RequestMapping("/api/v1/feedbackcategories")
 public class FeedbackCategoryController {
 
     @Autowired

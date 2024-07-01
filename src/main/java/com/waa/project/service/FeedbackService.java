@@ -1,17 +1,17 @@
 package com.waa.project.service;
 
-import com.waa.project.entity.Feedback;
+import com.waa.project.dto.FeedbackDto;
 
 import java.util.List;
 
 public interface FeedbackService {
-    List<Feedback> getAllFeedbacks();
+    List<FeedbackDto> getAllFeedbacks();
 
-    Feedback getFeedback(Long feedId);
+    FeedbackDto getFeedback(Long feedId);
 
-    String save(Feedback feedback);
+    String save(FeedbackDto feedback);
 
-    String update(Feedback feedback, Long fid);
+    String update(FeedbackDto feedback, Long fid);
 
     String delete(Long fid);
 }
