@@ -10,5 +10,5 @@ import java.time.LocalDate;
 @Data
 public class PostRequest {
     @NotNull @NotBlank private String content;
-    @NotNull @NotBlank private Long categoryId;
+    @NotNull private Long categoryId;
 }

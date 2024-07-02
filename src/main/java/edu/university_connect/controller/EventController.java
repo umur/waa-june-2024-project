@@ -63,7 +63,7 @@ public class EventController {
 
     @PostMapping("/{id}/rsvp")
     public ResponseEntity<ApiResponse<Boolean>> rsvpForEvent(@Valid @PathVariable Long id) {
-        Long userId = contextUser.getUser().getId();
+        Long userId = contextUser.getLoginUser().getId();
         eventService.rsvpForEvent(id, userId);
         String message = messagingService.getResponseMessage(AppStatusCode.S20002, new String[]{"event rsvp"});
         ApiResponse<Boolean> apiResponse = new ApiResponse<>(message, true);

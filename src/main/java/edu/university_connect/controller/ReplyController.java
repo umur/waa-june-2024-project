@@ -37,15 +37,8 @@ public class ReplyController {
         return ResponseEntity.ok(ApiResponse.of(responseMessage, replyService.getById(id)));
     }
 
-    @GetMapping("/byPost")
-    public ResponseEntity<ApiResponse<List<ReplyDto>>> getByPostId(@RequestParam("postId") Long postId) {
-        String responseMessage = messagingService
-                .getResponseMessage(AppStatusCode.S20001, "reply");
-        return ResponseEntity.ok(ApiResponse.of(responseMessage, replyService.getByPostId(postId)));
-    }
-
-    @GetMapping("/toReply")
-    public ResponseEntity<ApiResponse<List<ReplyDto>>> getByReplyId(@RequestParam("replyId") Long replyId) {
+    @GetMapping("/{id}/replies")
+    public ResponseEntity<ApiResponse<List<ReplyDto>>> getByReplyId(@PathVariable("id") Long replyId) {
         String responseMessage = messagingService
                 .getResponseMessage(AppStatusCode.S20001, "reply");
         return ResponseEntity.ok(ApiResponse.of(responseMessage, replyService.getByReplyId(replyId)));

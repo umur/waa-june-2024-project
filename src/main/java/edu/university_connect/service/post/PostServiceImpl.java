@@ -34,6 +34,14 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
+    public List<PostDto> getAll(Long categoryId) {
+        return postRepository.findByCategoryId(categoryId)
+                .stream()
+                .map(PostDtoMapper.MAPPER::entityToDto)
+                .toList();
+    }
+
+    @Override
     public PostDto getById(Long id) {
         return PostDtoMapper.MAPPER.entityToDto(getPost(id));
     }

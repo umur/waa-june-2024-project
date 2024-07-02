@@ -2,12 +2,12 @@ package edu.university_connect.controller;
 
 import edu.university_connect.model.contract.dto.PostDto;
 import edu.university_connect.model.contract.dto.ReplyDto;
-import edu.university_connect.model.contract.request.discussionthread.PostReplyRequest;
 import edu.university_connect.model.contract.request.discussionthread.PostRequest;
 import edu.university_connect.model.contract.response.ApiResponse;
 import edu.university_connect.model.enums.AppStatusCode;
 import edu.university_connect.service.MessagingService;
 import edu.university_connect.service.post.PostService;
+import edu.university_connect.service.reply.ReplyService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +21,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class PostController {
     private final PostService postService;
+    private final ReplyService replyService;
     private final MessagingService messagingService;
 
     @GetMapping
@@ -35,6 +36,13 @@ public class PostController {
         String responseMessage = messagingService
                 .getResponseMessage(AppStatusCode.S20001, "post");
         return ResponseEntity.ok(ApiResponse.of(responseMessage, postService.getById(id)));
+    }
+
+    @GetMapping("/{id}/replies")
+    public ResponseEntity<ApiResponse<List<ReplyDto>>> getByPostId(@PathVariable("id") Long id) {
+        String responseMessage = messagingService
+                .getResponseMessage(AppStatusCode.S20001, "reply");
+        return ResponseEntity.ok(ApiResponse.of(responseMessage, replyService.getByPostId(id)));
     }
 
     @DeleteMapping("/{id}")

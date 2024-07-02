@@ -9,6 +9,8 @@ import java.util.List;
 public interface PostService {
     List<PostDto> getAll();
 
+    List<PostDto> getAll(Long categoryId);
+
     Post getPost(Long id);
 
     PostDto getById(Long id);
