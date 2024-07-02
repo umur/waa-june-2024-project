@@ -43,11 +43,11 @@ public class EventController {
 
     @PostMapping("/{eventId}/attendees/{studentId}")
     public EventDTO addAttendee(@PathVariable Long eventId, @PathVariable Long studentId) {
-        return null;
+        return eventService.addEventAttendee(eventId, studentId);
     }
 
     @DeleteMapping("/{eventId}/attendees/{studentId}")
-    public EventDTO removeAttendee(@PathVariable Long eventId, @PathVariable Long studentId) {
-        return null;
-        }
+    public void removeAttendee(@PathVariable Long eventId, @PathVariable Long studentId) {
+         eventService.removeEventAttendee(eventId, studentId);
+    }
 }

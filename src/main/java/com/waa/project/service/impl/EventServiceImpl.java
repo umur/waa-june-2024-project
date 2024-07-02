@@ -67,12 +67,27 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public EventDTO addEventAttendee(EventDTO eventDTO) {
+    public EventDTO addEventAttendee(Long eventId, Long studentId) {
+//        Event event = eventRepository.findById(eventId).orElse(null);
+//        Student student = studentRepository.findById(studentId).orElse(null);
+//
+//        event.getAttendedStudents().add(student);
+//        student.getEvents().add(event);
+//        eventRepository.save(event);
+//        studentRepository.save(student);
+//        return modelMapper.map(event, EventDTO.class);
         return null;
     }
 
     @Override
-    public void removeEventAttendee(EventDTO eventDTO) {
+    public void removeEventAttendee(Long eventId, Long studentId) {
+        //        Event event = eventRepository.findById(eventId).orElse(null);
+//        Student student = studentRepository.findById(studentId).orElse(null);
 
+//        event.getAttendedStudents().add(student);
+//        student.getEvents().remove(event);
+//        eventRepository.save(event);
+//        studentRepository.save(student);
+//        return modelMapper.map(event, EventDTO.class);
     }
 }

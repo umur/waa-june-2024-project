@@ -11,6 +11,6 @@ public interface EventService {
     public void deleteById(Long id);
     public EventDTO update(EventDTO eventDTO,  Long id);
 
-    public EventDTO addEventAttendee(EventDTO eventDTO);
-    public void removeEventAttendee(EventDTO eventDTO);
+    public EventDTO addEventAttendee(Long eventId, Long studentId);
+    public void removeEventAttendee(Long eventId, Long studentId);
 }
