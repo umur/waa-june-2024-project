@@ -12,7 +12,7 @@ import java.util.List;
 @RestController
 @AllArgsConstructor
 @NoArgsConstructor
-@RequestMapping("/api/v1/feedback")
+@RequestMapping("/api/v1/feedbacks")
 public class FeedbackController {
 
     @Autowired
@@ -24,17 +24,16 @@ public class FeedbackController {
         return feedbackService.getAllFeedbacks();
     }
 
-    @GetMapping("/{catId}")
-    public FeedbackDto getFeedBack(@PathVariable Long catId) {
-        return feedbackService.getFeedback(catId);
+    @GetMapping("/{Id}")
+    public FeedbackDto getFeedBack(@PathVariable Long Id) {
+        return feedbackService.getFeedback(Id);
     }
 
-    @PutMapping("/{catId}")
+    @PutMapping("/{Id}")
     public String update(
-            @RequestBody FeedbackDto feedbackDto,
-            @PathVariable Long catId
+            @RequestBody FeedbackDto feedbackDto, @PathVariable Long Id
                         ) {
-        return feedbackService.update(feedbackDto, catId);
+        return feedbackService.update(feedbackDto, Id);
     }
 
     @PostMapping
@@ -42,10 +41,10 @@ public class FeedbackController {
         return feedbackService.save(feedbackDto);
     }
 
-    @DeleteMapping("/{catId}")
-    public String delete(@PathVariable Long catId) {
+    @DeleteMapping("/{Id}")
+    public String delete(@PathVariable Long Id) {
 
-        return feedbackService.delete(catId);
+        return feedbackService.delete(Id);
     }
 
 

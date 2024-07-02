@@ -2,7 +2,11 @@ package com.waa.project.service.impl;
 
 import com.waa.project.dto.FeedbackDto;
 import com.waa.project.entity.Feedback;
+import com.waa.project.entity.FeedbackCategory;
+import com.waa.project.entity.Student;
+import com.waa.project.repository.FeedbackCategoryRepository;
 import com.waa.project.repository.FeedbackRepository;
+import com.waa.project.repository.StudentRepository;
 import com.waa.project.service.FeedbackService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +21,12 @@ public class FeebackServiceImp implements FeedbackService {
 
     @Autowired
     private FeedbackRepository feedbackRepository;
+
+    @Autowired
+    private FeedbackCategoryRepository feedbackCategoryRepository;
+
+    @Autowired
+    private StudentRepository studentRepository;
 
     @Autowired
     private ModelMapper modelMapper;
@@ -36,7 +46,14 @@ public class FeebackServiceImp implements FeedbackService {
 
     @Override
     public String save(FeedbackDto feedback) {
-        feedbackRepository.save(modelMapper.map(feedback, Feedback.class));
+        Feedback         feedbackToSave   = modelMapper.map(feedback, Feedback.class);
+        FeedbackCategory feedbackCategory = feedbackCategoryRepository.findById(1L).get();
+        feedbackToSave.setCategory(feedbackCategory);
+
+        Student student = studentRepository.findById(1L).get();
+        feedbackToSave.setStudent(student);
+        
+        feedbackRepository.save(feedbackToSave);
         return "Feedback saved successfully.";
     }
 
