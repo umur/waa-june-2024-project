@@ -11,8 +11,6 @@ public class ResourceCategory {
 
     private String name;
 
-    // Default constructor
     public ResourceCategory() {}
 
-    // Getters and setters
 }

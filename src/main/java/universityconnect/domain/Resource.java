@@ -16,7 +16,5 @@ public class Resource {
     @JoinColumn(name = "resCategory_id")
     private ResourceCategory resourceCategory;
 
-
-
     public Resource() {}
 }
