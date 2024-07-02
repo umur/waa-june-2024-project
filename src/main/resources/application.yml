@@ -19,7 +19,13 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQLDialect
-
+  servlet:
+    multipart:
+      max-file-size: 5MB
+      max-request-size: 50MB
+  web:
+    resources:
+      static-locations: file:${FILE_STORAGE_PATH}
 
 jwt_configs:
   secret: ${APP_JWT_SECRET}
@@ -32,4 +38,10 @@ logging:
     org:
       springframework:
         security: info
+file:
+  upload:
+    path: ${FILE_STORAGE_PATH}
+
+app:
+  allowed-file-types: image/png,image/jpeg,application/pdf,application/zip,application/x-rar-compressed
 

@@ -29,6 +29,7 @@ public enum AppStatusCode {
     E40006("already.exist", HttpStatus.BAD_REQUEST),
     E40007("token.expired", HttpStatus.UNAUTHORIZED),
     E40008("invalid.refresh.token", HttpStatus.UNAUTHORIZED),
+    E40009("invalid.file.type", HttpStatus.BAD_REQUEST),
 
     E50000("some.error.occurred", HttpStatus.INTERNAL_SERVER_ERROR),
     E50001("fetch.error", HttpStatus.INTERNAL_SERVER_ERROR),
@@ -38,7 +39,10 @@ public enum AppStatusCode {
     E50004("update.error", HttpStatus.INTERNAL_SERVER_ERROR),
     E50005("delete.error", HttpStatus.INTERNAL_SERVER_ERROR),
 
-    E50006("serialization.error", HttpStatus.INTERNAL_SERVER_ERROR);
+    E50006("serialization.error", HttpStatus.INTERNAL_SERVER_ERROR),
+    E50007("file.write.error", HttpStatus.INTERNAL_SERVER_ERROR),
+    E50009("file.read.error", HttpStatus.INTERNAL_SERVER_ERROR),
+    E50008("file.write.path.error", HttpStatus.INTERNAL_SERVER_ERROR);
     private final HttpStatus httpStatusCode;
     private final String description;
 
