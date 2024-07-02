@@ -2,6 +2,7 @@ package edu.university_connect.service.resource;
 
 import edu.university_connect.model.contract.dto.ResourceDto;
 import edu.university_connect.model.contract.request.resource.ResourceRequest;
+import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.multipart.MultipartFile;
@@ -22,4 +23,6 @@ public interface ResourceService {
     Page<ResourceDto> getPage(Pageable pageable);
 
     ResourceDto handleFileUpload(MultipartFile[] files, Long id);
+
+    Resource loadResource(String filename, Long id);
 }

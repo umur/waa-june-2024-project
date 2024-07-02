@@ -4,9 +4,11 @@ import edu.university_connect.domain.entity.discussionthread.Post;
 import edu.university_connect.domain.meta.MetaData;
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 @Data
 @Entity
+@EqualsAndHashCode(callSuper = true)
 public class ModerationReport extends MetaData {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

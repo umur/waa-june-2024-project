@@ -5,9 +5,9 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-@EqualsAndHashCode(callSuper = true)
 @Data
 @Entity
+@EqualsAndHashCode(callSuper = true)
 public class Student extends MetaData {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

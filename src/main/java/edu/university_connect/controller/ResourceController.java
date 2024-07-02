@@ -1,6 +1,7 @@
 package edu.university_connect.controller;
 
 import edu.university_connect.model.contract.dto.ResourceDto;
+import edu.university_connect.model.contract.request.resource.ResourceDownloadRequest;
 import edu.university_connect.model.contract.request.resource.ResourceRequest;
 import edu.university_connect.model.contract.response.ApiResponse;
 import edu.university_connect.model.enums.AppStatusCode;
@@ -9,9 +10,11 @@ import edu.university_connect.service.resource.ResourceService;
 import edu.university_connect.service.storage.StorageService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -94,6 +97,16 @@ public class ResourceController {
         apiResponse.setResponseData(response);
         apiResponse.setMessage(messagingService.getResponseMessage(AppStatusCode.S20000,new String[]{"resource"}));
         return ResponseEntity.ok(apiResponse);
+    }
+
+
+
+    @PostMapping("/{id}/download")    @ResponseBody
+    public ResponseEntity<Resource> serveFile(@RequestBody
+                                                  ResourceDownloadRequest request,@PathVariable Long id) {
+        Resource file = service.loadResource(request.getFilename(), id);
+        return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION,
+                "attachment; filename=\"" + file.getFilename() + "\"").body(file);
     }
 
 }

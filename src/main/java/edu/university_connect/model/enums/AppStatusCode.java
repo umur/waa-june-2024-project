@@ -29,6 +29,7 @@ public enum AppStatusCode {
     E40006("already.exist", HttpStatus.BAD_REQUEST),
     E40007("token.expired", HttpStatus.UNAUTHORIZED),
     E40008("invalid.refresh.token", HttpStatus.UNAUTHORIZED),
+    E40009("invalid.file.type", HttpStatus.BAD_REQUEST),
 
     E50000("some.error.occurred", HttpStatus.INTERNAL_SERVER_ERROR),
     E50001("fetch.error", HttpStatus.INTERNAL_SERVER_ERROR),

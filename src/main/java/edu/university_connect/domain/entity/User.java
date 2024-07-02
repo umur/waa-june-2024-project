@@ -3,6 +3,7 @@ package edu.university_connect.domain.entity;
 import edu.university_connect.domain.meta.MetaData;
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
@@ -11,6 +12,7 @@ import java.util.Set;
 @Data
 @NoArgsConstructor
 @Entity
+@EqualsAndHashCode(callSuper = true)
 @Table(name = "user")
 public class User extends MetaData {
 

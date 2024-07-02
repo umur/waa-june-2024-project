@@ -11,15 +11,18 @@ import edu.university_connect.model.enums.StorageResourceType;
 import edu.university_connect.repository.ResourceRepository;
 import edu.university_connect.service.storage.StorageService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.nio.file.Path;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 @RequiredArgsConstructor
 @Service
@@ -29,6 +32,7 @@ public class ResourceServiceImpl implements ResourceService {
     private final ResourceRepository repository;
     private final StorageService storageService;
     private final ContextUser contextUser;
+
 
 
     @Override
@@ -43,7 +47,13 @@ public class ResourceServiceImpl implements ResourceService {
     public ResourceDto getById(Long id) {
         Optional<Resource> resourceOpt = repository.findById(id);
         if (resourceOpt.isPresent()) {
-            return ResourceDtoMapper.MAPPER.entityToDto(resourceOpt.get());
+            ResourceDto resourceDto=ResourceDtoMapper.MAPPER.entityToDto(resourceOpt.get());
+            if(Objects.nonNull(resourceOpt.get().getUrl())) {
+                List<String> savedFiles = storageService.loadFileNames(contextUser.getUser().getUsername(), StorageResourceType.RESOURCE.name(),
+                        resourceOpt.get().getId());
+                resourceDto.setFiles(savedFiles);
+            }
+            return resourceDto;
         } else {
             throw ServiceException.of(AppStatusCode.E40000, "resource", "id = " + id);
         }
@@ -66,7 +76,13 @@ public class ResourceServiceImpl implements ResourceService {
             resource.setDescription(updateRequest.getTitle());
 
             Resource savedResource = repository.save(resource);
-            return ResourceDtoMapper.MAPPER.entityToDto(savedResource);
+            ResourceDto resourceDto=ResourceDtoMapper.MAPPER.entityToDto(resource);
+            if(Objects.nonNull(savedResource.getUrl())) {
+                List<String> savedFiles = storageService.loadFileNames(contextUser.getUser().getUsername(), StorageResourceType.RESOURCE.name(),
+                        savedResource.getId());
+                resourceDto.setFiles(savedFiles);
+            }
+            return resourceDto;
         } else {
             throw ServiceException.of(AppStatusCode.E40000, "resource");
         }
@@ -88,6 +104,10 @@ public class ResourceServiceImpl implements ResourceService {
 
     @Override
     public ResourceDto handleFileUpload(MultipartFile[] files, Long id) {
+        boolean validType=storageService.validateFileTypes(files);
+        if(!validType){
+            throw ServiceException.of(AppStatusCode.E40009);
+        }
         Optional<Resource> resourceOpt = repository.findById(id);
         if (resourceOpt.isEmpty()) {
             throw ServiceException.of(AppStatusCode.E40000, "resource", "id = " + id);
@@ -97,7 +117,27 @@ public class ResourceServiceImpl implements ResourceService {
                 resourceOpt.get().getId());
         resource.setUrl(url);
         repository.save(resource);
-        return ResourceDtoMapper.MAPPER.entityToDto(resource);
+        List<String> savedFiles=storageService.loadFileNames(contextUser.getUser().getUsername(),
+                StorageResourceType.RESOURCE.name(),
+                resourceOpt.get().getId());
+        ResourceDto resourceDto=ResourceDtoMapper.MAPPER.entityToDto(resource);
+        resourceDto.setFiles(savedFiles);
+        return resourceDto;
+    }
+
+    @Override
+    public org.springframework.core.io.Resource loadResource(String filename, Long id) {
+        Optional<Resource> resourceOpt = repository.findById(id);
+        if (resourceOpt.isEmpty()) {
+            throw ServiceException.of(AppStatusCode.E40000, "resource", "id = " + id);
+        }
+        org.springframework.core.io.Resource fileResource=storageService.loadAsResource(filename,
+                storageService.getRootLocation(contextUser.getUser().getUsername(), StorageResourceType.RESOURCE.name(),
+                resourceOpt.get().getId()));
+        if(Objects.isNull(fileResource)){
+            throw ServiceException.of(AppStatusCode.E50009);
+        }
+        return fileResource;
     }
 
 

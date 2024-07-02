@@ -1,5 +1,6 @@
 server:
   port: ${SERVER_PORT}
+
 spring:
   application:
     name: UNIVERSITY-CONNECT
@@ -21,6 +22,9 @@ spring:
     multipart:
       max-file-size: 5MB
       max-request-size: 50MB
+  web:
+    resources:
+      static-locations: file:${FILE_STORAGE_PATH}
 
 jwt_configs:
   secret: ${APP_JWT_SECRET}
@@ -36,3 +40,7 @@ logging:
 file:
   upload:
     path: ${FILE_STORAGE_PATH}
+
+app:
+  allowed-file-types: image/png,image/jpeg,application/pdf,application/zip,application/x-rar-compressed
+

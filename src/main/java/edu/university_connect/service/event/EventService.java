@@ -17,4 +17,6 @@ public interface EventService {
     EventDto update(Long id, EventRequest eventRequest);
 
     EventDto create(EventRequest eventRequest);
+
+    void rsvpForEvent(Long eventId, Long userId);
 }
