@@ -16,7 +16,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Query("SELECT DISTINCT u FROM User u " +
             "LEFT JOIN u.interests i " +
             "LEFT JOIN u.achievements a " +
-            "LEFT JOIN u.extracurricularActivities e " +
+            "LEFT JOIN u.activities e " +
             "WHERE u.role = 'STUDENT' " +
             "AND (:major is null or u.major LIKE %:major%) " +
             "AND (:entryYear is null or u.entryYear = :entryYear) " +

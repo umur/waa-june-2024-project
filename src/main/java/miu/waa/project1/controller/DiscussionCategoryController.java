@@ -3,7 +3,7 @@ package miu.waa.project1.controller;
 import lombok.RequiredArgsConstructor;
 
 import miu.waa.project1.model.DiscussionCategory;
-import miu.waa.project1.service.DiscussionCategoryService;
+import miu.waa.project1.service.impl.DiscussionCategoryServiceImpl;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,7 +13,7 @@ import java.util.List;
 @RequestMapping("/api/v1/category")
 @RequiredArgsConstructor
 public class DiscussionCategoryController {
-	private final DiscussionCategoryService categoryService;
+	private final DiscussionCategoryServiceImpl categoryService;
 
 	@GetMapping
 	public ResponseEntity<List<DiscussionCategory>> getAll() {

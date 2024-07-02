@@ -20,5 +20,5 @@ public interface UserService {
 
 	List<User> getAll();
 
-	boolean reportUser(Long id);
+	void reportUser(Long id);
 }

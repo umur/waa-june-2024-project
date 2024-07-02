@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import miu.waa.project1.common.AccountStatus;
 import miu.waa.project1.common.Role;
 import miu.waa.project1.exception.UserNotFound;
-import miu.waa.project1.model.Thread;
 import miu.waa.project1.model.User;
 import miu.waa.project1.repository.UserRepository;
 import miu.waa.project1.service.UserService;
@@ -13,7 +12,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -56,7 +54,7 @@ public class UserServiceImpl implements UserService {
 		existUser.setAvatar(user.getAvatar());
 		existUser.setAchievements(user.getAchievements());
 		existUser.setInterests(user.getInterests());
-		existUser.setExtracurricularActivities(user.getExtracurricularActivities());
+		existUser.setActivities(user.getActivities());
 		return userRepository.save(existUser);
 	}
 
@@ -76,13 +74,12 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public boolean reportUser(Long id) {
+	public void reportUser(Long id) {
 		User item = userRepository.findById(id).orElse(null);
 		if (item == null) {
 			throw new UserNotFound();
 		}
 		item.setReports(item.getReports() + 1);
 		userRepository.save(item);
-		return true;
 	}
 }

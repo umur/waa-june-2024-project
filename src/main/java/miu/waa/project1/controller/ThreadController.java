@@ -2,9 +2,8 @@ package miu.waa.project1.controller;
 
 import lombok.RequiredArgsConstructor;
 import miu.waa.project1.dto.CreateOrUpdateThreadRequest;
-import miu.waa.project1.model.Discussion;
 import miu.waa.project1.model.Thread;
-import miu.waa.project1.service.ThreadService;
+import miu.waa.project1.service.impl.ThreadServiceImpl;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,7 +13,7 @@ import java.util.Optional;
 @RequestMapping("/api/v1/thread")
 @RequiredArgsConstructor
 public class ThreadController {
-	private final ThreadService threadService;
+	private final ThreadServiceImpl threadService;
 
 	@PostMapping
 	public ResponseEntity<?> createOne(@RequestBody CreateOrUpdateThreadRequest req) {

@@ -72,7 +72,7 @@ public class User implements UserDetails {
 
 	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
 	@JsonIgnore
-	private List<Activity> extracurricularActivities = new ArrayList<>();
+	private List<Activity> activities = new ArrayList<>();
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
