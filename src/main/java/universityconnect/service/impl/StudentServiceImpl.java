@@ -39,31 +39,12 @@ public class StudentServiceImpl implements StudentService {
     private ProfileMapper profileMapper;
 
     @Override
-    public StudentDTO createStudent(StudentDTO studentDTO) {
-        Student student = studentMapper.studentDTOToStudent(studentDTO);
-
-        if (studentDTO.getResourceIds() != null && !studentDTO.getResourceIds().isEmpty()) {
-            List<Resource> resources = resourceRepository.findAllById(studentDTO.getResourceIds());
-            student.setResources(resources);
-        }
-        Student savedStudent = studentRepository.save(student);
-
-        // Automatically create a profile
-        Profile profile = new Profile();
-        profile.setUser(savedStudent);
-        profileRepository.save(profile);
-
-        return studentMapper.studentToStudentDTO(savedStudent);
-    }
-
-    @Override
     public List<StudentDTO> getAllStudents() {
         List<Student> students = studentRepository.findAll();
         return students.stream()
                 .map(studentMapper::studentToStudentDTO)
                 .collect(Collectors.toList());
     }
-
 
     @Override
     public StudentDTO updateStudent(long id, StudentDTO studentDTO) {
@@ -77,16 +58,6 @@ public class StudentServiceImpl implements StudentService {
         existingStudent.setEmail(studentDTO.getEmail());
         existingStudent.setPassword(studentDTO.getPassword());
         existingStudent.setRole(studentDTO.getRole());
-
-        if(studentDTO.getEventIds() != null) {
-            List<Event> events = eventRepository.findAllById(studentDTO.getEventIds());
-            existingStudent.setEvents(events);
-        }
-
-        if (studentDTO.getResourceIds() != null) {
-            List<Resource> resources = resourceRepository.findAllById(studentDTO.getResourceIds());
-            existingStudent.setResources(resources);
-        }
 
         Student student = studentRepository.save(existingStudent);
         return studentMapper.studentToStudentDTO(student);
@@ -133,6 +104,5 @@ public class StudentServiceImpl implements StudentService {
                 .map(studentMapper::studentToStudentDTO)
                 .collect(Collectors.toList());
     }
-
 
 }

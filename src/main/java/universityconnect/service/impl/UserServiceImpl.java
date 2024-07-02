@@ -9,6 +9,7 @@ import universityconnect.dto.UserDTO;
 import universityconnect.exception.ResourceNotFoundException;
 import universityconnect.mapper.BlockMapper;
 import universityconnect.mapper.ReportMapper;
+import universityconnect.mapper.StudentMapper;
 import universityconnect.mapper.UserMapper;
 import universityconnect.repository.*;
 import universityconnect.service.UserService;
@@ -29,30 +30,52 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private ReportRepository reportRepository;
 
-
-    @Autowired
-    private DiscussionRepository discussionRepository;
-
-    @Autowired
-    private EventRepository eventRepository;
-
-    @Autowired
-    private ResourceRepository resourceRepository;
-
     @Autowired
     private BlockRepository blockRepository;
 
     @Autowired
-    private ReportMapper reportMapper;
+    private ProfileRepository profileRepository;
 
     @Autowired
-    private BlockMapper blockMapper;
+    private StudentRepository studentRepository;
+
+    @Autowired
+    private AdminRepository adminRepository;
+
+    @Autowired
+    private StudentMapper studentMapper;
 
     @Override
     public UserDTO createUser(UserDTO userDTO) {
         User user = userMapper.userDTOToUser(userDTO);
-        User savedUser = userRepository.save(user);
-        return userMapper.userToUserDTO(savedUser);
+
+        // Automatically create a student if the role is STUDENT
+        if (userDTO.getRole().name().equals("STUDENT")) {
+            Student student = new Student(userDTO.getYear(),userDTO.getMajor());
+            student.setUsername(userDTO.getUsername());
+            student.setEmail(userDTO.getEmail());
+            student.setPassword(userDTO.getPassword());
+            student.setRole(userDTO.getRole());
+            student.setAddress(userDTO.getAddress());
+            studentRepository.saveAndFlush(student);
+            Profile profile = new Profile();
+            profile.setUser(student);
+            profileRepository.save(profile);
+            user.setId(student.getId());
+        } else if (userDTO.getRole().name().equals("ADMIN")) {
+            Admin admin = new Admin(userDTO.getDepartment());
+            admin.setUsername(userDTO.getUsername());
+            admin.setEmail(userDTO.getEmail());
+            admin.setAddress(userDTO.getAddress());
+            admin.setRole(userDTO.getRole());
+            admin.setPassword(userDTO.getPassword());
+            adminRepository.saveAndFlush(admin);
+            Profile profile = new Profile();
+            profile.setUser(admin);
+            profileRepository.save(profile);
+            user.setId(admin.getId());
+        }
+        return userMapper.userToUserDTO(user);
     }
 
     @Override
@@ -80,21 +103,6 @@ public class UserServiceImpl implements UserService {
         existingUser.setAddress(userDTO.getAddress());
         existingUser.setPassword(userDTO.getPassword());
         existingUser.setRole(userDTO.getRole());
-
-        if (userDTO.getDiscussionIds() != null) {
-            List<Discussion> discussions = discussionRepository.findAllById(userDTO.getDiscussionIds());
-            existingUser.setDiscussions(discussions);
-        }
-
-        if (userDTO.getEventIds() != null) {
-            List<Event> events = eventRepository.findAllById(userDTO.getEventIds());
-            existingUser.setEvents(events);
-        }
-
-        if (userDTO.getResourceIds() != null) {
-            List<Resource> resources = resourceRepository.findAllById(userDTO.getResourceIds());
-            existingUser.setResources(resources);
-        }
 
         User updatedUser = userRepository.save(existingUser);
         return userMapper.userToUserDTO(updatedUser);
@@ -143,7 +151,5 @@ public class UserServiceImpl implements UserService {
                 .map(userMapper::userToUserDTO)
                 .collect(Collectors.toList());
     }
-
-
 
 }

@@ -2,6 +2,7 @@ package universityconnect.dto;
 
 import lombok.Data;
 import universityconnect.domain.Role;
+import universityconnect.domain.Student;
 
 import java.util.List;
 
@@ -13,25 +14,12 @@ public class UserDTO {
     private String email;
     private String address;
     private AuditDataDTO auditData;
-    private List<Long> discussionIds;
-    private List<Long> resourceIds;
-    private List<Long> eventIds;
     private Role role;
-
+    private int year;
+    private String major;
+    private String department;
 
     public UserDTO() {}
 
-    public UserDTO(Long id, String username, String password, String email, String address, AuditDataDTO auditData, List<Long> discussionIds, List<Long> resourceIds, List<Long> eventIds, Role role) {
-        this.id = id;
-        this.username = username;
-        this.password = password;
-        this.email = email;
-        this.address = address;
-        this.auditData = auditData;
-        this.discussionIds = discussionIds;
-        this.resourceIds = resourceIds;
-        this.eventIds = eventIds;
-        this.role = role;
-    }
 }
 
