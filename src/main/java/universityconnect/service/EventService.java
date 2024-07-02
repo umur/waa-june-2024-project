@@ -1,8 +1,6 @@
 package universityconnect.service;
 
-import universityconnect.domain.Discussion;
 import universityconnect.domain.Event;
-import universityconnect.dto.DiscussionDTO;
 import universityconnect.dto.EventDTO;
 
 import java.util.List;

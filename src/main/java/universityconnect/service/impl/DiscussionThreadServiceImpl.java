@@ -56,7 +56,8 @@ public class DiscussionThreadServiceImpl implements DiscussionThreadService {
         List<DiscussionThread> nested = new ArrayList<>();
         discussionThreadDTO.getNestedThreadIds().forEach(threadId-> nested.add(findById(threadId)));
         thread.setNestedThreads(nested);
-        return null;
+        DiscussionThread savedThread = discussionThreadRepository.save(thread);
+        return discussionThreadMapper.discussionThreadToDiscussionThreadDTO(savedThread);
     }
 
     @Override

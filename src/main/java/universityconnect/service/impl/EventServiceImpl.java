@@ -46,6 +46,10 @@ public class EventServiceImpl implements EventService {
     public EventDTO updateEventById(Long id, EventDTO eventDTO) {
         Event event = eventRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("Event not found with id: "+id));
         event.setOrganizer(userService.findById(eventDTO.getOrganizerId()));
+        event.setTitle(eventDTO.getTitle());
+        event.setLocation(eventDTO.getLocation());
+        event.setStartDateTime(eventDTO.getStartDateTime());
+        event.setEndDateTime(eventDTO.getEndDateTime());
         List<EventAttendance> attendanceDTOS = new ArrayList<>();
         eventDTO.getEventAttendanceIds().forEach(attId->attendanceDTOS.add(attendanceService.findById(attId)));
         event.setEventAttendances(attendanceDTOS);

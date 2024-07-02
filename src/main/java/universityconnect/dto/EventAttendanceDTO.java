@@ -10,6 +10,7 @@ public class EventAttendanceDTO {
     private LocalDateTime checkOutTime;
     private boolean isResponse;
     private Long studentId;
+    private Long eventId;
 
     public EventAttendanceDTO() {}
 

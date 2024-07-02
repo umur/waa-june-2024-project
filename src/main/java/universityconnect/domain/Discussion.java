@@ -12,6 +12,7 @@ public class Discussion {
     private Long id;
 
     private String topic;
+    private String description;
 
     @ManyToOne
     @JoinColumn(name = "category_id")
