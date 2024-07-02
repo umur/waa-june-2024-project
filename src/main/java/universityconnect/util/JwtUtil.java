@@ -1,4 +1,4 @@
-package universityconnect.service.util;
+package universityconnect.util;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;

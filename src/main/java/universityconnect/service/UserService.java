@@ -1,9 +1,6 @@
 package universityconnect.service;
 
-import universityconnect.domain.Block;
 import universityconnect.domain.User;
-import universityconnect.dto.BlockDTO;
-import universityconnect.dto.ReportDTO;
 import universityconnect.dto.UserDTO;
 
 import java.util.List;
@@ -20,9 +17,13 @@ public interface UserService {
     void deleteUser(Long id);
 
     User findById(Long userId);
+
     List<UserDTO> getAllReportedUsersByReporterUserId(Long id);
+
     List<UserDTO> getAllReporterUsersByReportedUserId(Long id);
+
     List<UserDTO> getAllBlockedUsersByBlockerUserId(Long id);
+
     List<UserDTO> getAllBlockerUsersByBlockedUserId(Long id);
 
 
