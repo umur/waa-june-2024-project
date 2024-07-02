@@ -7,6 +7,7 @@ import java.util.List;
 public class DiscussionDTO {
     private Long id;
     private String topic;
+    private String description;
     private Long categoryId;
     private List<Long> discussionThreadIds;
     private Long userId;
