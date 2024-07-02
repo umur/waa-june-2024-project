@@ -3,11 +3,13 @@ package edu.university_connect.domain.entity;
 import edu.university_connect.domain.meta.MetaData;
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 @Data
 @Entity
 @NoArgsConstructor
+@EqualsAndHashCode(callSuper = true)
 @Table(name = "action")
 public class Action extends MetaData {
     @Id

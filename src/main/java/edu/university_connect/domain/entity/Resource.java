@@ -3,6 +3,7 @@ package edu.university_connect.domain.entity;
 import edu.university_connect.domain.meta.MetaData;
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
@@ -10,6 +11,7 @@ import java.util.Set;
 
 @Data
 @Entity
+@EqualsAndHashCode(callSuper = true)
 public class Resource extends MetaData {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

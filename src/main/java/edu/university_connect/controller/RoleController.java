@@ -6,6 +6,7 @@ import edu.university_connect.model.contract.request.role.RoleCreateRequest;
 import edu.university_connect.model.contract.request.role.RoleUpdateRequest;
 import edu.university_connect.model.contract.response.ApiResponse;
 import edu.university_connect.service.MessagingService;
+import edu.university_connect.service.role.RoleService;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -21,11 +22,11 @@ import java.util.List;
 @CrossOrigin
 @Slf4j
 public class RoleController {
-    private final MessagingService.RoleService service;
+    private final RoleService service;
 
     private final MessagingService messagingService;
 
-    public RoleController(MessagingService.RoleService service, MessagingService messagingService) {
+    public RoleController(RoleService service, MessagingService messagingService) {
         this.service = service;
         this.messagingService = messagingService;
     }

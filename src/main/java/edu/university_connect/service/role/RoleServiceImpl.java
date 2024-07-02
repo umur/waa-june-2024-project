@@ -22,7 +22,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @Service
 @Transactional
-public class RoleServiceImpl implements MessagingService.RoleService {
+public class RoleServiceImpl implements RoleService {
 
     private final RoleRepository repository;
 

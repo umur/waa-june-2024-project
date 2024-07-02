@@ -1,19 +1,13 @@
 package edu.university_connect.service;
 
-import edu.university_connect.model.contract.dto.RoleDto;
-import edu.university_connect.model.contract.request.role.RoleCreateRequest;
-import edu.university_connect.model.contract.request.role.RoleUpdateRequest;
-import edu.university_connect.model.enums.AppStatusCode;
 import edu.university_connect.exception.ServiceException;
+import edu.university_connect.model.enums.AppStatusCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -53,19 +47,5 @@ public class MessagingService {
     public String getResponseMessage(AppStatusCode appStatusCode) {
 
         return getResponseMessage(appStatusCode.getDescription());
-    }
-
-    public static interface RoleService {
-        Page<RoleDto> getPage(Pageable pageable);
-        List<RoleDto> getAll();
-        RoleDto getById(Long id);
-
-        RoleDto create(RoleCreateRequest createRequest);
-
-        RoleDto update(Long id, RoleUpdateRequest updateRequest);
-
-        boolean delete(Long id);
-
-
     }
 }

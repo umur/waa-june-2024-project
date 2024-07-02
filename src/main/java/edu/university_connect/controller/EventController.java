@@ -1,5 +1,6 @@
 package edu.university_connect.controller;
 
+import edu.university_connect.config.ContextUser;
 import edu.university_connect.model.contract.dto.EventDto;
 import edu.university_connect.model.contract.request.event.EventRequest;
 import edu.university_connect.model.contract.response.ApiResponse;
@@ -20,6 +21,7 @@ import java.util.List;
 public class EventController {
     private final EventService eventService;
     private final MessagingService messagingService;
+    private final ContextUser contextUser;
 
     @GetMapping
     public ResponseEntity<ApiResponse<List<EventDto>>> getAll() {
@@ -57,5 +59,15 @@ public class EventController {
         EventDto eventDto = eventService.create(eventRequest);
         String message = messagingService.getResponseMessage(AppStatusCode.S20002, new String[]{"event"});
         return ResponseEntity.ok(new ApiResponse<EventDto>(message, eventDto));
+    }
+
+    @PostMapping("/{id}/rsvp")
+    public ResponseEntity<ApiResponse<Boolean>> rsvpForEvent(@Valid @PathVariable Long id) {
+        Long userId = contextUser.getUser().getId();
+        eventService.rsvpForEvent(id, userId);
+        String message = messagingService.getResponseMessage(AppStatusCode.S20002, new String[]{"event rsvp"});
+        ApiResponse<Boolean> apiResponse = new ApiResponse<>(message, true);
+        apiResponse.setStatus(true);
+        return ResponseEntity.ok(apiResponse);
     }
 }
