@@ -31,7 +31,6 @@ public class SecurityConfig {
             .csrf(AbstractHttpConfigurer::disable)
             .authorizeHttpRequests(request -> request
                 .requestMatchers("/api/v1/auth/**").permitAll()
-                    .requestMatchers("/resources/**").permitAll()
                 .requestMatchers("/api/v1/admin/**").hasAuthority(ADMIN.name())
 //                .requestMatchers("/api/v1/users/**").hasAnyAuthority(ADMIN.name(), STUDENT.name())
                 .requestMatchers("/api/v1/interests/**").hasAnyAuthority(ADMIN.name(), STUDENT.name())
@@ -42,6 +41,7 @@ public class SecurityConfig {
                 .requestMatchers("/api/v1/discussion/**").hasAnyAuthority(ADMIN.name(), STUDENT.name())
                 .requestMatchers("/api/v1/thread/**").hasAnyAuthority(ADMIN.name(), STUDENT.name())
                 .requestMatchers("/api/v1/users/**").permitAll()
+                .requestMatchers("/resources/**").permitAll() // allow access to resources folder
                 .anyRequest().authenticated())
             .sessionManagement(session -> session.sessionCreationPolicy(STATELESS))
             .authenticationProvider(authenticationProvider)
@@ -49,10 +49,5 @@ public class SecurityConfig {
 
         return http.build();
     }
-
-//    @Bean
-//    public WebSecurityCustomizer webSecurityCustomizer() {
-//        return (web) -> web.ignoring().requestMatchers("/images/**", "/js/**", "/webjars/**", "/resources/**");
-//    }
 
 }
