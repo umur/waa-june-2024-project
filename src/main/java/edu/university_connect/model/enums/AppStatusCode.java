@@ -38,7 +38,10 @@ public enum AppStatusCode {
     E50004("update.error", HttpStatus.INTERNAL_SERVER_ERROR),
     E50005("delete.error", HttpStatus.INTERNAL_SERVER_ERROR),
 
-    E50006("serialization.error", HttpStatus.INTERNAL_SERVER_ERROR);
+    E50006("serialization.error", HttpStatus.INTERNAL_SERVER_ERROR),
+    E50007("file.write.error", HttpStatus.INTERNAL_SERVER_ERROR),
+    E50009("file.read.error", HttpStatus.INTERNAL_SERVER_ERROR),
+    E50008("file.write.path.error", HttpStatus.INTERNAL_SERVER_ERROR);
     private final HttpStatus httpStatusCode;
     private final String description;
 

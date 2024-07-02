@@ -6,6 +6,7 @@ import edu.university_connect.model.contract.response.ApiResponse;
 import edu.university_connect.model.enums.AppStatusCode;
 import edu.university_connect.service.MessagingService;
 import edu.university_connect.service.resource.ResourceService;
+import edu.university_connect.service.storage.StorageService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -13,6 +14,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -21,6 +23,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ResourceController {
     private final ResourceService service;
+    private final StorageService storageService;
 
     private final MessagingService messagingService;
 
@@ -45,7 +48,7 @@ public class ResourceController {
         return ResponseEntity.ok(apiResponse);
 
     }
-    @PostMapping("")
+    @PostMapping(value = "")
     public ResponseEntity<ApiResponse<ResourceDto>> create(@Valid @RequestBody ResourceRequest createRequest) {
         ResourceDto response= service.create(createRequest);
         ApiResponse<ResourceDto> apiResponse =  new ApiResponse<ResourceDto>();
@@ -81,6 +84,15 @@ public class ResourceController {
         ApiResponse<Boolean> apiResponse =  new ApiResponse<Boolean>();
         apiResponse.setResponseData(response);
         apiResponse.setMessage(messagingService.getResponseMessage(AppStatusCode.S20005,new String[]{"resource"}));
+        return ResponseEntity.ok(apiResponse);
+    }
+
+    @PostMapping("/{id}")
+    public ResponseEntity<ApiResponse<ResourceDto>> handleFileUpload(@RequestParam("files") MultipartFile[] files,@PathVariable Long id) {
+        ResourceDto response=service.handleFileUpload(files,id);
+        ApiResponse<ResourceDto> apiResponse =  new ApiResponse<ResourceDto>();
+        apiResponse.setResponseData(response);
+        apiResponse.setMessage(messagingService.getResponseMessage(AppStatusCode.S20000,new String[]{"resource"}));
         return ResponseEntity.ok(apiResponse);
     }
 
