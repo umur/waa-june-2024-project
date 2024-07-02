@@ -52,7 +52,7 @@ public class FeebackServiceImp implements FeedbackService {
 
         Student student = studentRepository.findById(1L).get();
         feedbackToSave.setStudent(student);
-        
+
         feedbackRepository.save(feedbackToSave);
         return "Feedback saved successfully.";
     }
@@ -72,5 +72,18 @@ public class FeebackServiceImp implements FeedbackService {
     public String delete(Long fid) {
         feedbackRepository.deleteById(fid);
         return "Feedback is deleted.";
+    }
+
+    @Override
+    public List<FeedbackDto> findFeedbackByCategory(Long id) {
+        List<FeedbackDto> list     = new ArrayList<>();
+        List<Feedback>    feedback = feedbackRepository.findFeedbackByCategoryId(id);
+        feedback.forEach(feed -> list.add(modelMapper.map(feed, FeedbackDto.class)));
+        return list;
+    }
+
+    @Override
+    public List<Object[]> findFeedbackByCategoryCount() {
+        return feedbackRepository.findFeedbackByCategoryCount();
     }
 }

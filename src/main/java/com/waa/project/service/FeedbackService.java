@@ -14,4 +14,8 @@ public interface FeedbackService {
     String update(FeedbackDto feedback, Long fid);
 
     String delete(Long fid);
+
+    List<FeedbackDto> findFeedbackByCategory(Long id);
+
+    List<Object[]> findFeedbackByCategoryCount();
 }

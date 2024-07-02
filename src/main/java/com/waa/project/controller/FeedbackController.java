@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @RestController
 @AllArgsConstructor
@@ -24,9 +26,9 @@ public class FeedbackController {
         return feedbackService.getAllFeedbacks();
     }
 
-    @GetMapping("/{Id}")
-    public FeedbackDto getFeedBack(@PathVariable Long Id) {
-        return feedbackService.getFeedback(Id);
+    @GetMapping("/category/{Id}")
+    public List<FeedbackDto> getFeedByCategory(@PathVariable Long Id) {
+        return feedbackService.findFeedbackByCategory(Id);
     }
 
     @PutMapping("/{Id}")
@@ -47,5 +49,15 @@ public class FeedbackController {
         return feedbackService.delete(Id);
     }
 
+    @GetMapping("/reports")
+    public Map<String, Integer> findFeedbackByCategoryCount() {
+        List<Object[]> results = feedbackService.findFeedbackByCategoryCount();
+        return results.stream()
+                      .collect(Collectors.toMap(
+                              result -> (String) result[0],
+                              result -> ((Long) result[1]).intValue()
+                                               ));
+
+    }
 
 }
