@@ -19,8 +19,8 @@ public class Event {
     @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(name = "body", nullable = false)
-    private String body;
+    @Column(name = "description", nullable = false)
+    private String description;
 
     @Column(nullable = false)
     private LocalDate eventDate;
