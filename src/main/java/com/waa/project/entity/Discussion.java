@@ -22,4 +22,11 @@ public class Discussion {
     @ManyToOne
     private DiscussionCategory category;
 
+    public void setStudent(Long studentId) {
+        Student s = new Student();
+        s.setId(studentId);
+
+        this.student = s;
+    }
+
 }
