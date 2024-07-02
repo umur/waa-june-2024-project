@@ -6,14 +6,18 @@ import edu.miu.cs545.project.repository.PostRepository;
 import edu.miu.cs545.project.repository.ThreadPostRepository;
 import edu.miu.cs545.project.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.ListCrudRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import java.util.Optional;
 
 @Transactional
 @Service
 public class PostServiceImpl extends CrudServiceImpl<Post, Long> implements PostService {
-    public PostServiceImpl(ListCrudRepository<Post, Long> postRepository) {
+    public PostServiceImpl(PostRepository postRepository) {
         super( postRepository);
     }
 
@@ -35,5 +39,23 @@ public class PostServiceImpl extends CrudServiceImpl<Post, Long> implements Post
             post.setParentPost(null);
         }
         return postRepository.save(post);
+    }
+
+
+    @Override
+    public Page<Post> findPostByThread(Long id, Integer page, Integer size, String sortDirection) {
+        try{
+            Sort sort = Sort.by("id");
+            sort = sortDirection.equalsIgnoreCase("asc") ? sort.ascending() : sort.descending();
+            Pageable pageable = PageRequest.of(page,size,sort);
+            Optional<ThreadPost> threadPostOpt = threadPostRepository.findById(id);
+            if(threadPostOpt.isPresent())
+                return postRepository.findPostByThreadPost(threadPostOpt.get(),pageable);
+
+        }catch (Exception e){
+        throw  new RuntimeException("Some thing happened in the server.");
+    }
+
+        return null;
     }
 }
