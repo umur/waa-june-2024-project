@@ -32,15 +32,12 @@ public class SecurityConfig {
             .authorizeHttpRequests(request -> request
                 .requestMatchers("/api/v1/auth/**").permitAll()
                 .requestMatchers("/api/v1/admin/**").hasAuthority(ADMIN.name())
-//                .requestMatchers("/api/v1/users/**").hasAnyAuthority(ADMIN.name(), STUDENT.name())
+                .requestMatchers("/api/v1/users/**").hasAnyAuthority(ADMIN.name(), STUDENT.name())
                 .requestMatchers("/api/v1/interests/**").hasAnyAuthority(ADMIN.name(), STUDENT.name())
                 .requestMatchers("/api/v1/achievements/**").hasAnyAuthority(ADMIN.name(), STUDENT.name())
-                .requestMatchers("/api/v1/achievements/**").hasAnyAuthority(ADMIN.name(), STUDENT.name())
-                    .requestMatchers("/api/v1/auth/**").permitAll()
                 .requestMatchers("/api/v1/category/**").hasAnyAuthority(ADMIN.name(), STUDENT.name())
                 .requestMatchers("/api/v1/discussion/**").hasAnyAuthority(ADMIN.name(), STUDENT.name())
                 .requestMatchers("/api/v1/thread/**").hasAnyAuthority(ADMIN.name(), STUDENT.name())
-                .requestMatchers("/api/v1/users/**").permitAll()
                 .requestMatchers("/resources/**").permitAll() // allow access to resources folder
                 .anyRequest().authenticated())
             .sessionManagement(session -> session.sessionCreationPolicy(STATELESS))
