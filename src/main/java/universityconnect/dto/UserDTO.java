@@ -2,9 +2,6 @@ package universityconnect.dto;
 
 import lombok.Data;
 import universityconnect.domain.Role;
-import universityconnect.domain.Student;
-
-import java.util.List;
 
 @Data
 public class UserDTO {

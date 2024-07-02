@@ -5,5 +5,5 @@ import org.springframework.stereotype.Repository;
 import universityconnect.domain.Admin;
 
 @Repository
-public interface AdminRepository extends JpaRepository<Admin, Long> {
+public interface AdminRepository extends JpaRepository<Admin,Long> {
 }
