@@ -3,18 +3,16 @@ package universityconnect.service.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import universityconnect.domain.*;
-import universityconnect.dto.BlockDTO;
-import universityconnect.dto.ReportDTO;
 import universityconnect.dto.UserDTO;
+import universityconnect.exception.EmailAlreadyExistsException;
 import universityconnect.exception.ResourceNotFoundException;
-import universityconnect.mapper.BlockMapper;
-import universityconnect.mapper.ReportMapper;
 import universityconnect.mapper.StudentMapper;
 import universityconnect.mapper.UserMapper;
 import universityconnect.repository.*;
 import universityconnect.service.UserService;
+import universityconnect.util.PasswordEncoderUtil;
 
-import java.util.ArrayList;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -40,42 +38,68 @@ public class UserServiceImpl implements UserService {
     private StudentRepository studentRepository;
 
     @Autowired
-    private AdminRepository adminRepository;
+    private PasswordEncoderUtil passwordEncoderUtil;
 
     @Autowired
-    private StudentMapper studentMapper;
+    private AdminRepository adminRepository;
+
 
     @Override
     public UserDTO createUser(UserDTO userDTO) {
-        User user = userMapper.userDTOToUser(userDTO);
 
-        // Automatically create a student if the role is STUDENT
-        if (userDTO.getRole().name().equals("STUDENT")) {
-            Student student = new Student(userDTO.getYear(),userDTO.getMajor());
-            student.setUsername(userDTO.getUsername());
-            student.setEmail(userDTO.getEmail());
-            student.setPassword(userDTO.getPassword());
-            student.setRole(userDTO.getRole());
-            student.setAddress(userDTO.getAddress());
-            studentRepository.saveAndFlush(student);
-            Profile profile = new Profile();
-            profile.setUser(student);
-            profileRepository.save(profile);
-            user.setId(student.getId());
-        } else if (userDTO.getRole().name().equals("ADMIN")) {
-            Admin admin = new Admin(userDTO.getDepartment());
-            admin.setUsername(userDTO.getUsername());
-            admin.setEmail(userDTO.getEmail());
-            admin.setAddress(userDTO.getAddress());
-            admin.setRole(userDTO.getRole());
-            admin.setPassword(userDTO.getPassword());
-            adminRepository.saveAndFlush(admin);
-            Profile profile = new Profile();
-            profile.setUser(admin);
-            profileRepository.save(profile);
-            user.setId(admin.getId());
+        if (userRepository.findByEmail(userDTO.getEmail()).isPresent()) {
+            throw new EmailAlreadyExistsException("Email already exists!");
         }
+
+        User user = switch (userDTO.getRole().name()) {
+            case "STUDENT" -> createStudent(userDTO);
+            case "ADMIN" -> createAdmin(userDTO);
+            default -> throw new IllegalArgumentException("Unsupported role: " + userDTO.getRole());
+        };
         return userMapper.userToUserDTO(user);
+    }
+
+    private User createStudent(UserDTO userDTO) {
+        Student student = new Student(userDTO.getYear(), userDTO.getMajor());
+        setCommonUserFields(student, userDTO);
+        student.setAuditData(createDefaultAuditData());
+
+        studentRepository.save(student);
+
+        Profile profile = new Profile();
+        profile.setUser(student);
+        profileRepository.save(profile);
+
+        return student;
+    }
+
+    private User createAdmin(UserDTO userDTO) {
+        Admin admin = new Admin(userDTO.getDepartment());
+        setCommonUserFields(admin, userDTO);
+        admin.setAuditData(createDefaultAuditData());
+
+        adminRepository.save(admin);
+
+        Profile profile = new Profile();
+        profile.setUser(admin);
+        profileRepository.save(profile);
+
+        return admin;
+    }
+
+    private void setCommonUserFields(User user, UserDTO userDTO) {
+        user.setUsername(userDTO.getUsername());
+        user.setEmail(userDTO.getEmail());
+        user.setAddress(userDTO.getAddress());
+        user.setRole(userDTO.getRole());
+        user.setPassword(passwordEncoderUtil.encodePassword(userDTO.getPassword()));
+    }
+
+    private AuditData createDefaultAuditData() {
+        AuditData auditData = new AuditData();
+        auditData.setCreatedBy("ADMIN");
+        auditData.setCreatedOn(LocalDate.now());
+        return auditData;
     }
 
     @Override
@@ -134,7 +158,7 @@ public class UserServiceImpl implements UserService {
         return reporterUsers.stream()
                 .map(userMapper::userToUserDTO)
                 .collect(Collectors.toList());
-     }
+    }
 
     @Override
     public List<UserDTO> getAllBlockedUsersByBlockerUserId(Long id) {

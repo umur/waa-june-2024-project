@@ -9,7 +9,7 @@ import universityconnect.service.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/surveys")
+@RequestMapping("/surveys")
 public class SurveyController {
 
     @Autowired
