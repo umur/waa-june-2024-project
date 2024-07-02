@@ -14,7 +14,7 @@ import universityconnect.domain.request.LoginRequest;
 import universityconnect.domain.request.RefreshTokenRequest;
 import universityconnect.domain.response.LoginResponse;
 import universityconnect.service.AuthService;
-import universityconnect.service.util.JwtUtil;
+import universityconnect.util.JwtUtil;
 
 @Service
 @RequiredArgsConstructor
