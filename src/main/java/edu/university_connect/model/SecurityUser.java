@@ -23,6 +23,7 @@ public class SecurityUser implements UserDetails {
     private boolean accountNonLocked;
     private boolean credentialsNonExpired;
     private boolean enabled;
+    private User user;
 
     public SecurityUser(User user){
         Set<Role> roles= user.getRoles();
@@ -40,6 +41,7 @@ public class SecurityUser implements UserDetails {
         this.credentialsNonExpired = true;
         this.enabled = user.isEnabled();
         this.authorities =   authorities;
+        this.user = user;
     }
 
 

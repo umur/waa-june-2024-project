@@ -1,5 +1,6 @@
 package edu.university_connect.service.reply;
 
+import edu.university_connect.config.ContextUser;
 import edu.university_connect.domain.entity.discussionthread.Post;
 import edu.university_connect.domain.entity.discussionthread.Reply;
 import edu.university_connect.exception.ServiceException;
@@ -24,6 +25,7 @@ import java.util.Optional;
 public class ReplyServiceImpl implements ReplyService {
     private final ReplyRepository replyRepository;
     private final PostService postService;
+    private final ContextUser contextUser;
 
     @Override
     public List<ReplyDto> getAll() {
@@ -65,7 +67,7 @@ public class ReplyServiceImpl implements ReplyService {
     public ReplyDto update(Long id, ReplyRequest replyRequest) {
         Optional<Reply> replyOpt = replyRepository.findById(id);
         if (replyOpt.isEmpty()) {
-            throw ServiceException.of(AppStatusCode.E40000, "reply");
+            throw ServiceException.of(AppStatusCode.E40000, "id reply");
         }
         Reply reply = replyOpt.get();
         reply.setContent(replyRequest.getContent());
@@ -78,6 +80,7 @@ public class ReplyServiceImpl implements ReplyService {
         Post post = postService.getPost(postReplyRequest.getPostId());
         Reply reply = ReplyDtoMapper.MAPPER.dtoToEntity(postReplyRequest);
         reply.setPost(post);
+        reply.setUser(contextUser.getLoginUser().getUser());
         reply = replyRepository.save(reply);
         return ReplyDtoMapper.MAPPER.entityToDto(reply);
     }
@@ -105,7 +108,7 @@ public class ReplyServiceImpl implements ReplyService {
     private Reply getReply(Long id) {
         Optional<Reply> replyOpt = replyRepository.findById(id);
         if (replyOpt.isEmpty()) {
-            throw ServiceException.of(AppStatusCode.E40000, "reply", id.toString());
+            throw ServiceException.of(AppStatusCode.E40000, "id reply", id.toString());
         }
         return replyOpt.get();
     }

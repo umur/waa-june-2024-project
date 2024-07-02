@@ -1,14 +1,11 @@
 package edu.university_connect.service.post;
 
+import edu.university_connect.config.ContextUser;
 import edu.university_connect.domain.entity.discussionthread.Category;
 import edu.university_connect.domain.entity.discussionthread.Post;
-import edu.university_connect.domain.entity.discussionthread.Reply;
 import edu.university_connect.exception.ServiceException;
 import edu.university_connect.mapper.PostDtoMapper;
-import edu.university_connect.mapper.ReplyDtoMapper;
 import edu.university_connect.model.contract.dto.PostDto;
-import edu.university_connect.model.contract.dto.ReplyDto;
-import edu.university_connect.model.contract.request.discussionthread.PostReplyRequest;
 import edu.university_connect.model.contract.request.discussionthread.PostRequest;
 import edu.university_connect.model.enums.AppStatusCode;
 import edu.university_connect.repository.CategoryRepository;
@@ -26,6 +23,7 @@ import java.util.Optional;
 public class PostServiceImpl implements PostService {
     private final PostRepository postRepository;
     private final CategoryRepository categoryRepository;
+    private final ContextUser contextUser;
 
     @Override
     public List<PostDto> getAll() {
@@ -50,7 +48,7 @@ public class PostServiceImpl implements PostService {
     public PostDto update(Long id, PostRequest postRequest) {
         Optional<Post> postOpt = postRepository.findById(id);
         if (postOpt.isEmpty()) {
-            throw ServiceException.of(AppStatusCode.E40000, "post");
+            throw ServiceException.of(AppStatusCode.E40000, "id post");
         }
         Post post = postOpt.get();
         post.setContent(postRequest.getContent());
@@ -65,6 +63,7 @@ public class PostServiceImpl implements PostService {
         Post post = PostDtoMapper.MAPPER.dtoToEntity(postRequest);
         Category category = validatePostCategory(postRequest.getCategoryId());
         post.setCategory(category);
+        post.setUser(contextUser.getLoginUser().getUser());
         Post savedPost = postRepository.save(post);
         return PostDtoMapper.MAPPER.entityToDto(savedPost);
     }
@@ -72,7 +71,7 @@ public class PostServiceImpl implements PostService {
     public Post getPost(Long id) {
         Optional<Post> postOpt = postRepository.findById(id);
         if (postOpt.isEmpty()) {
-            throw ServiceException.of(AppStatusCode.E40000, "post", id.toString());
+            throw ServiceException.of(AppStatusCode.E40000, "id post", id.toString());
         }
         return postOpt.get();
     }
@@ -80,7 +79,7 @@ public class PostServiceImpl implements PostService {
     private Category validatePostCategory(Long categoryId) {
         Optional<Category> category = categoryRepository.findById(categoryId);
         if (category.isEmpty()) {
-            throw ServiceException.of(AppStatusCode.E40000, "category", categoryId.toString());
+            throw ServiceException.of(AppStatusCode.E40000, "id category", categoryId.toString());
         }
         return category.get();
     }
