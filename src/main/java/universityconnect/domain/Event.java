@@ -16,8 +16,7 @@ public class Event {
     private LocalDateTime startDateTime;
     private LocalDateTime endDateTime;
 
-    @OneToMany
-    @JoinColumn(name = "event_id")
+    @OneToMany(mappedBy = "event")
     private List<EventAttendance> eventAttendances;
 
     @ManyToOne

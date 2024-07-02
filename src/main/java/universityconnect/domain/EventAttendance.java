@@ -13,6 +13,8 @@ public class EventAttendance {
     private LocalDateTime checkInTime;
     private LocalDateTime checkOutTime;
     private boolean isResponse;
+    @ManyToOne
+    private Event event;
 
     @ManyToOne
     private Student student;
