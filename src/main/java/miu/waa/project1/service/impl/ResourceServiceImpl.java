@@ -4,10 +4,16 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import miu.waa.project1.model.Resource;
+import miu.waa.project1.model.User;
 import miu.waa.project1.repository.ResourceRepository;
 import miu.waa.project1.service.ResourceService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -24,6 +30,7 @@ import java.util.UUID;
 @Getter
 public class ResourceServiceImpl implements ResourceService {
     private final ResourceRepository resourceRepository;
+    private final UserServiceImpl userService;
 
     @Override
     public Page<Resource> getAllResources(Pageable pageable) {
@@ -87,6 +94,13 @@ public class ResourceServiceImpl implements ResourceService {
             image.setDescription(desc);
             image.setName(fileName);
             System.out.println(image.toString());
+
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            if (authentication == null || !(authentication.getPrincipal() instanceof UserDetails userDetails)) {
+                throw new RuntimeException("Invalid token or user not found");
+            }
+            User user = userService.getUserByEmail(userDetails.getUsername());
+            image.setUser(user);
             newImage = resourceRepository.save(image);
         } catch (IOException e) {
             throw new RuntimeException(e);
