@@ -54,10 +54,10 @@ public class SurveyServiceImpl implements SurveyService {
 
     @Override
     public SurveyDto create(SurveyCreateRequest createRequest) {
-        Long userId =  contextUser.getUser().getId();
+        Long userId =  contextUser.getLoginUser().getId();
         Survey survey= SurveyDtoMapper .MAPPER.dtoToEntity(createRequest);
         Optional<User> user = userRepository.findById(userId);
-        if(user.isPresent()){
+        if (user.isPresent()){
             survey.setCreator(user.get());
             Survey savedSurvey=repository.save(survey);
             return SurveyDtoMapper.MAPPER.entityToDto(savedSurvey);

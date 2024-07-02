@@ -23,6 +23,14 @@ public class ApiResponse<T> implements Serializable {
 
     private Error errors;
 
+    public static <T> ApiResponse<T> of(boolean status, T data) {
+        return new ApiResponse<>(status, data);
+    }
+
+    public static <T> ApiResponse<T> of(String message, T data) {
+        return new ApiResponse<>(message, data);
+    }
+
     public ApiResponse(boolean status, T data) {
         this.status = status;
         this.data = data;

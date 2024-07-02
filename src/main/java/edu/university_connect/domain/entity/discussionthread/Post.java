@@ -23,7 +23,7 @@ public class Post extends MetaData {
     @JoinColumn(name = "category_id")
     private Category category;
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name="post_id")
     private List<Reply> replies;
 
