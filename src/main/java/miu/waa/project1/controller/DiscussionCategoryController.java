@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/discussion/category")
+@RequestMapping("/api/v1/category")
 @RequiredArgsConstructor
 public class DiscussionCategoryController {
 	private final DiscussionCategoryService categoryService;

@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import miu.waa.project1.common.AccountStatus;
 import miu.waa.project1.common.Role;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -21,83 +22,92 @@ import java.util.List;
 @Getter
 @Setter
 public class User implements UserDetails {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
-    private String email;
+	@Column(unique = true)
+	private String email;
 
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    private String password;
+	@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+	private String password;
 
-    @Enumerated(EnumType.STRING)
-    private Role role;
+	@Enumerated(EnumType.STRING)
+	private Role role;
 
-    private String firstName;
-    private String lastName;
-    private String bio;
-    private String avatar;
-    private Integer entryYear;
-    private String major;
+	@Column(nullable = false)
+	@Enumerated(EnumType.STRING)
+	private AccountStatus status = AccountStatus.INACTIVE;
 
-    private int loginAttempts;
-    private LocalDateTime lockTime;
+	private String firstName;
+	private String lastName;
+	private String bio;
+	private String avatar;
+	private Integer entryYear;
+	private String major;
 
-    @CreatedDate
-    @Column(name = "created_at", updatable = false, nullable = false)
-    private LocalDateTime createdAt;
+	@Column(columnDefinition = "integer default 0")
+	private Integer reports;
 
-    @LastModifiedDate
-    @Column(name = "updated_at", nullable = false)
-    private LocalDateTime updatedAt;
+	private int loginAttempts;
+	private LocalDateTime lockTime;
 
-    @Column(name = "deleted_at")
-    private LocalDateTime deletedAt;
+	@CreatedDate
+	@Column(name = "created_at", updatable = false, nullable = false)
+	private LocalDateTime createdAt;
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
-    @JsonIgnore
-    private List<Achievement> achievements = new ArrayList<>();
+	@LastModifiedDate
+	@Column(name = "updated_at", nullable = false)
+	private LocalDateTime updatedAt;
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Interest> interests = new ArrayList<>();
+	@Column(name = "deleted_at")
+	private LocalDateTime deletedAt;
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
-    @JsonIgnore
-    private List<Activity> extracurricularActivities = new ArrayList<>();
+	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+	@JsonIgnore
+	private List<Achievement> achievements = new ArrayList<>();
 
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
+	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<Interest> interests = new ArrayList<>();
+
+	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+	@JsonIgnore
+	private List<Activity> extracurricularActivities = new ArrayList<>();
+
+	@Override
+	public Collection<? extends GrantedAuthority> getAuthorities() {
 //        return Collections.singleton(new SimpleGrantedAuthority(user.getRole()));
-        return List.of(new SimpleGrantedAuthority(role.name()));
-    }
+		return List.of(new SimpleGrantedAuthority(role.name()));
+	}
 
-    @Override
-    public String getPassword() {
-        return password;
-    }
+	@Override
+	public String getPassword() {
+		return password;
+	}
 
-    @Override
-    public String getUsername() {
-        return email;
-    }
+	@Override
+	public String getUsername() {
+		return email;
+	}
 
-    @Override
-    public boolean isAccountNonExpired() {
-        return true;
-    }
+	@Override
+	public boolean isAccountNonExpired() {
+		return true;
+	}
 
-    @Override
-    public boolean isAccountNonLocked() {
-        return true;
-    }
+	@Override
+	public boolean isAccountNonLocked() {
+		return true;
+	}
 
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return true;
-    }
+	@Override
+	public boolean isCredentialsNonExpired() {
+		return true;
+	}
 
-    @Override
-    public boolean isEnabled() {
-        return true;
-    }
+	@Override
+	public boolean isEnabled() {
+		return true;
+	}
+
 }
