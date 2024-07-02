@@ -18,12 +18,6 @@ public class StudentController {
     @Autowired
     private StudentService studentService;
 
-    @PostMapping
-    public ResponseEntity<StudentDTO> createStudent(@RequestBody StudentDTO studentDTO) {
-        StudentDTO createdStudent = studentService.createStudent(studentDTO);
-        return new ResponseEntity<>(createdStudent, HttpStatus.CREATED);
-    }
-
     @GetMapping
     public ResponseEntity<List<StudentDTO>> getAllStudents() {
         List<StudentDTO> students = studentService.getAllStudents();
@@ -67,6 +61,5 @@ public class StudentController {
     public List<StudentDTO> getStudentsByYearAndMajor(@PathVariable int year, @PathVariable String major) {
         return studentService.getStudentsByYearAndMajor(year, major);
     }
-
 
 }
