@@ -13,6 +13,7 @@ import java.time.LocalDate;
 @Entity
 @Data
 @Inheritance(strategy = InheritanceType.JOINED)
+@DiscriminatorColumn(name = "user_type")
 @Table(name = "users")
 public abstract class User {
 
