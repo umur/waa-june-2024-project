@@ -1,4 +1,4 @@
-package universityconnect.domain;
+package universityconnect.exception;
 
 import lombok.Data;
 

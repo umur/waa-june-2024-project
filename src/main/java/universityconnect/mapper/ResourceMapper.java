@@ -6,7 +6,7 @@ import org.mapstruct.factory.Mappers;
 import universityconnect.domain.Resource;
 import universityconnect.dto.ResourceDTO;
 
-@Mapper
+@Mapper(componentModel = "spring")
 public interface ResourceMapper {
     ResourceMapper INSTANCE = Mappers.getMapper(ResourceMapper.class);
 

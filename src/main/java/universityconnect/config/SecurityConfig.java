@@ -37,8 +37,12 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> {
                     auth
                             .requestMatchers("/users/**").permitAll()
-                            .requestMatchers("/admins/**").hasRole("ADMIN")
-                            .requestMatchers("/students/**").hasRole("STUDENT")
+                            .requestMatchers("/students/**").permitAll()
+                            .requestMatchers("/profiles/**").permitAll()
+                            .requestMatchers("/reports/**").permitAll()
+                            .requestMatchers("/blocks/**").permitAll()
+//                            .requestMatchers("/admins/**").hasRole("ADMIN")
+//                            .requestMatchers("/students/**").permitAll()
                             .anyRequest().authenticated();
                 })
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

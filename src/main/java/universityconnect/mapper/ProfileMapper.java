@@ -6,7 +6,7 @@ import org.mapstruct.factory.Mappers;
 import universityconnect.domain.Profile;
 import universityconnect.dto.ProfileDTO;
 
-@Mapper
+@Mapper(componentModel = "spring")
 public interface ProfileMapper {
     ProfileMapper INSTANCE = Mappers.getMapper(ProfileMapper.class);
 
