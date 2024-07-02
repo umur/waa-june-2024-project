@@ -1,4 +1,4 @@
-package com.waa.project.controller;
+package com.waa.project.controller.feedback;
 
 import com.waa.project.dto.FeedbackDto;
 import com.waa.project.service.FeedbackService;
@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 @RestController
 @AllArgsConstructor
 @NoArgsConstructor
-@RequestMapping("/api/v1/feedbacks")
+@RequestMapping("/feedbacks")
 public class FeedbackController {
 
     @Autowired

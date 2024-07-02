@@ -1,4 +1,4 @@
-package com.waa.project.controller;
+package com.waa.project.controller.feedback;
 
 import com.waa.project.dto.FeedbackCategoryDto;
 import com.waa.project.service.FeedbackCategoryService;
@@ -12,7 +12,7 @@ import java.util.List;
 @RestController
 @AllArgsConstructor
 @NoArgsConstructor
-@RequestMapping("/api/v1/feedbackcategories")
+@RequestMapping("/feedbackcategories")
 public class FeedbackCategoryController {
 
     @Autowired
@@ -28,7 +28,7 @@ public class FeedbackCategoryController {
         return feedbackCategoryService.getCategory(catId);
     }
 
-    @PutMapping("/{catId}")
+    @PutMapping("/admin/{catId}")
     public String getAllFeedCategory(
             @RequestBody FeedbackCategoryDto feedbackCategoryDto,
             @PathVariable Long catId
@@ -36,12 +36,12 @@ public class FeedbackCategoryController {
         return feedbackCategoryService.update(feedbackCategoryDto, catId);
     }
 
-    @PostMapping
+    @PostMapping("/admin")
     public String getAllFeedCategory(@RequestBody FeedbackCategoryDto feedbackCategoryDto) {
         return feedbackCategoryService.save(feedbackCategoryDto);
     }
 
-    @DeleteMapping("/{catId}")
+    @DeleteMapping("/admin/{catId}")
     public String delete(@PathVariable Long catId) {
         return feedbackCategoryService.delete(catId);
     }
