@@ -3,18 +3,17 @@ package miu.waa.project1.controller;
 import lombok.RequiredArgsConstructor;
 import miu.waa.project1.dto.CreateOrUpdateDiscussionRequest;
 import miu.waa.project1.model.Discussion;
-import miu.waa.project1.model.DiscussionCategory;
-import miu.waa.project1.service.DiscussionService;
+import miu.waa.project1.service.impl.DiscussionServiceImpl;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/discussion")
+@RequestMapping("/api/v1/discussion")
 @RequiredArgsConstructor
 public class DiscussionController {
-	private final DiscussionService discussionService;
+	private final DiscussionServiceImpl discussionService;
 
 	@GetMapping
 	public ResponseEntity<List<Discussion>> getAll() {
