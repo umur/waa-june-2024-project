@@ -1,6 +1,7 @@
 package com.waa.project.service.impl;
 
 import com.waa.project.dto.requests.EventDTO;
+import com.waa.project.dto.requests.StudentEventDTO;
 import com.waa.project.entity.Event;
 import com.waa.project.entity.Student;
 import com.waa.project.repository.EventRepository;
@@ -102,11 +103,15 @@ public class EventServiceImpl implements EventService {
 
     }
     @Override
-    public List<Student> getAttendeesForEvent(Long eventId) {
-        return eventRepository.findStudentsByEventId(eventId);
+    public List<StudentEventDTO> getAttendeesForEvent(Long eventId) {
+        return eventRepository.findStudentsByEventId(eventId).stream()
+                              .map(event -> eventMapper.map(event, StudentEventDTO.class))
+                              .collect(Collectors.toList());
     }
 
     public List<EventDTO> getEventsByStudentId(Long studentId) {
-        return studentRepository.findEventsByStudentId(studentId);
+        return studentRepository.findEventsByStudentId(studentId).stream()
+                              .map(event -> eventMapper.map(event, EventDTO.class))
+                              .collect(Collectors.toList());
     }
 }

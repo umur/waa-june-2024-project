@@ -1,6 +1,7 @@
 package com.waa.project.controller.events;
 
 import com.waa.project.dto.requests.EventDTO;
+import com.waa.project.dto.requests.StudentEventDTO;
 import com.waa.project.entity.Student;
 import com.waa.project.service.EventService;
 import com.waa.project.service.UserService;
@@ -49,7 +50,7 @@ public class EventController {
 
     // Get all  attendees for an events by admin
     @GetMapping("/admins/events/{eventId}/attendees")
-    public List<Student> getEventAttendees(@PathVariable Long eventId) {
+    public List<StudentEventDTO> getEventAttendees(@PathVariable Long eventId) {
         return  eventService.getAttendeesForEvent(eventId);
     }
 

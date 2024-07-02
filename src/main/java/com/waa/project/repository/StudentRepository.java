@@ -14,5 +14,5 @@ import java.util.List;
 @Repository
 public interface StudentRepository extends ListCrudRepository<Student, Long> {
     @Query("SELECT e FROM Student s JOIN s.eventList e WHERE s.id = :studentId")
-    List<EventDTO> findEventsByStudentId(@Param("studentId") Long studentId);
+    List<Event> findEventsByStudentId(@Param("studentId") Long studentId);
 }
