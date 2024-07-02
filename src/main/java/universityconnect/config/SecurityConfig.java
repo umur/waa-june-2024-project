@@ -41,6 +41,8 @@ public class SecurityConfig {
                             .requestMatchers("/profiles/**").permitAll()
                             .requestMatchers("/reports/**").permitAll()
                             .requestMatchers("/blocks/**").permitAll()
+                            .requestMatchers("/resources/**").permitAll()
+                            .requestMatchers("/resource-categories/**").permitAll()
                             .requestMatchers("/events/**").permitAll()
                             .requestMatchers("/discussions/**").permitAll()
                             .requestMatchers("/discussion-categories/**").permitAll()
