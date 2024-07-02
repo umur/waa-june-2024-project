@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 @RestController
 @AllArgsConstructor
 @NoArgsConstructor
-@RequestMapping("/feedbacks")
+@RequestMapping("/api/v1")
 public class FeedbackController {
 
     @Autowired
@@ -26,12 +26,12 @@ public class FeedbackController {
         return feedbackService.getAllFeedbacks();
     }
 
-    @GetMapping("/category/{Id}")
+    @GetMapping("/feedbacks/category/{Id}")
     public List<FeedbackDto> getFeedByCategory(@PathVariable Long Id) {
         return feedbackService.findFeedbackByCategory(Id);
     }
 
-    @PutMapping("/{Id}")
+    @PutMapping({"/admins/feedbacks/{Id}", "/students/feedbacks/{Id}"})
     public String update(
             @RequestBody FeedbackDto feedbackDto, @PathVariable Long Id
                         ) {

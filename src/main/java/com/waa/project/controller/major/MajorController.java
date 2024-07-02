@@ -12,6 +12,7 @@ import java.util.List;
 @RestController
 @AllArgsConstructor
 @NoArgsConstructor
+@RequestMapping("/api/v1")
 public class MajorController {
 
     @Autowired
