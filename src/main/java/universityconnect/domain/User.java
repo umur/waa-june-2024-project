@@ -23,15 +23,17 @@ public class User {
     @OneToOne(mappedBy = "user")
     private Profile profile;
 
-    @OneToMany
-    @JoinColumn(name = "user_id")
-    private List<Block> blocks;
+    @OneToMany(mappedBy = "blockerUser")
+    private List<Block> blockerUserLists;
 
-    @OneToMany(mappedBy = "reportingUser")
-    private List<Report> reportedUserLists;
+    @OneToMany(mappedBy = "blockedUser")
+    private List<Block> blockedUserLists;
+
+    @OneToMany(mappedBy = "reporterUser")
+    private List<Report> reporterUserLists;
 
     @OneToMany(mappedBy = "reportedUser")
-    private List<Report> reportingUserLists;
+    private List<Report> reportedUserLists;
 
     @OneToMany(mappedBy = "user")
     private List<Discussion> discussions;

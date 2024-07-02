@@ -10,8 +10,8 @@ public class Report {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "reporting_user_id")
-    private User reportingUser;
+    @JoinColumn(name = "reporter_user_id")
+    private User reporterUser;
 
     @ManyToOne
     @JoinColumn(name = "reported_user_id")

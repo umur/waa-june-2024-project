@@ -24,12 +24,6 @@ public class StudentServiceImpl implements StudentService {
     private StudentMapper studentMapper;
 
     @Autowired
-    private BlockRepository blockRepository;
-
-    @Autowired
-    private ReportRepository reportRepository;
-
-    @Autowired
     private DiscussionRepository discussionRepository;
 
     @Autowired
@@ -79,12 +73,7 @@ public class StudentServiceImpl implements StudentService {
         existingStudent.setPassword(studentDTO.getPassword());
         existingStudent.setRole(studentDTO.getRole());
 
-        if (studentDTO.getBlockIds() != null) {
-            List<Block> blocks = blockRepository.findAllById(studentDTO.getBlockIds());
-            existingStudent.setBlocks(blocks);
-        }
-
-        if (studentDTO.getEventIds() != null) {
+        if(studentDTO.getEventIds() != null) {
             List<Event> events = eventRepository.findAllById(studentDTO.getEventIds());
             existingStudent.setEvents(events);
         }

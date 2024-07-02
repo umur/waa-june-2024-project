@@ -3,12 +3,17 @@ package universityconnect.service.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import universityconnect.domain.*;
+import universityconnect.dto.BlockDTO;
+import universityconnect.dto.ReportDTO;
 import universityconnect.dto.UserDTO;
 import universityconnect.exception.ResourceNotFoundException;
+import universityconnect.mapper.BlockMapper;
+import universityconnect.mapper.ReportMapper;
 import universityconnect.mapper.UserMapper;
 import universityconnect.repository.*;
 import universityconnect.service.UserService;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -22,10 +27,8 @@ public class UserServiceImpl implements UserService {
     private UserMapper userMapper;
 
     @Autowired
-    private BlockRepository blockRepository;
-
-    @Autowired
     private ReportRepository reportRepository;
+
 
     @Autowired
     private DiscussionRepository discussionRepository;
@@ -35,6 +38,15 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private ResourceRepository resourceRepository;
+
+    @Autowired
+    private BlockRepository blockRepository;
+
+    @Autowired
+    private ReportMapper reportMapper;
+
+    @Autowired
+    private BlockMapper blockMapper;
 
     @Override
     public UserDTO createUser(UserDTO userDTO) {
@@ -69,11 +81,6 @@ public class UserServiceImpl implements UserService {
         existingUser.setPassword(userDTO.getPassword());
         existingUser.setRole(userDTO.getRole());
 
-        if (userDTO.getBlockIds() != null) {
-            List<Block> blocks = blockRepository.findAllById(userDTO.getBlockIds());
-            existingUser.setBlocks(blocks);
-        }
-
         if (userDTO.getDiscussionIds() != null) {
             List<Discussion> discussions = discussionRepository.findAllById(userDTO.getDiscussionIds());
             existingUser.setDiscussions(discussions);
@@ -102,6 +109,41 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User findById(Long userId) {
-        return userRepository.findById(userId).orElse(null);
+        return userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User Not Found with ID: " + userId));
     }
+
+    @Override
+    public List<UserDTO> getAllReportedUsersByReporterUserId(Long id) {
+        List<User> reportedUsers = reportRepository.findByReportedUserByReporterUserId(id);
+        return reportedUsers.stream()
+                .map(userMapper::userToUserDTO)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<UserDTO> getAllReporterUsersByReportedUserId(Long id) {
+        List<User> reporterUsers = reportRepository.findByReporterUserByReportedUserId(id);
+        return reporterUsers.stream()
+                .map(userMapper::userToUserDTO)
+                .collect(Collectors.toList());
+     }
+
+    @Override
+    public List<UserDTO> getAllBlockedUsersByBlockerUserId(Long id) {
+        List<User> blockedUsers = blockRepository.findBlockedUsersByBlockerUserId(id);
+        return blockedUsers.stream()
+                .map(userMapper::userToUserDTO)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<UserDTO> getAllBlockerUsersByBlockedUserId(Long id) {
+        List<User> blockingUsers = blockRepository.findBlockerUsersByBlockedUserId(id);
+        return blockingUsers.stream()
+                .map(userMapper::userToUserDTO)
+                .collect(Collectors.toList());
+    }
+
+
+
 }
