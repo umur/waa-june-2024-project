@@ -57,7 +57,7 @@ public class ActionServiceImpl implements ActionService {
         if(actionWithCode.isPresent()){
             throw ServiceException.of(AppStatusCode.E40006,"action","code="+createRequest.getCode());
         }
-        Action action= ActionDtoMapper.MAPPER.dtoToEntity(createRequest);
+        Action action = ActionDtoMapper.MAPPER.dtoToEntity(createRequest);
         Action savedAction=repository.save(action);
         return ActionDtoMapper.MAPPER.entityToDto(savedAction);
     }
@@ -65,7 +65,7 @@ public class ActionServiceImpl implements ActionService {
     @Override
     public ActionDto update(Long id, ActionUpdateRequest updateRequest) {
         Optional<Action> actionOpt= getActionById(id);
-        if(actionOpt.isPresent()){
+        if (actionOpt.isPresent()){
             Action action=actionOpt.get();
             action.setName(updateRequest.getName());
             action.setCode(updateRequest.getCode());

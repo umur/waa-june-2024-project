@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/events")
+@RequestMapping("/events")
 @CrossOrigin
 @RequiredArgsConstructor
 public class EventController {
@@ -33,7 +33,7 @@ public class EventController {
     @GetMapping("/{id}")
     public ResponseEntity<ApiResponse<EventDto>> getById(@PathVariable Long id) {
         String responseMessage = messagingService
-                .getResponseMessage(AppStatusCode.S20001, new String[]{"event"});
+                .getResponseMessage(AppStatusCode.S20001, "event");
         return ResponseEntity.ok(new ApiResponse<>(responseMessage, eventService.getById(id)));
     }
 
@@ -63,7 +63,7 @@ public class EventController {
 
     @PostMapping("/{id}/rsvp")
     public ResponseEntity<ApiResponse<Boolean>> rsvpForEvent(@Valid @PathVariable Long id) {
-        Long userId = contextUser.getUser().getId();
+        Long userId = contextUser.getLoginUser().getId();
         eventService.rsvpForEvent(id, userId);
         String message = messagingService.getResponseMessage(AppStatusCode.S20002, new String[]{"event rsvp"});
         ApiResponse<Boolean> apiResponse = new ApiResponse<>(message, true);

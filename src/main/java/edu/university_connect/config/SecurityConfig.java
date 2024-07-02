@@ -31,7 +31,7 @@ public class SecurityConfig {
                                                    JwtTokenProvider tokenProvider) throws Exception {
         http
                 .csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests(authorize -> authorize.requestMatchers("/api/v1/auth/**").permitAll())
+                .authorizeHttpRequests(authorize -> authorize.requestMatchers("/auth/**").permitAll())
                 .authorizeHttpRequests(authorize -> authorize.requestMatchers("/swagger-ui/**").permitAll())
                 .authorizeHttpRequests(authorize -> authorize.anyRequest().authenticated())
                 .addFilterBefore(new JwtTokenAuthenticationFilter(tokenProvider, userDetailsService),
