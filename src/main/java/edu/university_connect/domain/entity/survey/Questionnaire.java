@@ -19,4 +19,5 @@ public class Questionnaire extends MetaData {
 
     @OneToMany(mappedBy = "surveyQuestionnaire")
     private List<Response> surveyResponse;
+
 }
