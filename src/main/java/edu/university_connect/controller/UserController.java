@@ -1,6 +1,7 @@
 package edu.university_connect.controller;
 
 import edu.university_connect.model.contract.dto.ProfileDto;
+import edu.university_connect.model.contract.dto.SearchDto;
 import edu.university_connect.model.contract.request.action.ActionUpdateRequest;
 import edu.university_connect.model.contract.request.profile.ProfileRequest;
 import edu.university_connect.model.enums.AppStatusCode;
@@ -115,5 +116,12 @@ public class UserController {
         apiResponse.setMessage(messagingService.getResponseMessage(AppStatusCode.S20004,new String[]{"profile"}));
         return ResponseEntity.ok(apiResponse);
     }
-
+    @GetMapping("/search")
+    public ResponseEntity<ApiResponse<List<SearchDto>>> getAllByUserName(@RequestParam String username) {
+        List<SearchDto> searchDtos = service.getAllStudentsByName(username);
+        ApiResponse<List<SearchDto>> apiResponse = new ApiResponse<List<SearchDto>>();
+        apiResponse.setResponseData(searchDtos);
+        apiResponse.setMessage(messagingService.getResponseMessage(AppStatusCode.S20004,new String[]{"search"}));
+        return ResponseEntity.ok(apiResponse);
+    }
 }

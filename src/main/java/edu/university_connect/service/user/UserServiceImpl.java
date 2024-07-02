@@ -7,6 +7,7 @@ import edu.university_connect.exception.ServiceException;
 import edu.university_connect.mapper.ProfileDtoMapper;
 import edu.university_connect.mapper.UserDtoMapper;
 import edu.university_connect.model.contract.dto.ProfileDto;
+import edu.university_connect.model.contract.dto.SearchDto;
 import edu.university_connect.model.contract.request.auth.SignUpRequest;
 import edu.university_connect.model.contract.request.profile.ProfileRequest;
 import edu.university_connect.model.enums.AppStatusCode;
@@ -76,7 +77,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDto update(Long id, UserUpdateRequest updateRequest) {
         Optional<User> userOpt= getUserById(id);
-        if (userOpt.isPresent()){
+        if(userOpt.isPresent()){
             User user=userOpt.get();
             user.setUsername(updateRequest.getUsername());
             user.setEmail(updateRequest.getEmail());
@@ -159,5 +160,19 @@ public class UserServiceImpl implements UserService {
         }
         profileService.saveUserProfile(profile);
         return ProfileDtoMapper.MAPPER.entityToDto(profile);
+    }
+
+    @Override
+    public List<SearchDto> getAllStudentsByName(String uname) {
+        List<User> users = repository.findAllByUsername(uname);
+        return users.stream().map(user -> {
+            SearchDto searchDto = new SearchDto();
+            searchDto.setUserDto(UserDtoMapper.MAPPER.entityToDto(user));
+            Optional<Profile> profileOpt = profileService.getProfileByUserId(user.getId());
+            if (profileOpt.isPresent()) {
+                searchDto.setProfileDto(ProfileDtoMapper.MAPPER.entityToDto(profileOpt.get()));
+            }
+            return searchDto;
+        }).toList();
     }
 }
