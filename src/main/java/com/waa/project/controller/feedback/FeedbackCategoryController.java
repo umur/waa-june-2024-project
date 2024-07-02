@@ -1,4 +1,4 @@
-package com.waa.project.controller;
+package com.waa.project.controller.feedback;
 
 import com.waa.project.dto.FeedbackCategoryDto;
 import com.waa.project.service.FeedbackCategoryService;
