@@ -24,6 +24,12 @@ public class ResourceServiceImpl implements ResourceService {
     @Override
     public ResourceDTO createResource(ResourceDTO resourceDTO) {
         Resource resource = resourceMapper.resourceDTOToResource(resourceDTO);
+
+        if(resourceDTO.getResourceCategoryId() != null){
+            ResourceCategory resourceCategory = resourceCategoryRepository.findById(resourceDTO.getResourceCategoryId())
+                    .orElseThrow(()-> new ResourceNotFoundException("Resource Category is not found"));
+            resource.setResourceCategory(resourceCategory);
+        }
         Resource createdResource = resourceRepository.save(resource);
         return resourceMapper.resourceToResourceDTO(createdResource);
     }

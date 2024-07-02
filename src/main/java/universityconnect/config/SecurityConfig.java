@@ -41,6 +41,8 @@ public class SecurityConfig {
                             .requestMatchers("/profiles/**").permitAll()
                             .requestMatchers("/reports/**").permitAll()
                             .requestMatchers("/blocks/**").permitAll()
+                            .requestMatchers("/resources/**").permitAll()
+                            .requestMatchers("/resource-categories/**").permitAll()
 //                            .requestMatchers("/admins/**").hasRole("ADMIN")
 //                            .requestMatchers("/students/**").permitAll()
                             .anyRequest().authenticated();

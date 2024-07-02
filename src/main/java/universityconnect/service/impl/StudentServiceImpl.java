@@ -41,6 +41,11 @@ public class StudentServiceImpl implements StudentService {
     @Override
     public StudentDTO createStudent(StudentDTO studentDTO) {
         Student student = studentMapper.studentDTOToStudent(studentDTO);
+
+        if (studentDTO.getResourceIds() != null && !studentDTO.getResourceIds().isEmpty()) {
+            List<Resource> resources = resourceRepository.findAllById(studentDTO.getResourceIds());
+            student.setResources(resources);
+        }
         Student savedStudent = studentRepository.save(student);
 
         // Automatically create a profile
