@@ -9,6 +9,7 @@ import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -30,11 +31,13 @@ public class SecurityConfig {
             .csrf(AbstractHttpConfigurer::disable)
             .authorizeHttpRequests(request -> request
                 .requestMatchers("/api/v1/auth/**").permitAll()
+                    .requestMatchers("/resources/**").permitAll()
                 .requestMatchers("/api/v1/admin/**").hasAuthority(ADMIN.name())
 //                .requestMatchers("/api/v1/users/**").hasAnyAuthority(ADMIN.name(), STUDENT.name())
                 .requestMatchers("/api/v1/interests/**").hasAnyAuthority(ADMIN.name(), STUDENT.name())
                 .requestMatchers("/api/v1/achievements/**").hasAnyAuthority(ADMIN.name(), STUDENT.name())
                 .requestMatchers("/api/v1/achievements/**").hasAnyAuthority(ADMIN.name(), STUDENT.name())
+                    .requestMatchers("/api/v1/auth/**").permitAll()
                 .requestMatchers("/api/v1/category/**").hasAnyAuthority(ADMIN.name(), STUDENT.name())
                 .requestMatchers("/api/v1/discussion/**").hasAnyAuthority(ADMIN.name(), STUDENT.name())
                 .requestMatchers("/api/v1/thread/**").hasAnyAuthority(ADMIN.name(), STUDENT.name())
@@ -46,4 +49,10 @@ public class SecurityConfig {
 
         return http.build();
     }
+
+//    @Bean
+//    public WebSecurityCustomizer webSecurityCustomizer() {
+//        return (web) -> web.ignoring().requestMatchers("/images/**", "/js/**", "/webjars/**", "/resources/**");
+//    }
+
 }

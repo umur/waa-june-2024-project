@@ -6,9 +6,12 @@ import miu.waa.project1.service.ResourceService;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
@@ -28,7 +31,7 @@ public class ResourceController {
                 Sort.Direction.ASC,
                 sortBy.orElse("id")
         );
-        return ResponseEntity.ok(resourceService.getAllResources(pageRequest)).getBody();
+        return (List<Resource>) ResponseEntity.ok(resourceService.getAllResources(pageRequest));
     }
 
     @GetMapping("/{id}")
@@ -39,6 +42,11 @@ public class ResourceController {
     @PostMapping("")
     public ResponseEntity<Resource> createResource(@RequestBody Resource resource) {
         return ResponseEntity.ok(resourceService.createResource(resource));
+    }
+
+    @PostMapping("/upload")
+    public Resource uploadFile(@RequestParam("file") MultipartFile multipartFile, @RequestParam String desc) throws IOException {
+        return ResponseEntity.ok(resourceService.upload(multipartFile, desc)).getBody();
     }
 
     @PutMapping("/{id}")
