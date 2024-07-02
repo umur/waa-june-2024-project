@@ -76,7 +76,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDto update(Long id, UserUpdateRequest updateRequest) {
         Optional<User> userOpt= getUserById(id);
-        if(userOpt.isPresent()){
+        if (userOpt.isPresent()){
             User user=userOpt.get();
             user.setUsername(updateRequest.getUsername());
             user.setEmail(updateRequest.getEmail());

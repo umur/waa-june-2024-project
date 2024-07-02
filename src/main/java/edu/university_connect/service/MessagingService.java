@@ -25,7 +25,7 @@ public class MessagingService {
     }
 
 
-    public String getResponseMessage(String mainArg,String[] args) {
+    public String getResponseMessage(String mainArg, String... args) {
 
         String[] arguments = new String[args.length];
         for (int i = 0; i < args.length; i++) {
@@ -41,7 +41,7 @@ public class MessagingService {
                 LocaleContextHolder.getLocale());
     }
 
-    public String getResponseMessage(AppStatusCode appStatusCode, String[] args) {
+    public String getResponseMessage(AppStatusCode appStatusCode, String... args) {
         return getResponseMessage(appStatusCode.getDescription(),args);
     }
 
