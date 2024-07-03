@@ -10,6 +10,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -84,6 +85,18 @@ public class FeedbackController {
                               result -> (String) result[0],
                               result -> ((Long) result[1]).intValue()
                                                ));
+
+    }
+
+    @GetMapping("/feedbacks/showMe")
+    public Map<String, String> showMe(@AuthenticationPrincipal UserDetails userDetails) {
+        var                 result   = userService.findByUsername(userDetails.getUsername());
+        Map<String, String> response = new HashMap<>();
+        response.put("name", result.getUsername());
+        response.put("email", result.getUsername());
+        response.put("role", result.getUsername());
+        response.put("id", result.getId().toString());
+        return response;
 
     }
 
