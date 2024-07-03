@@ -3,10 +3,10 @@ package miu.waa.project1.controller;
 import lombok.RequiredArgsConstructor;
 import miu.waa.project1.model.Resource;
 import miu.waa.project1.service.ResourceService;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -22,16 +22,16 @@ public class ResourceController {
     private final ResourceService resourceService;
 
     @GetMapping("")
-    public List<Resource> getAllResources(@RequestParam Optional<Integer> pageNumber,
-                                          @RequestParam Optional<String> sortBy,
-                                          @RequestParam Optional<Integer> total) {
+    public ResponseEntity<Page<Resource>> getAllResources(@RequestParam Optional<Integer> pageNumber,
+                                                          @RequestParam Optional<String> sortBy,
+                                                          @RequestParam Optional<Integer> total) {
         Pageable pageRequest = PageRequest.of(
                 pageNumber.orElse(0),
                 total.orElse(10),
                 Sort.Direction.ASC,
                 sortBy.orElse("id")
         );
-        return (List<Resource>) ResponseEntity.ok(resourceService.getAllResources(pageRequest));
+        return ResponseEntity.ok(resourceService.getAllResources(pageRequest));
     }
 
     @GetMapping("/{id}")
