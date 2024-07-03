@@ -5,6 +5,7 @@ import com.waa.project.enums.GenderType;
 import com.waa.project.enums.RoleType;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 
@@ -21,12 +22,12 @@ public abstract class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "username")
-    @Size(min = 3, max = 10, message = "Name must be between 3 and 10 characters long")
+    @Column(name = "username", unique = true, nullable = false)
+    @Size(min = 3, max = 15, message = "Username must be between 3 and 10 characters long")
     private String username;
 
     @Column(name = "password")
-    @Size(min = 5, max = 15, message = "Name must be between 5 and 15 characters long")
+    @NotNull
     private String password;
 
     @Column(name = "first_name", nullable = false)
@@ -35,7 +36,7 @@ public abstract class User {
     @Column(name = "last_name", nullable = false)
     private String lastName;
 
-    @Column(name = "email")
+    @Column(name = "email", unique = true, nullable = false)
     @Email
     private String email;
 
