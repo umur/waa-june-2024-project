@@ -2,11 +2,15 @@ package com.waa.project.controller.feedback;
 
 import com.waa.project.dto.FeedbackDto;
 import com.waa.project.service.FeedbackService;
+import com.waa.project.service.UserService;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -14,36 +18,60 @@ import java.util.stream.Collectors;
 @RestController
 @AllArgsConstructor
 @NoArgsConstructor
-@RequestMapping("/api/v1/feedbacks")
+@RequestMapping("/api/v1")
 public class FeedbackController {
 
     @Autowired
     private FeedbackService feedbackService;
 
-    @GetMapping
+    @Autowired
+    private UserService userService;
+
+    @GetMapping("/feedbacks")
     public List<FeedbackDto> getAllFeedBack() {
 
         return feedbackService.getAllFeedbacks();
     }
 
-    @GetMapping("/category/{Id}")
+    @GetMapping("/feedbacks/category/{Id}")
     public List<FeedbackDto> getFeedByCategory(@PathVariable Long Id) {
         return feedbackService.findFeedbackByCategory(Id);
     }
 
-    @PutMapping("/{Id}")
+    @PutMapping({"/admins/feedbacks/{Id}", "/students/feedbacks/{Id}"})
     public String update(
-            @RequestBody FeedbackDto feedbackDto, @PathVariable Long Id
+            @RequestBody FeedbackDto feedbackDto,
+            @PathVariable Long Id,
+            @AuthenticationPrincipal UserDetails userDetails
                         ) {
-        return feedbackService.update(feedbackDto, Id);
+        Long currentUser = null;
+
+        if (userDetails != null && userDetails.getUsername() != null) {
+            System.out.println("uuuu ===" + userDetails.getUsername());
+            System.out.println("uuuu ===" + userDetails.getAuthorities());
+
+            currentUser = userService.findByUsername(userDetails.getUsername()).getId();
+
+        }
+        System.out.println("currentUser ===" + currentUser);
+
+        return feedbackService.update(feedbackDto, Id, currentUser);
     }
 
-    @PostMapping
-    public String save(@RequestBody FeedbackDto feedbackDto) {
-        return feedbackService.save(feedbackDto);
+    @PostMapping("/feedbacks")
+    public String save(@RequestBody FeedbackDto feedbackDto, @AuthenticationPrincipal UserDetails userDetails) {
+        Long currentUser = null;
+
+        if (userDetails != null && userDetails.getUsername() != null) {
+            currentUser = userService.findByUsername(userDetails.getUsername()).getId();
+        }
+
+        System.out.println("userId ===" + currentUser);
+
+        return feedbackService.save(feedbackDto, currentUser);
     }
 
-    @DeleteMapping("/{Id}")
+    @DeleteMapping({"/admins/feedbacks/{Id}", "/students/feebacks/{Id}"})
     public String delete(@PathVariable Long Id) {
 
         return feedbackService.delete(Id);
@@ -60,4 +88,15 @@ public class FeedbackController {
 
     }
 
+    @GetMapping("/feedbacks/showMe")
+    public Map<String, String> showMe(@AuthenticationPrincipal UserDetails userDetails) {
+        var                 result   = userService.findByUsername(userDetails.getUsername());
+        Map<String, String> response = new HashMap<>();
+        response.put("name", result.getUsername());
+        response.put("email", result.getUsername());
+        response.put("role", result.getUsername());
+        response.put("id", result.getId().toString());
+        return response;
+
+    }
 }
