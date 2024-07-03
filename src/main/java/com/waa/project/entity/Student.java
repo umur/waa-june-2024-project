@@ -9,6 +9,7 @@ import java.util.Set;
 
 @Entity
 @Data
+@DiscriminatorValue("STUDENT")
 @Table(name = "students")
 public class Student extends User {
 

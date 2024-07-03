@@ -1,8 +1,11 @@
 package com.waa.project.service.impl;
 
 import com.waa.project.dto.requests.EventDTO;
+import com.waa.project.dto.requests.StudentEventDTO;
 import com.waa.project.entity.Event;
+import com.waa.project.entity.Student;
 import com.waa.project.repository.EventRepository;
+import com.waa.project.repository.StudentRepository;
 import com.waa.project.service.EventService;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -13,11 +16,15 @@ import java.util.stream.Collectors;
 @Service
 public class EventServiceImpl implements EventService {
     private final EventRepository eventRepository;
-    private final ModelMapper eventMapper;
+    private final ModelMapper       eventMapper;
+    private final StudentRepository studentRepository;
 
-    public EventServiceImpl(EventRepository eventRepository, ModelMapper eventMapper) {
+    public EventServiceImpl(EventRepository eventRepository, ModelMapper eventMapper,
+                            StudentRepository studentRepository
+                           ) {
         this.eventRepository = eventRepository;
         this.eventMapper     = eventMapper;
+        this.studentRepository = studentRepository;
     }
 
     @Override
@@ -67,27 +74,44 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public EventDTO addEventAttendee(Long eventId, Long studentId) {
-//        Event event = eventRepository.findById(eventId).orElse(null);
-//        Student student = studentRepository.findById(studentId).orElse(null);
-//
-//        event.getAttendedStudents().add(student);
-//        student.getEvents().add(event);
-//        eventRepository.save(event);
-//        studentRepository.save(student);
-//        return modelMapper.map(event, EventDTO.class);
+    public EventDTO addEventReservation(Long eventId, Long studentId) {
+        Event   event   = eventRepository.findById(eventId).orElse(null);
+        Student student = studentRepository.findById(studentId).orElse(null);
+        if (event != null && student != null) {
+            event.getAttendedStudents().add(student);
+            student.getEventList().add(event);
+            eventRepository.save(event);
+            studentRepository.save(student);
+            return eventMapper.map(event, EventDTO.class);
+        }
+
         return null;
     }
 
     @Override
-    public void removeEventAttendee(Long eventId, Long studentId) {
-        //        Event event = eventRepository.findById(eventId).orElse(null);
-//        Student student = studentRepository.findById(studentId).orElse(null);
+    public String removeEventReservation(Long eventId, Long studentId) {
+        Event event = eventRepository.findById(eventId).orElse(null);
+        Student student = studentRepository.findById(studentId).orElse(null);
+        if (event != null && student != null) {
+            event.getAttendedStudents().remove(student);
+            student.getEventList().remove(event);
+            eventRepository.save(event);
+            studentRepository.save(student);
+            return "Reservation removed.";
+        }
+        return "Student or Event not found.";
 
-//        event.getAttendedStudents().add(student);
-//        student.getEvents().remove(event);
-//        eventRepository.save(event);
-//        studentRepository.save(student);
-//        return modelMapper.map(event, EventDTO.class);
+    }
+    @Override
+    public List<StudentEventDTO> getAttendeesForEvent(Long eventId) {
+        return eventRepository.findStudentsByEventId(eventId).stream()
+                              .map(event -> eventMapper.map(event, StudentEventDTO.class))
+                              .collect(Collectors.toList());
+    }
+
+    public List<EventDTO> getEventsByStudentId(Long studentId) {
+        return studentRepository.findEventsByStudentId(studentId).stream()
+                              .map(event -> eventMapper.map(event, EventDTO.class))
+                              .collect(Collectors.toList());
     }
 }
