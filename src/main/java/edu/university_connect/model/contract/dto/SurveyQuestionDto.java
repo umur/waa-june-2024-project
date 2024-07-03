@@ -1,12 +1,13 @@
 package edu.university_connect.model.contract.dto;
-import jakarta.persistence.*;
 import lombok.Data;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Data
-public class SurveyDto {
+public class SurveyQuestionDto {
     private  Long id;
-    private  String title;
+    private String question;
+    private LocalDate dueDate;
     LocalDateTime createdAt;
     String createdBy;
     LocalDateTime lastModifiedAt;
