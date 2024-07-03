@@ -18,9 +18,20 @@ public class StudentController {
     private StudentService studentService;
 
     @GetMapping
-    public ResponseEntity<List<StudentDTO>> getAllStudents() {
-        List<StudentDTO> students = studentService.getAllStudents();
-        return ResponseEntity.ok(students);
+    public ResponseEntity<List<StudentDTO>> getAllStudents(@RequestParam(name = "year", required = false) Integer year,
+                                                           @RequestParam(name = "major", required = false) String major) {
+        if (year != null && major != null) {
+            List<StudentDTO> students = studentService.getStudentsByYearAndMajor(year, major);
+            return ResponseEntity.ok(students);
+        } else if (year != null) {
+            List<StudentDTO> students = studentService.getStudentsByYear(year);
+            return ResponseEntity.ok(students);
+        } else if (major != null) {
+            List<StudentDTO> students = studentService.getStudentsByMajor(major);
+            return ResponseEntity.ok(students);
+        }
+        return ResponseEntity.ok(studentService.getAllStudents());
+
     }
 
     @GetMapping("/{id}")
@@ -46,19 +57,5 @@ public class StudentController {
         return ResponseEntity.ok(profileDTO);
     }
 
-    @GetMapping("/year/{year}")
-    public List<StudentDTO> getStudentsByYear(@PathVariable int year) {
-        return studentService.getStudentsByYear(year);
-    }
-
-    @GetMapping("/major/{major}")
-    public List<StudentDTO> getStudentsByMajor(@PathVariable String major) {
-        return studentService.getStudentsByMajor(major);
-    }
-
-    @GetMapping("/year/{year}/major/{major}")
-    public List<StudentDTO> getStudentsByYearAndMajor(@PathVariable int year, @PathVariable String major) {
-        return studentService.getStudentsByYearAndMajor(year, major);
-    }
 
 }
