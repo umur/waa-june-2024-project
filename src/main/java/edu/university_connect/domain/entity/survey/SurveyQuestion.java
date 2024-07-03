@@ -5,19 +5,23 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Data
 @Entity
 @EqualsAndHashCode(callSuper = true)
-public class Questionnaire extends MetaData {
+public class SurveyQuestion extends MetaData {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private  int id;
     @Column(nullable = false)
     private String question;
+    private LocalDate dueDate;
 
-    @OneToMany(mappedBy = "surveyQuestionnaire")
-    private List<Response> surveyResponse;
+    @ManyToOne
+    private Survey survey;
 
+    @OneToMany(mappedBy = "surveyQuestion")
+    private List<SurveyResponse> surveyResponse;
 }

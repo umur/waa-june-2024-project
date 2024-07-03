@@ -24,7 +24,6 @@ public class Survey extends MetaData {
     @JoinColumn(name="user_id")
     private User creator;
 
-    @OneToMany
-    @JoinColumn(name="survey_id")
-    private List<Questionnaire> surveyQuestionnaire;
+    @OneToMany(mappedBy = "survey")
+    private List<SurveyQuestion> surveyQuestionnaire;
 }
