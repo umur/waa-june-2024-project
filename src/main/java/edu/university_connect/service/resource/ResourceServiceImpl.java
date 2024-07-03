@@ -49,7 +49,7 @@ public class ResourceServiceImpl implements ResourceService {
         if (resourceOpt.isPresent()) {
             ResourceDto resourceDto=ResourceDtoMapper.MAPPER.entityToDto(resourceOpt.get());
             if(Objects.nonNull(resourceOpt.get().getUrl())) {
-                List<String> savedFiles = storageService.loadFileNames(contextUser.getUser().getUsername(), StorageResourceType.RESOURCE.name(),
+                List<String> savedFiles = storageService.loadFileNames(contextUser.getLoginUser().getUsername(), StorageResourceType.RESOURCE.name(),
                         resourceOpt.get().getId());
                 resourceDto.setFiles(savedFiles);
             }
@@ -78,7 +78,7 @@ public class ResourceServiceImpl implements ResourceService {
             Resource savedResource = repository.save(resource);
             ResourceDto resourceDto=ResourceDtoMapper.MAPPER.entityToDto(resource);
             if(Objects.nonNull(savedResource.getUrl())) {
-                List<String> savedFiles = storageService.loadFileNames(contextUser.getUser().getUsername(), StorageResourceType.RESOURCE.name(),
+                List<String> savedFiles = storageService.loadFileNames(contextUser.getLoginUser().getUsername(), StorageResourceType.RESOURCE.name(),
                         savedResource.getId());
                 resourceDto.setFiles(savedFiles);
             }
@@ -113,11 +113,11 @@ public class ResourceServiceImpl implements ResourceService {
             throw ServiceException.of(AppStatusCode.E40000, "resource", "id = " + id);
         }
         Resource resource=resourceOpt.get();
-        String url=storageService.store(files,contextUser.getUser().getUsername(), StorageResourceType.RESOURCE.name(),
+        String url=storageService.store(files,contextUser.getLoginUser().getUsername(), StorageResourceType.RESOURCE.name(),
                 resourceOpt.get().getId());
         resource.setUrl(url);
         repository.save(resource);
-        List<String> savedFiles=storageService.loadFileNames(contextUser.getUser().getUsername(),
+        List<String> savedFiles=storageService.loadFileNames(contextUser.getLoginUser().getUsername(),
                 StorageResourceType.RESOURCE.name(),
                 resourceOpt.get().getId());
         ResourceDto resourceDto=ResourceDtoMapper.MAPPER.entityToDto(resource);
@@ -132,7 +132,7 @@ public class ResourceServiceImpl implements ResourceService {
             throw ServiceException.of(AppStatusCode.E40000, "resource", "id = " + id);
         }
         org.springframework.core.io.Resource fileResource=storageService.loadAsResource(filename,
-                storageService.getRootLocation(contextUser.getUser().getUsername(), StorageResourceType.RESOURCE.name(),
+                storageService.getRootLocation(contextUser.getLoginUser().getUsername(), StorageResourceType.RESOURCE.name(),
                 resourceOpt.get().getId()));
         if(Objects.isNull(fileResource)){
             throw ServiceException.of(AppStatusCode.E50009);

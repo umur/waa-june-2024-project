@@ -1,6 +1,7 @@
 package edu.university_connect.controller;
 
 import edu.university_connect.model.contract.dto.ProfileDto;
+import edu.university_connect.model.contract.dto.SearchDto;
 import edu.university_connect.model.contract.request.action.ActionUpdateRequest;
 import edu.university_connect.model.contract.request.profile.ProfileRequest;
 import edu.university_connect.model.contract.request.user.BlockRequest;
@@ -117,6 +118,15 @@ public class UserController {
         return ResponseEntity.ok(apiResponse);
     }
 
+    @GetMapping("/search")
+    public ResponseEntity<ApiResponse<List<SearchDto>>> getAllByUserName(@RequestParam String username) {
+        List<SearchDto> searchDtos = service.getAllStudentsByName(username);
+        ApiResponse<List<SearchDto>> apiResponse = new ApiResponse<List<SearchDto>>();
+        apiResponse.setResponseData(searchDtos);
+        apiResponse.setMessage(messagingService.getResponseMessage(AppStatusCode.S20004,new String[]{"search"}));
+        return ResponseEntity.ok(apiResponse);
+    }
+
     @PostMapping("/{id}/blocked-users")
     public ResponseEntity<ApiResponse<Boolean>> blockUser(@Valid @RequestBody BlockRequest request,
                                                                  @PathVariable Long id) {
@@ -136,6 +146,4 @@ public class UserController {
         apiResponse.setMessage(messagingService.getResponseMessage(AppStatusCode.S20000));
         return ResponseEntity.ok(apiResponse);
     }
-
-
 }

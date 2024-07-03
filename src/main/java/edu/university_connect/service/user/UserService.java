@@ -1,6 +1,7 @@
 package edu.university_connect.service.user;
 
 import edu.university_connect.model.contract.dto.ProfileDto;
+import edu.university_connect.model.contract.dto.SearchDto;
 import edu.university_connect.model.contract.request.auth.SignUpRequest;
 import edu.university_connect.model.contract.request.profile.ProfileRequest;
 import edu.university_connect.model.contract.request.user.BlockRequest;
@@ -28,6 +29,8 @@ public interface UserService {
     ProfileDto getUserProfile(Long id);
 
     ProfileDto updateUserProfile(Long id, ProfileRequest updateRequest);
+
+    List<SearchDto> getAllStudentsByName(String uname);
 
     boolean blockUser(Long id, BlockRequest request);
 
