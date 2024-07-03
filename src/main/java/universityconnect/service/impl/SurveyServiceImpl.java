@@ -2,12 +2,17 @@ package universityconnect.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import universityconnect.domain.Question;
 import universityconnect.domain.Survey;
+import universityconnect.dto.QuestionDTO;
 import universityconnect.dto.SurveyDTO;
 import universityconnect.exception.ResourceNotFoundException;
+import universityconnect.mapper.QuestionMapper;
 import universityconnect.mapper.SurveyMapper;
+import universityconnect.repository.QuestionRepository;
 import universityconnect.repository.SurveyRepository;
 import universityconnect.service.SurveyService;
+import universityconnect.service.SurveyStudentService;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -18,14 +23,26 @@ public class SurveyServiceImpl implements SurveyService {
 
     private final SurveyRepository surveyRepository;
 
+    private final QuestionRepository questionRepository;
+
     private final SurveyMapper surveyMapper;
+
+    private final QuestionMapper questionMapper;
 
 
     @Override
-    public SurveyDTO createSurvey(Survey survey) {
-        Survey s = surveyRepository.saveAndFlush(survey);
+    public SurveyDTO createSurvey(SurveyDTO survey) {
+        Survey reqSurvey = surveyMapper.surveyDTOToSurvey(survey);
+        Survey s = surveyRepository.saveAndFlush(reqSurvey);
         return surveyMapper.surveyToSurveyDTO(s);
 
+    }
+
+    @Override
+    public QuestionDTO createQuestion(QuestionDTO question) {
+        Question reqQ = questionMapper.questionDTOToQuestion(question);
+        Question repQ = questionRepository.save(reqQ);
+        return questionMapper.questionToQuestionDTO(repQ);
     }
 
     @Override

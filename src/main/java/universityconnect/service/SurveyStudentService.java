@@ -1,6 +1,7 @@
 package universityconnect.service;
 
 import universityconnect.domain.SurveyStudent;
+import universityconnect.dto.SurveyStudentDTO;
 
 import java.util.List;
 
@@ -16,5 +17,5 @@ public interface SurveyStudentService {
 
     List<SurveyStudent> getSurveysByStudent(Long studentId);
 
-    SurveyStudent submitSurvey(Long studentId, SurveyStudent surveyStudent);
+    SurveyStudentDTO submitSurvey(Long studentId, SurveyStudentDTO surveyStudent);
 }
