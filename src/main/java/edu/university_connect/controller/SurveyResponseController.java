@@ -1,13 +1,10 @@
 package edu.university_connect.controller;
 import edu.university_connect.model.contract.dto.SurveyResponseDto;
-import edu.university_connect.model.contract.request.survey.SurveyQuestionCreateRequest;
-import edu.university_connect.model.contract.request.survey.SurveyQuestionUpdateRequest;
 import edu.university_connect.model.contract.request.survey.SurveyResponseCreateRequest;
 import edu.university_connect.model.contract.request.survey.SurveyResponseUpdateRequest;
 import edu.university_connect.model.contract.response.ApiResponse;
 import edu.university_connect.model.enums.AppStatusCode;
 import edu.university_connect.service.MessagingService;
-import edu.university_connect.service.survey.SurveyQuestionService;
 import edu.university_connect.service.survey.SurveyResponseService;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;

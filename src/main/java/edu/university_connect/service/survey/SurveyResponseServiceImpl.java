@@ -1,25 +1,19 @@
 package edu.university_connect.service.survey;
-import edu.university_connect.domain.entity.survey.Survey;
 import edu.university_connect.domain.entity.survey.SurveyQuestion;
 import edu.university_connect.domain.entity.survey.SurveyResponse;
 import edu.university_connect.exception.ServiceException;
 import edu.university_connect.mapper.SurveyResponseDtoMapper;
-import edu.university_connect.model.contract.dto.SurveyQuestionDto;
 import edu.university_connect.model.contract.dto.SurveyResponseDto;
-import edu.university_connect.model.contract.request.survey.SurveyQuestionCreateRequest;
-import edu.university_connect.model.contract.request.survey.SurveyQuestionUpdateRequest;
 import edu.university_connect.model.contract.request.survey.SurveyResponseCreateRequest;
 import edu.university_connect.model.contract.request.survey.SurveyResponseUpdateRequest;
 import edu.university_connect.model.enums.AppStatusCode;
 import edu.university_connect.repository.SurveyQuestionRepository;
-import edu.university_connect.repository.SurveyRepository;
 import edu.university_connect.repository.SurveyResponseRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;

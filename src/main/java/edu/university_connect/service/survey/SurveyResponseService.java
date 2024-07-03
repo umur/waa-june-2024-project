@@ -1,7 +1,5 @@
 package edu.university_connect.service.survey;
 import edu.university_connect.model.contract.dto.SurveyResponseDto;
-import edu.university_connect.model.contract.request.survey.SurveyQuestionCreateRequest;
-import edu.university_connect.model.contract.request.survey.SurveyQuestionUpdateRequest;
 import edu.university_connect.model.contract.request.survey.SurveyResponseCreateRequest;
 import edu.university_connect.model.contract.request.survey.SurveyResponseUpdateRequest;
 import org.springframework.data.domain.Page;

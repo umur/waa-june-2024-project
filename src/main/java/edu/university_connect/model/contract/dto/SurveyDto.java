@@ -1,9 +1,6 @@
 package edu.university_connect.model.contract.dto;
-
-import edu.university_connect.domain.entity.User;
 import jakarta.persistence.*;
 import lombok.Data;
-
 import java.time.LocalDateTime;
 
 @Data

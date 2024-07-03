@@ -1,7 +1,5 @@
 package edu.university_connect.model.contract.dto;
-
 import lombok.Data;
-
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
