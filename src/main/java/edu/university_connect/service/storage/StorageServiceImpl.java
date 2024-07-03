@@ -4,7 +4,6 @@ package edu.university_connect.service.storage;
 import edu.university_connect.exception.ServiceException;
 import edu.university_connect.model.enums.AppStatusCode;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Bean;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;

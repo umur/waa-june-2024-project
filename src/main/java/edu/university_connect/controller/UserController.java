@@ -3,6 +3,7 @@ package edu.university_connect.controller;
 import edu.university_connect.model.contract.dto.ProfileDto;
 import edu.university_connect.model.contract.request.action.ActionUpdateRequest;
 import edu.university_connect.model.contract.request.profile.ProfileRequest;
+import edu.university_connect.model.contract.request.user.BlockRequest;
 import edu.university_connect.model.enums.AppStatusCode;
 import edu.university_connect.model.contract.dto.UserDto;
 import edu.university_connect.model.contract.request.user.UserCreateRequest;
@@ -115,5 +116,26 @@ public class UserController {
         apiResponse.setMessage(messagingService.getResponseMessage(AppStatusCode.S20004,new String[]{"profile"}));
         return ResponseEntity.ok(apiResponse);
     }
+
+    @PostMapping("/{id}/blocked-users")
+    public ResponseEntity<ApiResponse<Boolean>> blockUser(@Valid @RequestBody BlockRequest request,
+                                                                 @PathVariable Long id) {
+        boolean response= service.blockUser(id,request);
+        ApiResponse<Boolean> apiResponse =  new ApiResponse<Boolean>();
+        apiResponse.setResponseData(response);
+        apiResponse.setMessage(messagingService.getResponseMessage(AppStatusCode.S20000));
+        return ResponseEntity.ok(apiResponse);
+    }
+
+    @DeleteMapping("/{id}/blocked-users")
+    public ResponseEntity<ApiResponse<Boolean>> unBlockUser(@Valid @RequestBody BlockRequest request,
+                                                             @PathVariable Long id) {
+        boolean response= service.unblockUser(id,request);
+        ApiResponse<Boolean> apiResponse =  new ApiResponse<Boolean>();
+        apiResponse.setResponseData(response);
+        apiResponse.setMessage(messagingService.getResponseMessage(AppStatusCode.S20000));
+        return ResponseEntity.ok(apiResponse);
+    }
+
 
 }
