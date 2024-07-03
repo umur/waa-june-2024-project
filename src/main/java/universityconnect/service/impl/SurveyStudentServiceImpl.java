@@ -3,13 +3,18 @@ package universityconnect.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import universityconnect.domain.Student;
 import universityconnect.domain.SurveyStudent;
+import universityconnect.dto.SurveyStudentDTO;
 import universityconnect.exception.ResourceNotFoundException;
+import universityconnect.mapper.StudentMapper;
+import universityconnect.mapper.SurveyStudentMapper;
 import universityconnect.repository.StudentRepository;
 import universityconnect.repository.SurveyStudentRepository;
 import universityconnect.service.SurveyStudentService;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -17,6 +22,9 @@ public class SurveyStudentServiceImpl implements SurveyStudentService {
 
     private final SurveyStudentRepository surveyStudentRepository;
     private final StudentRepository studentRepository;
+
+    private final StudentMapper studentMapper;
+    private final SurveyStudentMapper surveyStudentMapper;
 
     @Override
     public List<SurveyStudent> getAllSurveyStudents() {
@@ -48,13 +56,15 @@ public class SurveyStudentServiceImpl implements SurveyStudentService {
 
 
     @Override
-    public SurveyStudent submitSurvey(Long studentId, SurveyStudent surveyStudent) {
-        return studentRepository.findById(studentId)
-                .map(student -> {
-                    surveyStudent.setStudent(student);
-                    return surveyStudentRepository.save(surveyStudent);
-                })
-                .orElseThrow(() -> new ResourceNotFoundException("Student with id " + studentId + " does not exist"));
+    public SurveyStudentDTO submitSurvey(Long studentId, SurveyStudentDTO surveyStudent) {
+
+        Optional<Student> student = studentRepository.findById(studentId);
+        if (student.isPresent()) {
+            surveyStudentRepository.save(surveyStudentMapper.surveyStudentDTOToSurveyStudent(surveyStudent));
+            return surveyStudent;
+        } else {
+            throw new ResourceNotFoundException("Student with id " + studentId + " does not exist");
+        }
     }
 
 }
