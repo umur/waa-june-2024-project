@@ -1,8 +1,9 @@
 package com.waa.project.controller.events;
 
-import com.waa.project.dto.requests.EventDTO;
-import com.waa.project.dto.requests.StudentEventDTO;
-import com.waa.project.entity.Student;
+import com.waa.project.dto.requests.EventRequestDto;
+import com.waa.project.dto.responses.EventResponseDto;
+import com.waa.project.dto.responses.EventsDto;
+import com.waa.project.dto.responses.StudentEventResponseDTO;
 import com.waa.project.service.EventService;
 import com.waa.project.service.UserService;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -24,23 +25,23 @@ public class EventController {
     }
 
     @GetMapping("/events")
-    public List<EventDTO> getAllEvents() {
+    public List<EventResponseDto> getAllEvents() {
         return eventService.findAll();
     }
 
     @GetMapping("/events/{id}")
-    public EventDTO getEvent(@PathVariable Long id) {
+    public EventResponseDto getEvent(@PathVariable Long id) {
         return eventService.findById(id);
     }
 
     @PostMapping("/admins/events")
-    public EventDTO createEvent(@RequestBody EventDTO eventDTO) {
-        return eventService.save(eventDTO);
+    public EventRequestDto createEvent(@RequestBody EventRequestDto eventRequestDTO) {
+        return eventService.save(eventRequestDTO);
     }
 
     @PutMapping("/admins/events/{id}")
-    public EventDTO updateEvent(@PathVariable Long id, @RequestBody EventDTO eventDTO) {
-        return eventService.update(eventDTO, id);
+    public EventRequestDto updateEvent(@PathVariable Long id, @RequestBody EventRequestDto eventRequestDTO) {
+        return eventService.update(eventRequestDTO, id);
     }
 
     @DeleteMapping("/admins/events/{id}")
@@ -50,17 +51,17 @@ public class EventController {
 
     // Get all  attendees for an events by admin
     @GetMapping("/admins/events/{eventId}/attendees")
-    public List<StudentEventDTO> getEventAttendees(@PathVariable Long eventId) {
+    public List<EventsDto> getEventAttendees(@PathVariable Long eventId) {
         return  eventService.getAttendeesForEvent(eventId);
     }
 
     @GetMapping("/students/events/{studentId}/events")
-    public List<EventDTO> getEventsByStudentId(@PathVariable Long studentId) {
+    public List<StudentEventResponseDTO> getEventsByStudentId(@PathVariable Long studentId) {
         return eventService.getEventsByStudentId(studentId);
     }
     @PostMapping("/students/events/{eventId}/reservation")
-    public EventDTO addEventReservation(@PathVariable Long eventId,
-                                @AuthenticationPrincipal UserDetails
+    public EventRequestDto addEventReservation(@PathVariable Long eventId,
+                                               @AuthenticationPrincipal UserDetails
                                  userDetails) {
 
        var currentUser = userService.findByUsername(userDetails.getUsername());

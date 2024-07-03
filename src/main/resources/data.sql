@@ -51,3 +51,10 @@ VALUES
 ('Book Fair', 'Book fair with stalls from various publishers and authors.', '2024-11-12', '14:00:00'),
 ('Fitness Bootcamp', 'Outdoor fitness bootcamp for all levels.', '2025-03-10', '07:00:00'),
 ('Coding Workshop', 'Hands-on coding workshop for beginners.', '2025-04-22', '11:00:00');
+
+-- temp
+INSERT INTO `waa-demo`.courses (name, code, major_id) VALUES
+('Introduction to Programming', 'CS101', 1),
+('Algorithm', 'CS102', 1),
+('Business Accounting', 'MBA101', 2),
+('Taxation', 'MBA102', 2);
