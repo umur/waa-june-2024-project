@@ -3,8 +3,6 @@ package com.waa.project.entity;
 import jakarta.persistence.*;
 import lombok.Data;
 
-import java.util.List;
-
 @Entity
 @Data
 @Table(name = "discussion_comments")
@@ -23,9 +21,9 @@ public class DiscussionComments {
     @ManyToOne
     private Student student;
 
-    @OneToMany
-    @JoinTable(name = "sub_comment_list")
-    private List<DiscussionComments> commentsList;
+    @ManyToOne
+    @JoinColumn(name = "parent_comment_id")
+    private DiscussionComments parentCommentId;
 
     public void setStudent(Long studentId) {
         Student s = new Student();
