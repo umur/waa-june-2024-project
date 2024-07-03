@@ -23,12 +23,12 @@ public class FeedbackCategoryController {
         return feedbackCategoryService.getAllCategories();
     }
 
-    @GetMapping("/{catId}")
+    @GetMapping("/feedbackcategories/{catId}")
     public FeedbackCategoryDto getAllFeedCategory(@PathVariable Long catId) {
         return feedbackCategoryService.getCategory(catId);
     }
 
-    @PutMapping("/admins/{catId}")
+    @PutMapping("/admins/feedbackcategories/{catId}")
     public String getAllFeedCategory(
             @RequestBody FeedbackCategoryDto feedbackCategoryDto,
             @PathVariable Long catId
@@ -36,12 +36,12 @@ public class FeedbackCategoryController {
         return feedbackCategoryService.update(feedbackCategoryDto, catId);
     }
 
-    @PostMapping("/admins")
+    @PostMapping("/admins/feedbackcategories")
     public String getAllFeedCategory(@RequestBody FeedbackCategoryDto feedbackCategoryDto) {
         return feedbackCategoryService.save(feedbackCategoryDto);
     }
 
-    @DeleteMapping("/admins/{catId}")
+    @DeleteMapping("/admins/feedbackcategories/{catId}")
     public String delete(@PathVariable Long catId) {
         return feedbackCategoryService.delete(catId);
     }

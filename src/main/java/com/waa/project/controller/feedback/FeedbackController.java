@@ -47,13 +47,8 @@ public class FeedbackController {
         Long currentUser = null;
 
         if (userDetails != null && userDetails.getUsername() != null) {
-            System.out.println("uuuu ===" + userDetails.getUsername());
-            System.out.println("uuuu ===" + userDetails.getAuthorities());
-
             currentUser = userService.findByUsername(userDetails.getUsername()).getId();
-
         }
-        System.out.println("currentUser ===" + currentUser);
 
         return feedbackService.update(feedbackDto, Id, currentUser);
     }
