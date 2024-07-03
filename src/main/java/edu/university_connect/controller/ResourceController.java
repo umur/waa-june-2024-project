@@ -109,7 +109,8 @@ public class ResourceController {
 
 
 
-    @PostMapping("/{id}/download")    @ResponseBody
+    @PostMapping("/{id}/download")
+    @ResponseBody
     public ResponseEntity<Resource> serveFile(@RequestBody
                                                   ResourceDownloadRequest request,@PathVariable Long id) {
         Resource file = service.loadResource(request.getFilename(), id);

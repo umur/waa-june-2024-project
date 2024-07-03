@@ -2,8 +2,10 @@ package edu.university_connect.controller;
 
 import edu.university_connect.config.ContextUser;
 import edu.university_connect.model.contract.dto.ProfileDto;
+import edu.university_connect.model.contract.dto.SearchDto;
 import edu.university_connect.model.contract.dto.UserDto;
 import edu.university_connect.model.contract.request.profile.ProfileRequest;
+import edu.university_connect.model.contract.request.user.BlockRequest;
 import edu.university_connect.model.contract.request.user.UserCreateRequest;
 import edu.university_connect.model.contract.request.user.UserUpdateRequest;
 import edu.university_connect.model.contract.response.ApiResponse;
@@ -17,7 +19,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -122,4 +123,34 @@ public class UserController {
         return ResponseEntity.ok(apiResponse);
     }
 
+    @GetMapping("/search")
+    public ResponseEntity<ApiResponse<List<SearchDto>>> getAllByUserName(@RequestParam String username) {
+        List<SearchDto> searchDtos = service.getAllStudentsByName(username);
+        ApiResponse<List<SearchDto>> apiResponse = new ApiResponse<List<SearchDto>>();
+        apiResponse.setResponseData(searchDtos);
+        apiResponse.setMessage(messagingService.getResponseMessage(AppStatusCode.S20004,new String[]{"search"}));
+        return ResponseEntity.ok(apiResponse);
+    }
+
+    @PostMapping("/{id}/blocked-users")
+    @PreAuthorize("hasAuthority('update_profile')")
+    public ResponseEntity<ApiResponse<Boolean>> blockUser(@Valid @RequestBody BlockRequest request,
+                                                                 @PathVariable Long id) {
+        boolean response= service.blockUser(id,request);
+        ApiResponse<Boolean> apiResponse =  new ApiResponse<Boolean>();
+        apiResponse.setResponseData(response);
+        apiResponse.setMessage(messagingService.getResponseMessage(AppStatusCode.S20000));
+        return ResponseEntity.ok(apiResponse);
+    }
+
+    @DeleteMapping("/{id}/blocked-users")
+    @PreAuthorize("hasAuthority('update_profile')")
+    public ResponseEntity<ApiResponse<Boolean>> unBlockUser(@Valid @RequestBody BlockRequest request,
+                                                             @PathVariable Long id) {
+        boolean response= service.unblockUser(id,request);
+        ApiResponse<Boolean> apiResponse =  new ApiResponse<Boolean>();
+        apiResponse.setResponseData(response);
+        apiResponse.setMessage(messagingService.getResponseMessage(AppStatusCode.S20000));
+        return ResponseEntity.ok(apiResponse);
+    }
 }

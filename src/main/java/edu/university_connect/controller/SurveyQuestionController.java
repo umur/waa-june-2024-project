@@ -1,15 +1,11 @@
 package edu.university_connect.controller;
-import edu.university_connect.model.contract.dto.SurveyDto;
 import edu.university_connect.model.contract.dto.SurveyQuestionDto;
-import edu.university_connect.model.contract.request.survey.SurveyCreateRequest;
 import edu.university_connect.model.contract.request.survey.SurveyQuestionCreateRequest;
 import edu.university_connect.model.contract.request.survey.SurveyQuestionUpdateRequest;
-import edu.university_connect.model.contract.request.survey.SurveyUpdateRequest;
 import edu.university_connect.model.contract.response.ApiResponse;
 import edu.university_connect.model.enums.AppStatusCode;
 import edu.university_connect.service.MessagingService;
 import edu.university_connect.service.survey.SurveyQuestionService;
-import edu.university_connect.service.survey.SurveyService;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
