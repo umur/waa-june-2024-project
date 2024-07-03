@@ -11,8 +11,8 @@ public class ResourceDTO {
 
     public ResourceDTO() {}
 
-    public ResourceDTO(Long id, String fileName, String filePath, Long resourceCategoryId) {
-        this.id = id;
+    public ResourceDTO( String fileName, String filePath, Long resourceCategoryId) {
+
         this.fileName = fileName;
         this.filePath = filePath;
         this.resourceCategoryId = resourceCategoryId;
