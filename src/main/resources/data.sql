@@ -56,5 +56,5 @@ VALUES
 INSERT INTO `waa-demo`.courses (name, code, major_id) VALUES
 ('Introduction to Programming', 'CS101', 1),
 ('Algorithm', 'CS102', 1),
-('Business Accounting', 'WAA101', 2),
+('Business Accounting', 'MBA101', 2),
 ('Taxation', 'MBA102', 2);
