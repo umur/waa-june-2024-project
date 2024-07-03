@@ -1,7 +1,7 @@
 package com.waa.project.controller.academic;
 
-import com.waa.project.dto.MajorDto;
-import com.waa.project.service.MajorService;
+import com.waa.project.dto.AcademicResourceDto;
+import com.waa.project.service.AcademicResService;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,35 +16,36 @@ import java.util.List;
 public class AcademicController {
 
     @Autowired
-    private MajorService majorService;
+    private AcademicResService academicResService;
 
-    @GetMapping("/majors")
-    public List<MajorDto> getAllMajor() {
+    @GetMapping({"/admins/academic", "/students/academic"})
+    public List<AcademicResourceDto> getAllResources() {
 
-        return majorService.getAllMajor();
+        return academicResService.getAllAcademicRes();
     }
 
-    @GetMapping("/majors/{Id}")
-    public MajorDto getMajor(@PathVariable Long Id) {
+    @GetMapping({"/admins/academic/{Id}", "/students/academic/{Id}"})
+    public AcademicResourceDto getResource(@PathVariable Long Id) {
 
-        return majorService.getMajor(Id);
+        return academicResService.getAcademicResource(Id);
     }
 
-    @PutMapping("/admins/majors/{Id}")
+    @PutMapping({"/admins/academic/{Id}", "/students/academic/{Id}"})
     public String update(
-            @RequestBody MajorDto dto, @PathVariable Long Id
+            @RequestBody AcademicResourceDto dto, @PathVariable Long Id
                         ) {
-        return majorService.update(dto, Id);
+        return academicResService.update(dto, Id);
     }
 
-    @PostMapping("/admins/majors")
-    public String save(@RequestBody MajorDto dto) {
-        return majorService.save(dto);
+    @PostMapping({"/admins/academic", "/students/academic"})
+    public String save(@RequestBody AcademicResourceDto dto) {
+
+        return academicResService.save(dto);
     }
 
-    @DeleteMapping("/admins/majors/{Id}")
+    @DeleteMapping({"/admins/academic/{Id}", "/students/academic/{Id}"})
     public String delete(@PathVariable Long Id) {
 
-        return majorService.delete(Id);
+        return academicResService.delete(Id);
     }
 }
