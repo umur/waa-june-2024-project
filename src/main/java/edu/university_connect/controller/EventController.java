@@ -10,6 +10,7 @@ import edu.university_connect.service.event.EventService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -24,6 +25,7 @@ public class EventController {
     private final ContextUser contextUser;
 
     @GetMapping
+    @PreAuthorize("hasAuthority('view_event_list')")
     public ResponseEntity<ApiResponse<List<EventDto>>> getAll() {
         String responseMessage = messagingService
                 .getResponseMessage(AppStatusCode.S20001, new String[]{"event"});
@@ -31,6 +33,7 @@ public class EventController {
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasAuthority('view_event')")
     public ResponseEntity<ApiResponse<EventDto>> getById(@PathVariable Long id) {
         String responseMessage = messagingService
                 .getResponseMessage(AppStatusCode.S20001, "event");
@@ -38,6 +41,7 @@ public class EventController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAuthority('delete_event')")
     public ResponseEntity<ApiResponse<Boolean>> delete(@PathVariable Long id) {
         boolean response = eventService.delete(id);
         String message = messagingService.getResponseMessage(AppStatusCode.S20005,
@@ -46,6 +50,7 @@ public class EventController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasAuthority('modify_event')")
     public ResponseEntity<ApiResponse<EventDto>> update(@Valid @RequestBody EventRequest eventRequest,
                                                         @PathVariable Long id) {
         EventDto updatedEvent = eventService.update(id, eventRequest);
@@ -55,6 +60,7 @@ public class EventController {
     }
 
     @PostMapping
+    @PreAuthorize("hasAuthority('create_event')")
     public ResponseEntity<ApiResponse<EventDto>> create(@Valid @RequestBody EventRequest eventRequest) {
         EventDto eventDto = eventService.create(eventRequest);
         String message = messagingService.getResponseMessage(AppStatusCode.S20002, new String[]{"event"});
@@ -62,6 +68,7 @@ public class EventController {
     }
 
     @PostMapping("/{id}/rsvp")
+    @PreAuthorize("hasAuthority('create_event_rsvp')")
     public ResponseEntity<ApiResponse<Boolean>> rsvpForEvent(@Valid @PathVariable Long id) {
         Long userId = contextUser.getLoginUser().getId();
         eventService.rsvpForEvent(id, userId);

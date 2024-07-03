@@ -8,7 +8,6 @@ import edu.university_connect.model.contract.request.role.RoleCreateRequest;
 import edu.university_connect.model.contract.request.role.RoleUpdateRequest;
 import edu.university_connect.domain.entity.Role;
 import edu.university_connect.repository.RoleRepository;
-import edu.university_connect.service.MessagingService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -89,7 +88,13 @@ public class RoleServiceImpl implements RoleService {
         return true;
     }
 
-    private Optional<Role> getRoleById(Long id){
+    @Override
+    public Optional<Role> getRoleById(Long id){
         return repository.findById(id);
+    }
+
+    @Override
+    public Optional<Role> getRoleByCode(String code){
+        return repository.findByCodeIgnoreCase(code);
     }
 }

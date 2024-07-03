@@ -35,6 +35,7 @@ public class UserController {
     private final MessagingService messagingService;
 
     @GetMapping("/all")
+    @PreAuthorize("hasAuthority('view_user_list')")
     public ResponseEntity<ApiResponse<List<UserDto>>> getAll() {
         List<UserDto> response= service.getAll();
         ApiResponse<List<UserDto>> apiResponse =  new ApiResponse<List<UserDto>>();
@@ -44,6 +45,7 @@ public class UserController {
     }
 
     @GetMapping("")
+    @PreAuthorize("hasAuthority('view_user_list')")
     public ResponseEntity<ApiResponse<Page<UserDto>>> getPage(Pageable pageableReq) {
         Pageable pageable = PageRequest.of(pageableReq.getPageNumber()>0? pageableReq.getPageNumber()-1 : 0,
                 pageableReq.getPageSize() ,
@@ -56,6 +58,7 @@ public class UserController {
 
     }
     @PostMapping("")
+    @PreAuthorize("hasAuthority('create_user')")
     public ResponseEntity<ApiResponse<UserDto>> create(@Valid @RequestBody UserCreateRequest createRequest) {
         UserDto response= service.create(createRequest);
         ApiResponse<UserDto> apiResponse =  new ApiResponse<UserDto>();
@@ -66,6 +69,7 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasAuthority('view_user')")
     public ResponseEntity<ApiResponse<UserDto>> get(@PathVariable Long id) {
         UserDto response= service.getById(id);
         ApiResponse<UserDto> apiResponse =  new ApiResponse<UserDto>();
@@ -76,6 +80,7 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasAuthority('modify_user')")
     public ResponseEntity<ApiResponse<UserDto>> update(@Valid @RequestBody UserUpdateRequest updateRequest,
                                                        @PathVariable Long id) {
         UserDto response= service.update(id,updateRequest);
@@ -86,6 +91,7 @@ public class UserController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAuthority('delete_user')")
     public ResponseEntity<ApiResponse<Boolean>> delete(@PathVariable Long id) {
         boolean response= service.delete(id);
         ApiResponse<Boolean> apiResponse =  new ApiResponse<Boolean>();
@@ -95,6 +101,7 @@ public class UserController {
     }
 
     @GetMapping("/{id}/profile")
+    @PreAuthorize("hasAuthority('view_profile')")
     public ResponseEntity<ApiResponse<ProfileDto>> getProfile(@PathVariable Long id) {
         ProfileDto response= service.getUserProfile(id);
         ApiResponse<ProfileDto> apiResponse =  new ApiResponse<ProfileDto>();

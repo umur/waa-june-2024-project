@@ -14,6 +14,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -28,6 +29,7 @@ public class StudentController {
     private final MessagingService messagingService;
 
     @GetMapping("/all")
+    @PreAuthorize("hasAuthority('view_student_list')")
     public ResponseEntity<ApiResponse<List<StudentDto>>> getAll() {
         List<StudentDto> response= service.getAll();
         ApiResponse<List<StudentDto>> apiResponse =  new ApiResponse<List<StudentDto>>();
@@ -37,6 +39,7 @@ public class StudentController {
     }
 
     @GetMapping("")
+    @PreAuthorize("hasAuthority('view_student_list')")
     public ResponseEntity<ApiResponse<Page<StudentDto>>> getPage(Pageable pageableReq) {
         Pageable pageable = PageRequest.of(pageableReq.getPageNumber()>0? pageableReq.getPageNumber()-1 : 0,
                 pageableReq.getPageSize() ,
@@ -49,6 +52,7 @@ public class StudentController {
 
     }
     @PostMapping("")
+    @PreAuthorize("hasAuthority('create_student')")
     public ResponseEntity<ApiResponse<StudentDto>> create(@Valid @RequestBody StudentCreateRequest createRequest) {
         StudentDto response= service.create(createRequest);
         ApiResponse<StudentDto> apiResponse =  new ApiResponse<StudentDto>();
@@ -59,6 +63,7 @@ public class StudentController {
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasAuthority('view_student')")
     public ResponseEntity<ApiResponse<StudentDto>> get(@PathVariable Long id) {
         StudentDto response= service.getById(id);
         ApiResponse<StudentDto> apiResponse =  new ApiResponse<StudentDto>();
@@ -69,6 +74,7 @@ public class StudentController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasAuthority('modify_student')")
     public ResponseEntity<ApiResponse<StudentDto>> update(@Valid @RequestBody StudentUpdateRequest updateRequest,
                                                          @PathVariable Long id) {
         StudentDto response= service.update(id,updateRequest);
@@ -79,6 +85,7 @@ public class StudentController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAuthority('delete_student')")
     public ResponseEntity<ApiResponse<Boolean>> delete(@PathVariable Long id) {
         boolean response= service.delete(id);
         ApiResponse<Boolean> apiResponse =  new ApiResponse<Boolean>();
