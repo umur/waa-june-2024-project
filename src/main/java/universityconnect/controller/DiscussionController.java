@@ -49,8 +49,14 @@ public class DiscussionController {
         return ResponseEntity.noContent().build();
     }
 
-    @PostMapping("/search")
-    public DiscussionSearchResponseDTO searchDiscussions(@RequestBody DiscussionSearchCriteria criteria, Pageable pageable){
+    @GetMapping("/search")
+    public DiscussionSearchResponseDTO searchDiscussions(
+            @RequestParam(required = false) String keyword,
+            @RequestParam(required = false) String categoryName,
+            Pageable pageable) {
+        DiscussionSearchCriteria criteria = new DiscussionSearchCriteria();
+        criteria.setKeyword(keyword);
+        criteria.setCategoryName(categoryName);
         return discussionService.searchDiscussions(criteria, pageable);
     }
 }
