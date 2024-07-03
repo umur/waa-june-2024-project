@@ -177,7 +177,6 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-
     public List<SearchDto> getAllStudentsByName(String uname) {
         List<User> users = repository.findAllByUsername(uname);
         return users.stream().map(user -> {
@@ -189,6 +188,7 @@ public class UserServiceImpl implements UserService {
             }
             return searchDto;
         }).toList();
+    }
 
     public boolean blockUser(Long id, BlockRequest request) {
         Optional<User> blockerOpt=repository.findByUsername(contextUser.getUser().getUsername());
