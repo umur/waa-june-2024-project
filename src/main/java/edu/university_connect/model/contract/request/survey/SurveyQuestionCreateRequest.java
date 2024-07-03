@@ -8,9 +8,10 @@ import java.time.LocalDate;
 
 @Data
 public class SurveyQuestionCreateRequest {
+
+    private  Long surveyId;
     @NotBlank
     @NotEmpty
-    private  Long surveyId;
     private String question;
     private LocalDate dueDate;
 }

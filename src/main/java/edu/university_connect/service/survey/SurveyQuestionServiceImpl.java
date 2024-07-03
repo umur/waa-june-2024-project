@@ -1,21 +1,14 @@
 package edu.university_connect.service.survey;
-import edu.university_connect.config.ContextUser;
-import edu.university_connect.domain.entity.User;
 import edu.university_connect.domain.entity.survey.Survey;
 import edu.university_connect.domain.entity.survey.SurveyQuestion;
 import edu.university_connect.exception.ServiceException;
-import edu.university_connect.mapper.SurveyDtoMapper;
 import edu.university_connect.mapper.SurveyQuestionDtoMapper;
-import edu.university_connect.model.contract.dto.SurveyDto;
 import edu.university_connect.model.contract.dto.SurveyQuestionDto;
-import edu.university_connect.model.contract.request.survey.SurveyCreateRequest;
 import edu.university_connect.model.contract.request.survey.SurveyQuestionCreateRequest;
 import edu.university_connect.model.contract.request.survey.SurveyQuestionUpdateRequest;
-import edu.university_connect.model.contract.request.survey.SurveyUpdateRequest;
 import edu.university_connect.model.enums.AppStatusCode;
 import edu.university_connect.repository.SurveyQuestionRepository;
 import edu.university_connect.repository.SurveyRepository;
-import edu.university_connect.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -31,8 +24,6 @@ import java.util.Optional;
 public class SurveyQuestionServiceImpl implements SurveyQuestionService {
     private final SurveyQuestionRepository repository;
     private  final  SurveyRepository surveyRepository;
-//    private final UserRepository userRepository;
-//    private final ContextUser contextUser;
     @Override
     public Page<SurveyQuestionDto> getPage(Pageable pageable) {
         Page<SurveyQuestion> actionPage = repository.findAll(pageable);
