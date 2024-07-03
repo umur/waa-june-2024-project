@@ -10,11 +10,5 @@ public class PasswordEncoderUtil {
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         return encoder.encode(rawPassword);
     }
-
-//    public static void main(String[] args) {
-//        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-//        String rawPassword = "password123";
-//        String encodedPassword = encoder.encode(rawPassword);
-//        System.out.println(encodedPassword);
-//    }
+    
 }
