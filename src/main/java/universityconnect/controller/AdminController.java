@@ -39,15 +39,15 @@ public class AdminController {
     }
 
 
-    @PutMapping("/{id}")
-    public ResponseEntity<AdminResponse> updateAdmin(@PathVariable Long id, @RequestBody AdminDTO adminDetails) {
-        AdminDTO  adminDTO =  adminService.updateAdmin(id, adminDetails);
-        return ResponseEntity.ok(adminResponseMapper.adminDTOToAdminResponse(adminDTO));
-    }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteAdmin(@PathVariable Long id) {
-        adminService.deleteAdmin(id);
-        return ResponseEntity.noContent().build();
-    }
+//    @PutMapping("/{id}")
+//    public ResponseEntity<AdminResponse> updateAdmin(@PathVariable Long id, @RequestBody AdminDTO adminDetails) {
+//        AdminDTO  adminDTO =  adminService.updateAdmin(id, adminDetails);
+//        return ResponseEntity.ok(adminResponseMapper.adminDTOToAdminResponse(adminDTO));
+//    }
+//
+//    @DeleteMapping("/{id}")
+//    public ResponseEntity<Void> deleteAdmin(@PathVariable Long id) {
+//        adminService.deleteAdmin(id);
+//        return ResponseEntity.noContent().build();
+//    }
 }

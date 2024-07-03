@@ -29,16 +29,16 @@ public class StudentController {
         return ResponseEntity.ok(studentDTO);
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<StudentDTO> updateStudent(@PathVariable long id, @RequestBody StudentDTO studentDTO) {
-        StudentDTO student = studentService.updateStudent(id, studentDTO);
-        return ResponseEntity.ok(student);
-    }
-
-    @DeleteMapping("/{id}")
-    public void deleteStudent(@PathVariable long id) {
-        studentService.deleteStudent(id);
-    }
+//    @PutMapping("/{id}")
+//    public ResponseEntity<StudentDTO> updateStudent(@PathVariable long id, @RequestBody StudentDTO studentDTO) {
+//        StudentDTO student = studentService.updateStudent(id, studentDTO);
+//        return ResponseEntity.ok(student);
+//    }
+//
+//    @DeleteMapping("/{id}")
+//    public void deleteStudent(@PathVariable long id) {
+//        studentService.deleteStudent(id);
+//    }
 
     @GetMapping("/{id}/profiles")
     public ResponseEntity<ProfileDTO> getProfileByStudentId(@PathVariable long id) {
