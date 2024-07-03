@@ -2,8 +2,6 @@ package universityconnect.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import universityconnect.domain.Report;
-import universityconnect.domain.Role;
 
 import java.util.List;
 

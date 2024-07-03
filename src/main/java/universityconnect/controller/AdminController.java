@@ -3,7 +3,9 @@ package universityconnect.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import universityconnect.domain.response.AdminResponse;
 import universityconnect.dto.AdminDTO;
+import universityconnect.mapper.AdminResponseMapper;
 import universityconnect.service.AdminService;
 
 import java.util.List;
@@ -16,24 +18,31 @@ public class AdminController {
     private AdminService adminService;
 
     @Autowired
+    private AdminResponseMapper adminResponseMapper;
+
+    @Autowired
     public AdminController(AdminService adminService) {
         this.adminService = adminService;
     }
 
     @GetMapping
-    public ResponseEntity<List<AdminDTO>> getAllAdmins() {
-        return ResponseEntity.ok(adminService.getAllAdmins());
+    public ResponseEntity<List<AdminResponse>> getAllAdmins() {
+        List<AdminDTO> admins = adminService.getAllAdmins();
+        return ResponseEntity.ok(adminResponseMapper.adminDTOsToAdminResponses(admins));
+
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<AdminDTO> getAdminById(@PathVariable Long id) {
-        return ResponseEntity.ok(adminService.getAdminById(id));
+    public ResponseEntity<AdminResponse> getAdminById(@PathVariable Long id) {
+        AdminDTO adminDTO = adminService.getAdminById(id);
+        return ResponseEntity.ok(adminResponseMapper.adminDTOToAdminResponse(adminDTO));
     }
 
 
     @PutMapping("/{id}")
-    public ResponseEntity<AdminDTO> updateAdmin(@PathVariable Long id, @RequestBody AdminDTO adminDetails) {
-        return ResponseEntity.ok(adminService.updateAdmin(id, adminDetails));
+    public ResponseEntity<AdminResponse> updateAdmin(@PathVariable Long id, @RequestBody AdminDTO adminDetails) {
+        AdminDTO  adminDTO =  adminService.updateAdmin(id, adminDetails);
+        return ResponseEntity.ok(adminResponseMapper.adminDTOToAdminResponse(adminDTO));
     }
 
     @DeleteMapping("/{id}")

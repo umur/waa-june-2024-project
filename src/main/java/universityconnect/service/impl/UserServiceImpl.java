@@ -6,7 +6,6 @@ import universityconnect.domain.*;
 import universityconnect.dto.UserDTO;
 import universityconnect.exception.EmailAlreadyExistsException;
 import universityconnect.exception.ResourceNotFoundException;
-import universityconnect.mapper.StudentMapper;
 import universityconnect.mapper.UserMapper;
 import universityconnect.repository.*;
 import universityconnect.service.UserService;
