@@ -1,10 +1,15 @@
 package universityconnect.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import universityconnect.domain.Discussion;
+import universityconnect.domain.DiscussionSearchCriteria;
 import universityconnect.dto.DiscussionDTO;
+import universityconnect.dto.DiscussionSearchResponseDTO;
 import universityconnect.service.DiscussionService;
 
 import java.util.List;
@@ -42,5 +47,10 @@ public class DiscussionController {
     public ResponseEntity<Void> deleteDiscussionById(@PathVariable Long id) {
         discussionService.deleteDiscussion(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/search")
+    public DiscussionSearchResponseDTO searchDiscussions(@RequestBody DiscussionSearchCriteria criteria, Pageable pageable){
+        return discussionService.searchDiscussions(criteria, pageable);
     }
 }

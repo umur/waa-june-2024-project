@@ -1,12 +1,13 @@
 package universityconnect.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
-import universityconnect.domain.Discussion;
-import universityconnect.domain.DiscussionCategory;
-import universityconnect.domain.DiscussionThread;
-import universityconnect.domain.User;
+import universityconnect.domain.*;
 import universityconnect.dto.DiscussionDTO;
+import universityconnect.domain.DiscussionSpecifications;
+import universityconnect.dto.DiscussionSearchResponseDTO;
 import universityconnect.exception.ResourceNotFoundException;
 import universityconnect.mapper.DiscussionMapper;
 import universityconnect.repository.DiscussionRepository;
@@ -14,9 +15,12 @@ import universityconnect.repository.DiscussionThreadRepository;
 import universityconnect.service.DiscussionCategoryService;
 import universityconnect.service.DiscussionService;
 import universityconnect.service.UserService;
+import org.springframework.data.domain.Pageable;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 @RequiredArgsConstructor
 public class DiscussionServiceImpl implements DiscussionService {
@@ -76,5 +80,20 @@ public class DiscussionServiceImpl implements DiscussionService {
     @Override
     public Discussion findById(Long id) {
         return discussionRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("Discussion not found with id: "+id));
+    }
+
+    @Override
+    public DiscussionSearchResponseDTO searchDiscussions(DiscussionSearchCriteria criteria, Pageable page) {
+        Specification<Discussion> spec = DiscussionSpecifications.withCriteria(criteria);
+        Page<Discussion> discussions = discussionRepository.findAll(spec, page);
+
+        List<DiscussionDTO> discussionDTOs = discussions.getContent().stream()
+                .map(DiscussionMapper.INSTANCE::discussionToDiscussionDTO)
+                .collect(Collectors.toList());
+
+        DiscussionSearchResponseDTO response = new DiscussionSearchResponseDTO();
+        response.setContent(discussionDTOs);
+
+        return response;
     }
 }
