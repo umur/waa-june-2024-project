@@ -82,10 +82,9 @@ public class DiscussionServiceImpl implements DiscussionService {
         return discussionRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("Discussion not found with id: "+id));
     }
 
-    @Override
-    public DiscussionSearchResponseDTO searchDiscussions(DiscussionSearchCriteria criteria, Pageable page) {
+    public DiscussionSearchResponseDTO searchDiscussions(DiscussionSearchCriteria criteria, Pageable pageable) {
         Specification<Discussion> spec = DiscussionSpecifications.withCriteria(criteria);
-        Page<Discussion> discussions = discussionRepository.findAll(spec, page);
+        Page<Discussion> discussions = discussionRepository.findAll(spec, pageable);
 
         List<DiscussionDTO> discussionDTOs = discussions.getContent().stream()
                 .map(DiscussionMapper.INSTANCE::discussionToDiscussionDTO)
@@ -93,6 +92,12 @@ public class DiscussionServiceImpl implements DiscussionService {
 
         DiscussionSearchResponseDTO response = new DiscussionSearchResponseDTO();
         response.setContent(discussionDTOs);
+        response.setTotalPages(discussions.getTotalPages());
+        response.setTotalElements(discussions.getTotalElements());
+        response.setNumber(discussions.getNumber());
+        response.setSize(discussions.getSize());
+        response.setFirst(discussions.isFirst());
+        response.setLast(discussions.isLast());
 
         return response;
     }
