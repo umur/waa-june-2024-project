@@ -3,6 +3,7 @@ package edu.university_connect.service.user;
 import edu.university_connect.model.contract.dto.ProfileDto;
 import edu.university_connect.model.contract.request.auth.SignUpRequest;
 import edu.university_connect.model.contract.request.profile.ProfileRequest;
+import edu.university_connect.model.contract.request.user.BlockRequest;
 import edu.university_connect.model.contract.request.user.UserCreateRequest;
 import edu.university_connect.model.contract.request.user.UserUpdateRequest;
 import edu.university_connect.model.contract.dto.UserDto;
@@ -28,4 +29,7 @@ public interface UserService {
 
     ProfileDto updateUserProfile(Long id, ProfileRequest updateRequest);
 
+    boolean blockUser(Long id, BlockRequest request);
+
+    boolean unblockUser(Long id, BlockRequest request);
 }
