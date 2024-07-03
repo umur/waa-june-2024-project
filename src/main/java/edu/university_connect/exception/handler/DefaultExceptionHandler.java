@@ -3,8 +3,8 @@ package edu.university_connect.exception.handler;
 
 import edu.university_connect.exception.ServiceException;
 import edu.university_connect.model.contract.response.ApiResponse;
-import edu.university_connect.model.contract.response.ErrorField;
 import edu.university_connect.model.contract.response.Error;
+import edu.university_connect.model.contract.response.ErrorField;
 import edu.university_connect.service.MessagingService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -13,6 +13,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
+import org.springframework.lang.Nullable;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.AuthorizationServiceException;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -102,21 +103,6 @@ public class DefaultExceptionHandler extends ResponseEntityExceptionHandler {
                 .body(respData);
     }
 
-/*    @ExceptionHandler({NoResourceFoundException.class})
-    @ResponseBody
-    public ResponseEntity<Object> handleNoHandlerFoundException(NoHandlerFoundException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
-        ApiResponse<String> respData = new ApiResponse<>();
-        respData.setMessage(messagingService.getResponseMessage(new String[]{ex.getMessage()}));
-        respData.setStatus(false);
-        respData.setData(null);
-        return ResponseEntity
-                .status(HttpStatus.NOT_FOUND)
-                .body(respData);
-    }*/
-
-
-
-
     @ExceptionHandler({Exception.class})
     @ResponseBody
     public ResponseEntity<ApiResponse<String>> handleInternalCheckedException(Exception ex) {
@@ -126,6 +112,7 @@ public class DefaultExceptionHandler extends ResponseEntityExceptionHandler {
         respData.setData(null);
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(respData);
     }
+
 
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
@@ -175,5 +162,19 @@ public class DefaultExceptionHandler extends ResponseEntityExceptionHandler {
         }
         return handleExceptionInternal(ex, errorResponse.build(),
                 new HttpHeaders(), httpStatus, request);
+    }
+
+    @Nullable
+    @Override
+    protected ResponseEntity<Object> handleExceptionInternal(Exception ex, @Nullable Object body, HttpHeaders headers, HttpStatusCode statusCode, WebRequest request) {
+
+        if (!(body instanceof ApiResponse<?>)) {
+            ApiResponse<String> respData = new ApiResponse<>();
+            respData.setMessage(ex.getLocalizedMessage());
+            respData.setStatus(false);
+            respData.setData(null);
+            body=respData;
+        }
+        return super.handleExceptionInternal(ex, body,  headers,  statusCode,  request);
     }
 }

@@ -1,16 +1,17 @@
 package edu.university_connect.controller;
 
+import edu.university_connect.config.ContextUser;
 import edu.university_connect.model.contract.dto.ProfileDto;
-import edu.university_connect.model.contract.request.action.ActionUpdateRequest;
-import edu.university_connect.model.contract.request.profile.ProfileRequest;
-import edu.university_connect.model.enums.AppStatusCode;
 import edu.university_connect.model.contract.dto.UserDto;
+import edu.university_connect.model.contract.request.profile.ProfileRequest;
 import edu.university_connect.model.contract.request.user.UserCreateRequest;
 import edu.university_connect.model.contract.request.user.UserUpdateRequest;
 import edu.university_connect.model.contract.response.ApiResponse;
+import edu.university_connect.model.enums.AppStatusCode;
 import edu.university_connect.service.MessagingService;
 import edu.university_connect.service.user.UserService;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -24,17 +25,15 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/users")
-@CrossOrigin
+@RequiredArgsConstructor
 @Slf4j
 public class UserController {
     private final UserService service;
 
+    private final ContextUser contextUser;
+
     private final MessagingService messagingService;
 
-    public UserController(UserService service, MessagingService messagingService) {
-        this.service = service;
-        this.messagingService = messagingService;
-    }
     @GetMapping("/all")
     public ResponseEntity<ApiResponse<List<UserDto>>> getAll() {
         List<UserDto> response= service.getAll();
@@ -106,7 +105,7 @@ public class UserController {
     }
 
     @PostMapping("/{id}/profile")
-    @PreAuthorize("hasAuthority('update_profile')")
+    @PreAuthorize("hasAuthority('modify_profile') && @contextUser.getLoginUser().getId() == #id")
     public ResponseEntity<ApiResponse<ProfileDto>> updateProfile(@Valid @RequestBody ProfileRequest updateRequest,
                                                           @PathVariable Long id) {
         ProfileDto response= service.updateUserProfile(id,updateRequest);

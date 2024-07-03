@@ -16,8 +16,6 @@ public interface RoleDtoMapper {
 
     Role dtoToEntity(RoleCreateRequest request);
     Role dtoToEntity(RoleUpdateRequest request);
-    @Mapping(target = "createdBy", ignore = true)
-    @Mapping(target = "lastModifiedBy", ignore = true)
     RoleDto entityToDto(Role role);
 
 

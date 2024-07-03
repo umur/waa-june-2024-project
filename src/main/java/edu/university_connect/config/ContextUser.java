@@ -17,7 +17,7 @@ public class ContextUser {
     }
 
     public SecurityUser getUser() {
-            return getLoginUser();
+        return getLoginUser();
     }
 
 }
