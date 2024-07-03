@@ -41,16 +41,8 @@ public class SecurityConfig {
                             .requestMatchers("/profiles/**").permitAll()
                             .requestMatchers("/reports/**").permitAll()
                             .requestMatchers("/blocks/**").permitAll()
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-=======
                             .requestMatchers("/resources/**").permitAll()
                             .requestMatchers("/resource-categories/**").permitAll()
->>>>>>> Stashed changes
-=======
-                            .requestMatchers("/resources/**").permitAll()
-                            .requestMatchers("/resource-categories/**").permitAll()
->>>>>>> Stashed changes
                             .requestMatchers("/events/**").permitAll()
                             .requestMatchers("/discussions/**").permitAll()
                             .requestMatchers("/discussion-categories/**").permitAll()
