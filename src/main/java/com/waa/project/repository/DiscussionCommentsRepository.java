@@ -1,0 +1,19 @@
+package com.waa.project.repository;
+
+import com.waa.project.entity.DiscussionComments;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+import java.util.Optional;
+
+@Repository
+public interface DiscussionCommentsRepository extends JpaRepository<DiscussionComments, Long> {
+
+    Page<DiscussionComments> findByDiscussionId(Long discussionId, Pageable pageable);
+
+    Optional<DiscussionComments> findByIdAndStudentId(Long id, Long studentId);
+
+    void deleteByIdAndStudentId(long id, long studentId);
+}

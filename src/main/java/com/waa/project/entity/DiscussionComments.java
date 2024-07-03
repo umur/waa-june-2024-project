@@ -26,4 +26,11 @@ public class DiscussionComments {
     @OneToMany
     @JoinTable(name = "sub_comment_list")
     private List<DiscussionComments> commentsList;
+
+    public void setStudent(Long studentId) {
+        Student s = new Student();
+        s.setId(studentId);
+
+        this.student = s;
+    }
 }
