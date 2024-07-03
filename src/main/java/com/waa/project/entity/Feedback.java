@@ -22,5 +22,6 @@ public class Feedback {
     private FeedbackCategory category;
 
     @ManyToOne
+    @JoinColumn(name = "student_id", nullable = true)
     private Student student;
 }

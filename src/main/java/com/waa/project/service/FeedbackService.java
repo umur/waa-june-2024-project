@@ -8,10 +8,10 @@ public interface FeedbackService {
     List<FeedbackDto> getAllFeedbacks();
 
     FeedbackDto getFeedback(Long feedId);
-    
-    String save(FeedbackDto feedback);
 
-    String update(FeedbackDto feedback, Long fid);
+    String save(FeedbackDto feedback, Long userId);
+
+    String update(FeedbackDto feedback, Long fid, Long userId);
 
     String delete(Long fid);
 
