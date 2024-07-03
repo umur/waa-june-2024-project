@@ -15,7 +15,5 @@ public interface ReplyDtoMapper {
 
     Reply dtoToEntity(ReplyRequest request);
 
-    @Mapping(target = "createdBy", ignore = true)
-    @Mapping(target = "lastModifiedBy", ignore = true)
     ReplyDto entityToDto(Reply reply);
 }

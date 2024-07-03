@@ -15,6 +15,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
@@ -29,6 +30,7 @@ public class CategoryController {
     private final MessagingService messagingService;
 
     @GetMapping("/all")
+    @PreAuthorize("hasAuthority('view_action_list')")
     public ResponseEntity<ApiResponse<List<CategoryDto>>> getAll() {
         List<CategoryDto> response= service.getAll();
         ApiResponse<List<CategoryDto>> apiResponse =  new ApiResponse<List<CategoryDto>>();
@@ -38,6 +40,7 @@ public class CategoryController {
     }
 
     @GetMapping("")
+    @PreAuthorize("hasAuthority('view_action_list')")
     public ResponseEntity<ApiResponse<Page<CategoryDto>>> getPage(Pageable pageableReq) {
         Pageable pageable = PageRequest.of(pageableReq.getPageNumber()>0? pageableReq.getPageNumber()-1 : 0,
                 pageableReq.getPageSize() ,
@@ -50,6 +53,7 @@ public class CategoryController {
 
     }
     @PostMapping("")
+    @PreAuthorize("hasAuthority('create_category')")
     public ResponseEntity<ApiResponse<CategoryDto>> create(@Valid @RequestBody CategoryCreateRequest createRequest) {
         CategoryDto response= service.create(createRequest);
         ApiResponse<CategoryDto> apiResponse =  new ApiResponse<CategoryDto>();
@@ -60,6 +64,7 @@ public class CategoryController {
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasAuthority('view_category')")
     public ResponseEntity<ApiResponse<CategoryDto>> get(@PathVariable Long id) {
         CategoryDto response= service.getById(id);
         ApiResponse<CategoryDto> apiResponse =  new ApiResponse<CategoryDto>();
@@ -70,6 +75,7 @@ public class CategoryController {
     }
 
     @GetMapping("/{id}/posts")
+    @PreAuthorize("hasAuthority('view_post_list')")
     public ResponseEntity<ApiResponse<List<PostDto>>> getPosts(@PathVariable Long id) {
         String message = messagingService.getResponseMessage(AppStatusCode.S20003, "category");
         return ResponseEntity.ok(ApiResponse.of(message, postService.getAll(id)));
@@ -77,6 +83,7 @@ public class CategoryController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasAuthority('modify_category')")
     public ResponseEntity<ApiResponse<CategoryDto>> update(@Valid @RequestBody CategoryUpdateRequest updateRequest,
                                                          @PathVariable Long id) {
         CategoryDto response= service.update(id,updateRequest);
@@ -87,6 +94,7 @@ public class CategoryController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAuthority('delete_category')")
     public ResponseEntity<ApiResponse<Boolean>> delete(@PathVariable Long id) {
         boolean response= service.delete(id);
         ApiResponse<Boolean> apiResponse =  new ApiResponse<Boolean>();

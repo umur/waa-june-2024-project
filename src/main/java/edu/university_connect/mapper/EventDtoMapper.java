@@ -15,7 +15,5 @@ public interface EventDtoMapper {
 
     Event dtoToEntity(EventRequest request);
 
-    @Mapping(target = "createdBy", ignore = true)
-    @Mapping(target = "lastModifiedBy", ignore = true)
     EventDto entityToDto(Event event);
 }

@@ -12,6 +12,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -30,6 +31,7 @@ public class SurveyResponseController {
         this.messagingService = messagingService;
     }
     @GetMapping("/all")
+    @PreAuthorize("hasAuthority('view_survey_response_list')")
     public ResponseEntity<ApiResponse<List<SurveyResponseDto>>> getAll() {
         List<SurveyResponseDto> response= service.getAll();
         ApiResponse<List<SurveyResponseDto>> apiResponse =  new ApiResponse<List<SurveyResponseDto>>();
@@ -39,6 +41,7 @@ public class SurveyResponseController {
     }
 
     @GetMapping("")
+    @PreAuthorize("hasAuthority('view_survey_response_list')")
     public ResponseEntity<ApiResponse<Page<SurveyResponseDto>>> getPage(Pageable pageableReq) {
         Pageable pageable = PageRequest.of(pageableReq.getPageNumber()>0? pageableReq.getPageNumber()-1 : 0,
                 pageableReq.getPageSize() ,
@@ -51,6 +54,7 @@ public class SurveyResponseController {
 
     }
     @PostMapping("")
+    @PreAuthorize("hasAuthority('create_survey_response')")
     public ResponseEntity<ApiResponse<SurveyResponseDto>> create(@Valid @RequestBody SurveyResponseCreateRequest createRequest) {
         SurveyResponseDto response= service.create(createRequest);
         ApiResponse<SurveyResponseDto> apiResponse =  new ApiResponse<SurveyResponseDto>();
@@ -61,6 +65,7 @@ public class SurveyResponseController {
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasAuthority('view_survey_response')")
     public ResponseEntity<ApiResponse<SurveyResponseDto>> get(@PathVariable Long id) {
         SurveyResponseDto response= service.getById(id);
         ApiResponse<SurveyResponseDto> apiResponse =  new ApiResponse<SurveyResponseDto>();
@@ -71,6 +76,7 @@ public class SurveyResponseController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasAuthority('modify_survey_response')")
     public ResponseEntity<ApiResponse<SurveyResponseDto>> update(@Valid @RequestBody SurveyResponseUpdateRequest updateRequest,
                                                          @PathVariable Long id) {
         SurveyResponseDto response= service.update(id,updateRequest);
@@ -81,6 +87,7 @@ public class SurveyResponseController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAuthority('delete_survey_response')")
     public ResponseEntity<ApiResponse<Boolean>> delete(@PathVariable Long id) {
         boolean response= service.delete(id);
         ApiResponse<Boolean> apiResponse =  new ApiResponse<Boolean>();

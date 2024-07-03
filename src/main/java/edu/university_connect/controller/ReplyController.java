@@ -11,6 +11,7 @@ import edu.university_connect.service.reply.ReplyService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -24,6 +25,7 @@ public class ReplyController {
     private final MessagingService messagingService;
 
     @GetMapping
+    @PreAuthorize("hasAuthority('view_reply_list')")
     public ResponseEntity<ApiResponse<List<ReplyDto>>> getAll() {
         String responseMessage = messagingService
                 .getResponseMessage(AppStatusCode.S20001, "reply");
@@ -31,6 +33,7 @@ public class ReplyController {
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasAuthority('view_reply')")
     public ResponseEntity<ApiResponse<ReplyDto>> getById(@PathVariable Long id) {
         String responseMessage = messagingService
                 .getResponseMessage(AppStatusCode.S20001, "reply");
@@ -38,6 +41,7 @@ public class ReplyController {
     }
 
     @GetMapping("/{id}/replies")
+    @PreAuthorize("hasAuthority('view_reply')")
     public ResponseEntity<ApiResponse<List<ReplyDto>>> getByReplyId(@PathVariable("id") Long replyId) {
         String responseMessage = messagingService
                 .getResponseMessage(AppStatusCode.S20001, "reply");
@@ -45,6 +49,7 @@ public class ReplyController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAuthority('delete_reply')")
     public ResponseEntity<ApiResponse<Boolean>> delete(@PathVariable Long id) {
         boolean response = replyService.delete(id);
         String message = messagingService.getResponseMessage(AppStatusCode.S20005, "reply");
@@ -52,6 +57,7 @@ public class ReplyController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasAuthority('modify_reply')")
     public ResponseEntity<ApiResponse<ReplyDto>> update(@Valid @RequestBody ReplyRequest replyRequest,
                                                         @PathVariable Long id) {
         ReplyDto updatedReply = replyService.update(id, replyRequest);
@@ -60,6 +66,7 @@ public class ReplyController {
     }
 
     @PostMapping
+    @PreAuthorize("hasAuthority('create_reply')")
     public ResponseEntity<ApiResponse<ReplyDto>> create(@Valid @RequestBody PostReplyRequest replyRequest) {
         ReplyDto replyDto = replyService.create(replyRequest);
         String message = messagingService.getResponseMessage(AppStatusCode.S20002, "reply");
@@ -67,6 +74,7 @@ public class ReplyController {
     }
 
     @PostMapping("/{id}")
+    @PreAuthorize("hasAuthority('create_reply')")
     public ResponseEntity<ApiResponse<ReplyDto>> createReplyToReply(
             @PathVariable Long id,
             @Valid @RequestBody ReplyRequest replyRequest

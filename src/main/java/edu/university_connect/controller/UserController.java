@@ -1,24 +1,24 @@
 package edu.university_connect.controller;
 
+import edu.university_connect.config.ContextUser;
 import edu.university_connect.model.contract.dto.ProfileDto;
 import edu.university_connect.model.contract.dto.SearchDto;
-import edu.university_connect.model.contract.request.action.ActionUpdateRequest;
+import edu.university_connect.model.contract.dto.UserDto;
 import edu.university_connect.model.contract.request.profile.ProfileRequest;
 import edu.university_connect.model.contract.request.user.BlockRequest;
-import edu.university_connect.model.enums.AppStatusCode;
-import edu.university_connect.model.contract.dto.UserDto;
 import edu.university_connect.model.contract.request.user.UserCreateRequest;
 import edu.university_connect.model.contract.request.user.UserUpdateRequest;
 import edu.university_connect.model.contract.response.ApiResponse;
+import edu.university_connect.model.enums.AppStatusCode;
 import edu.university_connect.service.MessagingService;
 import edu.university_connect.service.user.UserService;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,18 +26,17 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/users")
-@CrossOrigin
+@RequiredArgsConstructor
 @Slf4j
 public class UserController {
     private final UserService service;
 
+    private final ContextUser contextUser;
+
     private final MessagingService messagingService;
 
-    public UserController(UserService service, MessagingService messagingService) {
-        this.service = service;
-        this.messagingService = messagingService;
-    }
     @GetMapping("/all")
+    @PreAuthorize("hasAuthority('view_user_list')")
     public ResponseEntity<ApiResponse<List<UserDto>>> getAll() {
         List<UserDto> response= service.getAll();
         ApiResponse<List<UserDto>> apiResponse =  new ApiResponse<List<UserDto>>();
@@ -47,6 +46,7 @@ public class UserController {
     }
 
     @GetMapping("")
+    @PreAuthorize("hasAuthority('view_user_list')")
     public ResponseEntity<ApiResponse<Page<UserDto>>> getPage(Pageable pageableReq) {
         Pageable pageable = PageRequest.of(pageableReq.getPageNumber()>0? pageableReq.getPageNumber()-1 : 0,
                 pageableReq.getPageSize() ,
@@ -59,6 +59,7 @@ public class UserController {
 
     }
     @PostMapping("")
+    @PreAuthorize("hasAuthority('create_user')")
     public ResponseEntity<ApiResponse<UserDto>> create(@Valid @RequestBody UserCreateRequest createRequest) {
         UserDto response= service.create(createRequest);
         ApiResponse<UserDto> apiResponse =  new ApiResponse<UserDto>();
@@ -69,6 +70,7 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasAuthority('view_user')")
     public ResponseEntity<ApiResponse<UserDto>> get(@PathVariable Long id) {
         UserDto response= service.getById(id);
         ApiResponse<UserDto> apiResponse =  new ApiResponse<UserDto>();
@@ -79,6 +81,7 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasAuthority('modify_user')")
     public ResponseEntity<ApiResponse<UserDto>> update(@Valid @RequestBody UserUpdateRequest updateRequest,
                                                        @PathVariable Long id) {
         UserDto response= service.update(id,updateRequest);
@@ -89,6 +92,7 @@ public class UserController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAuthority('delete_user')")
     public ResponseEntity<ApiResponse<Boolean>> delete(@PathVariable Long id) {
         boolean response= service.delete(id);
         ApiResponse<Boolean> apiResponse =  new ApiResponse<Boolean>();
@@ -98,6 +102,7 @@ public class UserController {
     }
 
     @GetMapping("/{id}/profile")
+    @PreAuthorize("hasAuthority('view_profile')")
     public ResponseEntity<ApiResponse<ProfileDto>> getProfile(@PathVariable Long id) {
         ProfileDto response= service.getUserProfile(id);
         ApiResponse<ProfileDto> apiResponse =  new ApiResponse<ProfileDto>();
@@ -108,7 +113,7 @@ public class UserController {
     }
 
     @PostMapping("/{id}/profile")
-    @PreAuthorize("hasAuthority('update_profile')")
+    @PreAuthorize("hasAuthority('modify_profile') && @contextUser.getLoginUser().getId() == #id")
     public ResponseEntity<ApiResponse<ProfileDto>> updateProfile(@Valid @RequestBody ProfileRequest updateRequest,
                                                           @PathVariable Long id) {
         ProfileDto response= service.updateUserProfile(id,updateRequest);
@@ -128,6 +133,7 @@ public class UserController {
     }
 
     @PostMapping("/{id}/blocked-users")
+    @PreAuthorize("hasAuthority('update_profile')")
     public ResponseEntity<ApiResponse<Boolean>> blockUser(@Valid @RequestBody BlockRequest request,
                                                                  @PathVariable Long id) {
         boolean response= service.blockUser(id,request);
@@ -138,6 +144,7 @@ public class UserController {
     }
 
     @DeleteMapping("/{id}/blocked-users")
+    @PreAuthorize("hasAuthority('update_profile')")
     public ResponseEntity<ApiResponse<Boolean>> unBlockUser(@Valid @RequestBody BlockRequest request,
                                                              @PathVariable Long id) {
         boolean response= service.unblockUser(id,request);

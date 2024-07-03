@@ -16,6 +16,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -31,6 +32,7 @@ public class ResourceController {
     private final MessagingService messagingService;
 
     @GetMapping("/all")
+    @PreAuthorize("hasAuthority('view_resource_list')")
     public ResponseEntity<ApiResponse<List<ResourceDto>>> getAll() {
         List<ResourceDto> response= service.getAll();
         ApiResponse<List<ResourceDto>> apiResponse =  new ApiResponse<List<ResourceDto>>();
@@ -40,6 +42,7 @@ public class ResourceController {
     }
 
     @GetMapping("")
+    @PreAuthorize("hasAuthority('view_resource_list')")
     public ResponseEntity<ApiResponse<Page<ResourceDto>>> getPage(Pageable pageableReq) {
         Pageable pageable = PageRequest.of(pageableReq.getPageNumber()>0? pageableReq.getPageNumber()-1 : 0,
                 pageableReq.getPageSize() ,
@@ -52,6 +55,7 @@ public class ResourceController {
 
     }
     @PostMapping(value = "")
+    @PreAuthorize("hasAuthority('create_resource')")
     public ResponseEntity<ApiResponse<ResourceDto>> create(@Valid @RequestBody ResourceRequest createRequest) {
         ResourceDto response= service.create(createRequest);
         ApiResponse<ResourceDto> apiResponse =  new ApiResponse<ResourceDto>();
@@ -62,6 +66,7 @@ public class ResourceController {
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasAuthority('view_resource')")
     public ResponseEntity<ApiResponse<ResourceDto>> get(@PathVariable Long id) {
         ResourceDto response= service.getById(id);
         ApiResponse<ResourceDto> apiResponse =  new ApiResponse<ResourceDto>();
@@ -72,6 +77,7 @@ public class ResourceController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasAuthority('modify_resource')")
     public ResponseEntity<ApiResponse<ResourceDto>> update(@Valid @RequestBody ResourceRequest updateRequest,
                                                          @PathVariable Long id) {
         ResourceDto response= service.update(id,updateRequest);
@@ -82,6 +88,7 @@ public class ResourceController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAuthority('delete_resource')")
     public ResponseEntity<ApiResponse<Boolean>> delete(@PathVariable Long id) {
         boolean response= service.delete(id);
         ApiResponse<Boolean> apiResponse =  new ApiResponse<Boolean>();
@@ -91,6 +98,7 @@ public class ResourceController {
     }
 
     @PostMapping("/{id}")
+    @PreAuthorize("hasAuthority('create_resource')")
     public ResponseEntity<ApiResponse<ResourceDto>> handleFileUpload(@RequestParam("files") MultipartFile[] files,@PathVariable Long id) {
         ResourceDto response=service.handleFileUpload(files,id);
         ApiResponse<ResourceDto> apiResponse =  new ApiResponse<ResourceDto>();
@@ -101,7 +109,8 @@ public class ResourceController {
 
 
 
-    @PostMapping("/{id}/download")    @ResponseBody
+    @PostMapping("/{id}/download")
+    @ResponseBody
     public ResponseEntity<Resource> serveFile(@RequestBody
                                                   ResourceDownloadRequest request,@PathVariable Long id) {
         Resource file = service.loadResource(request.getFilename(), id);

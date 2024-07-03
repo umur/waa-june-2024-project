@@ -15,7 +15,5 @@ public interface PostDtoMapper {
 
     Post dtoToEntity(PostRequest request);
 
-    @Mapping(target = "createdBy", ignore = true)
-    @Mapping(target = "lastModifiedBy", ignore = true)
     PostDto entityToDto(Post post);
 }

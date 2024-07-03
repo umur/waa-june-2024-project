@@ -2,6 +2,7 @@ package edu.university_connect.service.user;
 
 import edu.university_connect.config.ContextUser;
 import edu.university_connect.domain.entity.Profile;
+import edu.university_connect.domain.entity.Role;
 import edu.university_connect.domain.entity.Student;
 import edu.university_connect.domain.entity.User;
 import edu.university_connect.exception.ServiceException;
@@ -18,6 +19,7 @@ import edu.university_connect.model.contract.request.user.UserCreateRequest;
 import edu.university_connect.model.contract.request.user.UserUpdateRequest;
 import edu.university_connect.repository.UserRepository;
 import edu.university_connect.service.profile.ProfileService;
+import edu.university_connect.service.role.RoleService;
 import edu.university_connect.service.student.StudentService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -36,6 +38,7 @@ import java.util.*;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository repository;
+    private final RoleService roleService;
     private final StudentService studentService;
     private final ProfileService profileService;
     private final PasswordEncoder passwordEncoder;
@@ -114,9 +117,14 @@ public class UserServiceImpl implements UserService {
             throw ServiceException.of(AppStatusCode.E40003);
         }
         Optional<Student> studentOpt=studentService.getStudentByEmail(data.getEmail());
+        Optional<Role> roleOpt=roleService.getRoleByCode("normal-user");
         if(studentOpt.isEmpty()){
             log.error("Student with email {} does not exist",data.getEmail());
             throw ServiceException.of(AppStatusCode.E40000,"student", "email= "+data.getEmail());
+        }
+        if(roleOpt.isEmpty()){
+            log.error("Role for normal users is not set up in db");
+            throw ServiceException.of(AppStatusCode.E40000,"role");
         }
         if(Objects.nonNull(studentOpt.get().getUser())){
             log.error("Student with email {} is already associated with another user",data.getEmail());
@@ -125,6 +133,9 @@ public class UserServiceImpl implements UserService {
         User user = UserDtoMapper.MAPPER.dtoToEntity(data);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setEnabled(true);
+        user.setRoles( new HashSet<>() {{
+            add(roleOpt.get());
+        }});
         User savedUser=repository.save(user);
         Student student=studentOpt.get();
         student.setUser(savedUser);
@@ -166,7 +177,6 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-
     public List<SearchDto> getAllStudentsByName(String uname) {
         List<User> users = repository.findAllByUsername(uname);
         return users.stream().map(user -> {
@@ -178,6 +188,7 @@ public class UserServiceImpl implements UserService {
             }
             return searchDto;
         }).toList();
+    }
 
     public boolean blockUser(Long id, BlockRequest request) {
         Optional<User> blockerOpt=repository.findByUsername(contextUser.getUser().getUsername());

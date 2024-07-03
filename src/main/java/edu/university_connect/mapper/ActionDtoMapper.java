@@ -16,7 +16,5 @@ public interface ActionDtoMapper {
 
     Action dtoToEntity(ActionCreateRequest request);
     Action dtoToEntity(ActionUpdateRequest request);
-    @Mapping(target = "createdBy", ignore = true)
-    @Mapping(target = "lastModifiedBy", ignore = true)
     ActionDto entityToDto(Action action);
 }

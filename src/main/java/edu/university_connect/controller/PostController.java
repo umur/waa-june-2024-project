@@ -11,6 +11,7 @@ import edu.university_connect.service.reply.ReplyService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -25,6 +26,7 @@ public class PostController {
     private final MessagingService messagingService;
 
     @GetMapping
+    @PreAuthorize("hasAuthority('view_post_list')")
     public ResponseEntity<ApiResponse<List<PostDto>>> getAll() {
         String responseMessage = messagingService
                 .getResponseMessage(AppStatusCode.S20001, "post");
@@ -32,6 +34,7 @@ public class PostController {
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasAuthority('view_post')")
     public ResponseEntity<ApiResponse<PostDto>> getById(@PathVariable Long id) {
         String responseMessage = messagingService
                 .getResponseMessage(AppStatusCode.S20001, "post");
@@ -39,6 +42,7 @@ public class PostController {
     }
 
     @GetMapping("/{id}/replies")
+    @PreAuthorize("hasAuthority('view_reply_list')")
     public ResponseEntity<ApiResponse<List<ReplyDto>>> getByPostId(@PathVariable("id") Long id) {
         String responseMessage = messagingService
                 .getResponseMessage(AppStatusCode.S20001, "reply");
@@ -46,6 +50,7 @@ public class PostController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAuthority('delete_post')")
     public ResponseEntity<ApiResponse<Boolean>> delete(@PathVariable Long id) {
         boolean response = postService.delete(id);
         String message = messagingService.getResponseMessage(AppStatusCode.S20005, "post");
@@ -53,6 +58,7 @@ public class PostController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasAuthority('modify_post')")
     public ResponseEntity<ApiResponse<PostDto>> update(@Valid @RequestBody PostRequest postRequest,
                                                         @PathVariable Long id) {
         PostDto updatedPost = postService.update(id, postRequest);
@@ -61,6 +67,7 @@ public class PostController {
     }
 
     @PostMapping
+    @PreAuthorize("hasAuthority('create_post')")
     public ResponseEntity<ApiResponse<PostDto>> create(@Valid @RequestBody PostRequest postRequest) {
         PostDto postDto = postService.create(postRequest);
         String message = messagingService.getResponseMessage(AppStatusCode.S20002, "post");
