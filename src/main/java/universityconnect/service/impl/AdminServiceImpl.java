@@ -11,7 +11,6 @@ import universityconnect.repository.SurveyRepository;
 import universityconnect.service.AdminService;
 import universityconnect.util.PasswordEncoderUtil;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
