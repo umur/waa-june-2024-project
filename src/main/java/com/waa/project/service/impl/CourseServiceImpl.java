@@ -1,6 +1,6 @@
 package com.waa.project.service.impl;
 
-import com.waa.project.dto.responses.CourseResponseDTO;
+import com.waa.project.dto.responses.CourseResponseDto;
 import com.waa.project.entity.Course;
 import com.waa.project.repository.CourseRepository;
 import com.waa.project.service.CourseService;
@@ -21,16 +21,16 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public List<CourseResponseDTO> getAllCourses() {
-        return courseRepository.findAll().stream().map(course -> courseMapper.map(course, CourseResponseDTO.class))
+    public List<CourseResponseDto> getAllCourses() {
+        return courseRepository.findAll().stream().map(course -> courseMapper.map(course, CourseResponseDto.class))
                               .collect(Collectors.toList());
     }
 
     @Override
-    public CourseResponseDTO getCourseById(Long id) {
+    public CourseResponseDto getCourseById(Long id) {
         Course course = courseRepository.findById(id).orElse(null);
         if (course != null) {
-            return courseMapper.map(course, CourseResponseDTO.class);
+            return courseMapper.map(course, CourseResponseDto.class);
         } else {
             return null;
         }

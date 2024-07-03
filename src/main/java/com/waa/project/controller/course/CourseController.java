@@ -1,6 +1,6 @@
 package com.waa.project.controller.course;
 
-import com.waa.project.dto.responses.CourseResponseDTO;
+import com.waa.project.dto.responses.CourseResponseDto;
 import com.waa.project.service.CourseService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,12 +19,12 @@ public class CourseController {
     }
 
     @GetMapping("")
-    public List<CourseResponseDTO> getAllCourses() {
+    public List<CourseResponseDto> getAllCourses() {
         return courseService.getAllCourses();
     }
 
     @GetMapping("/{id}")
-    public CourseResponseDTO getCourse(@PathVariable Long id) {
+    public CourseResponseDto getCourse(@PathVariable Long id) {
         return courseService.getCourseById(id);
     }
 }

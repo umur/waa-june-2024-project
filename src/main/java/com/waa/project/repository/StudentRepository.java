@@ -1,7 +1,6 @@
 package com.waa.project.repository;
 
 
-import com.waa.project.dto.requests.EventDTO;
 import com.waa.project.entity.Event;
 import com.waa.project.entity.Student;
 import org.springframework.data.jpa.repository.Query;
