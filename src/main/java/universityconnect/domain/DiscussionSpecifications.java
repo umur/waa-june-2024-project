@@ -20,7 +20,7 @@ public class DiscussionSpecifications {
             }
 
             if (discussionSearchCriteria.getCategoryName() != null) {
-                predicate = builder.and(predicate, builder.equal(root.get("category").get("name"), discussionSearchCriteria.getCategoryName()));
+                predicate = builder.and(predicate, builder.like(root.get("category").get("name"), discussionSearchCriteria.getCategoryName()));
             }
 
             return predicate;
