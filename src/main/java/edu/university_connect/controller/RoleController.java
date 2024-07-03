@@ -13,6 +13,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -31,6 +32,7 @@ public class RoleController {
         this.messagingService = messagingService;
     }
     @GetMapping("/all")
+    @PreAuthorize("hasAuthority('view_role')")
     public ResponseEntity<ApiResponse<List<RoleDto>>> getAll() {
         List<RoleDto> response= service.getAll();
         ApiResponse<List<RoleDto>> apiResponse =  new ApiResponse<List<RoleDto>>();
@@ -40,6 +42,7 @@ public class RoleController {
     }
 
     @GetMapping("")
+    @PreAuthorize("hasAuthority('view_role')")
     public ResponseEntity<ApiResponse<Page<RoleDto>>> getPage(Pageable pageableReq) {
         Pageable pageable = PageRequest.of(pageableReq.getPageNumber()>0? pageableReq.getPageNumber()-1 : 0,
                 pageableReq.getPageSize() ,
@@ -52,6 +55,7 @@ public class RoleController {
 
     }
     @PostMapping("")
+    @PreAuthorize("hasAuthority('create_role')")
     public ResponseEntity<ApiResponse<RoleDto>> create(@Valid @RequestBody RoleCreateRequest createRequest) {
         RoleDto response= service.create(createRequest);
         ApiResponse<RoleDto> apiResponse =  new ApiResponse<RoleDto>();
@@ -62,6 +66,7 @@ public class RoleController {
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasAuthority('view_role')")
     public ResponseEntity<ApiResponse<RoleDto>> get(@PathVariable Long id) {
         RoleDto response= service.getById(id);
         ApiResponse<RoleDto> apiResponse =  new ApiResponse<RoleDto>();
@@ -72,6 +77,7 @@ public class RoleController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasAuthority('modify_role')")
     public ResponseEntity<ApiResponse<RoleDto>> update(@Valid @RequestBody RoleUpdateRequest updateRequest,
                                                        @PathVariable Long id) {
         RoleDto response= service.update(id,updateRequest);
@@ -82,6 +88,7 @@ public class RoleController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAuthority('delete_role')")
     public ResponseEntity<ApiResponse<Boolean>> delete(@PathVariable Long id) {
         boolean response= service.delete(id);
         ApiResponse<Boolean> apiResponse =  new ApiResponse<Boolean>();

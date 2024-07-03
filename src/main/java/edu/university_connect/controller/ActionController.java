@@ -13,6 +13,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -31,6 +32,7 @@ public class ActionController {
         this.messagingService = messagingService;
     }
     @GetMapping("/all")
+    @PreAuthorize("hasAuthority('view_action_list')")
     public ResponseEntity<ApiResponse<List<ActionDto>>> getAll() {
         List<ActionDto> response= service.getAll();
         ApiResponse<List<ActionDto>> apiResponse =  new ApiResponse<List<ActionDto>>();
@@ -40,6 +42,7 @@ public class ActionController {
     }
 
     @GetMapping("")
+    @PreAuthorize("hasAuthority('view_action_list')")
     public ResponseEntity<ApiResponse<Page<ActionDto>>> getPage(Pageable pageableReq) {
         Pageable pageable = PageRequest.of(pageableReq.getPageNumber()>0? pageableReq.getPageNumber()-1 : 0,
                 pageableReq.getPageSize() ,
@@ -52,6 +55,7 @@ public class ActionController {
 
     }
     @PostMapping("")
+    @PreAuthorize("hasAuthority('create_action')")
     public ResponseEntity<ApiResponse<ActionDto>> create(@Valid @RequestBody ActionCreateRequest createRequest) {
         ActionDto response= service.create(createRequest);
         ApiResponse<ActionDto> apiResponse =  new ApiResponse<ActionDto>();
@@ -62,6 +66,7 @@ public class ActionController {
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasAuthority('view_action')")
     public ResponseEntity<ApiResponse<ActionDto>> get(@PathVariable Long id) {
         ActionDto response= service.getById(id);
         ApiResponse<ActionDto> apiResponse =  new ApiResponse<ActionDto>();
@@ -72,6 +77,7 @@ public class ActionController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasAuthority('modify_action')")
     public ResponseEntity<ApiResponse<ActionDto>> update(@Valid @RequestBody ActionUpdateRequest updateRequest,
                                                          @PathVariable Long id) {
         ActionDto response= service.update(id,updateRequest);
@@ -82,6 +88,7 @@ public class ActionController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAuthority('delete_action')")
     public ResponseEntity<ApiResponse<Boolean>> delete(@PathVariable Long id) {
         boolean response= service.delete(id);
         ApiResponse<Boolean> apiResponse =  new ApiResponse<Boolean>();
