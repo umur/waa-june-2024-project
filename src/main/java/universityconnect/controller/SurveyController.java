@@ -40,7 +40,7 @@ public class SurveyController {
         return surveyService.createSurvey(survey);
     }
 
-    @PostMapping
+    @PostMapping("/questions")
     public QuestionDTO createQuestion(@RequestBody QuestionDTO question) {
         return surveyService.createQuestion(question);
     }

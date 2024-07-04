@@ -28,6 +28,8 @@ public class EventAttendanceServiceImpl implements EventAttendanceService {
         attendance.setStudent(student);
         Event event = eventRepository.findById(eventAttendanceDTO.getEventId()).orElseThrow(()->new ResourceNotFoundException("Event attendance not found with id: "+eventAttendanceDTO.getEventId()));
         attendance.setEvent(event);
+        attendance.setCheckInTime(eventAttendanceDTO.getCheckInTime());
+        attendance.setCheckOutTime(eventAttendanceDTO.getCheckOutTime());
         EventAttendance savedAttendance = attendanceRepository.save(attendance);
         return attendanceMapper.eventAttendanceToEventAttendanceDTO(savedAttendance);
     }
@@ -52,7 +54,8 @@ public class EventAttendanceServiceImpl implements EventAttendanceService {
         Student student = studentRepository.findById(eventAttendanceDTO.getStudentId()).orElseThrow(()->new ResourceNotFoundException("Student not found with id: "+eventAttendanceDTO.getStudentId()));
         attendance.setStudent(student);
         attendance.setStudent(student);
-        return attendanceMapper.eventAttendanceToEventAttendanceDTO(attendance);
+        EventAttendance savedAttendance = attendanceRepository.save(attendance);
+        return attendanceMapper.eventAttendanceToEventAttendanceDTO(savedAttendance);
     }
 
     @Override
