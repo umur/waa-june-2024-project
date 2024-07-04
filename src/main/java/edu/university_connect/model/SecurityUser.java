@@ -25,14 +25,16 @@ public class SecurityUser implements UserDetails {
     private boolean enabled;
     private User user;
 
-    public SecurityUser(User user){
-        Set<Role> roles= user.getRoles();
-        Set<String> actions=roles.stream()
+    public SecurityUser(User user) {
+        Set<Role> roles = user.getRoles();
+        Set<String> actions = roles.stream()
                 .flatMap(role -> role.getActions().stream())
                 .collect(Collectors.toSet());
-        Collection<SimpleGrantedAuthority> directAuthorities=actions.stream()
+        Collection<SimpleGrantedAuthority> directAuthorities = actions.stream()
                 .map(SimpleGrantedAuthority::new).toList();
         Collection<SimpleGrantedAuthority> authorities = new ArrayList<>(directAuthorities);
+        Collection<SimpleGrantedAuthority> roleList = new ArrayList<>(roles.stream().map(x -> new SimpleGrantedAuthority("ROLE_" + x.getCode())).toList());
+        authorities.addAll(roleList);
         this.id = user.getId();
         this.username = user.getUsername();
         this.password = user.getPassword();
@@ -40,7 +42,7 @@ public class SecurityUser implements UserDetails {
         this.accountNonLocked = true;
         this.credentialsNonExpired = true;
         this.enabled = user.isEnabled();
-        this.authorities =   authorities;
+        this.authorities = authorities;
         this.user = user;
     }
 

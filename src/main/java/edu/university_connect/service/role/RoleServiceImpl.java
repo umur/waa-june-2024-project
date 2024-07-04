@@ -56,6 +56,7 @@ public class RoleServiceImpl implements RoleService {
         if(roleWithCode.isPresent()){
             throw ServiceException.of(AppStatusCode.E40006,"role","code="+createRequest.getCode());
         }
+
         //check valid action codes
         Role role= RoleDtoMapper.MAPPER.dtoToEntity(createRequest);
         Role savedRole=repository.save(role);

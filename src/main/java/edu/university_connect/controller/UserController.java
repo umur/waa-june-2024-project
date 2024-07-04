@@ -133,7 +133,7 @@ public class UserController {
     }
 
     @PostMapping("/{id}/blocked-users")
-    @PreAuthorize("hasAuthority('update_profile')")
+    @PreAuthorize("hasAuthority('modify_profile')")
     public ResponseEntity<ApiResponse<Boolean>> blockUser(@Valid @RequestBody BlockRequest request,
                                                                  @PathVariable Long id) {
         boolean response= service.blockUser(id,request);
@@ -144,7 +144,7 @@ public class UserController {
     }
 
     @DeleteMapping("/{id}/blocked-users")
-    @PreAuthorize("hasAuthority('update_profile')")
+    @PreAuthorize("hasAuthority('modify_profile')")
     public ResponseEntity<ApiResponse<Boolean>> unBlockUser(@Valid @RequestBody BlockRequest request,
                                                              @PathVariable Long id) {
         boolean response= service.unblockUser(id,request);

@@ -11,18 +11,15 @@ import edu.university_connect.model.enums.StorageResourceType;
 import edu.university_connect.repository.ResourceRepository;
 import edu.university_connect.service.storage.StorageService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.nio.file.Path;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.stream.Stream;
 
 @RequiredArgsConstructor
 @Service
@@ -32,8 +29,6 @@ public class ResourceServiceImpl implements ResourceService {
     private final ResourceRepository repository;
     private final StorageService storageService;
     private final ContextUser contextUser;
-
-
 
     @Override
     public List<ResourceDto> getAll() {
@@ -71,6 +66,10 @@ public class ResourceServiceImpl implements ResourceService {
     public ResourceDto update(Long id, ResourceRequest updateRequest) {
         Optional<Resource> resourceOpt = repository.findById(id);
         if (resourceOpt.isPresent()) {
+            if(contextUser.isNormalUser() &&
+                    !contextUser.getLoginUser().getUser().getId().equals(resourceOpt.get().getUser().getId())){
+                throw ServiceException.of(AppStatusCode.E40010, "resource");
+            }
             Resource resource = resourceOpt.get();
             resource.setTitle(updateRequest.getDescription());
             resource.setDescription(updateRequest.getTitle());
@@ -90,8 +89,16 @@ public class ResourceServiceImpl implements ResourceService {
 
     @Override
     public boolean delete(Long id) {
-        if (Objects.nonNull(getById(id))) {
+        Optional<Resource> resourceOpt = repository.findById(id);
+        if (resourceOpt.isPresent()) {
+            if(contextUser.isNormalUser() &&
+                    !contextUser.getLoginUser().getUser().getId().equals(resourceOpt.get().getUser().getId())){
+                throw ServiceException.of(AppStatusCode.E40010, "resource");
+            }
             repository.deleteById(id);
+        }
+        else{
+            throw ServiceException.of(AppStatusCode.E40000, "resource");
         }
         return true;
     }
@@ -111,6 +118,10 @@ public class ResourceServiceImpl implements ResourceService {
         Optional<Resource> resourceOpt = repository.findById(id);
         if (resourceOpt.isEmpty()) {
             throw ServiceException.of(AppStatusCode.E40000, "resource", "id = " + id);
+        }
+        if(contextUser.isNormalUser() &&
+                !contextUser.getLoginUser().getUser().getId().equals(resourceOpt.get().getUser().getId())){
+            throw ServiceException.of(AppStatusCode.E40010, "resource");
         }
         Resource resource=resourceOpt.get();
         String url=storageService.store(files,contextUser.getLoginUser().getUsername(), StorageResourceType.RESOURCE.name(),

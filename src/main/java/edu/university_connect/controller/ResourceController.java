@@ -7,7 +7,6 @@ import edu.university_connect.model.contract.response.ApiResponse;
 import edu.university_connect.model.enums.AppStatusCode;
 import edu.university_connect.service.MessagingService;
 import edu.university_connect.service.resource.ResourceService;
-import edu.university_connect.service.storage.StorageService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.Resource;
@@ -23,11 +22,10 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/resources")
+@RequestMapping("/resources")
 @RequiredArgsConstructor
 public class ResourceController {
     private final ResourceService service;
-    private final StorageService storageService;
 
     private final MessagingService messagingService;
 
