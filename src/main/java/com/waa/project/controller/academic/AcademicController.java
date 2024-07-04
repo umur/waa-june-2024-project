@@ -43,6 +43,11 @@ public class AcademicController {
         return academicResService.save(dto);
     }
 
+    @GetMapping({"/admins/academic/search", "/students/academic/search"})
+    public List<AcademicResourceDto> search(@RequestParam String search) {
+        return academicResService.searchByResourceName(search);
+    }
+
     @DeleteMapping({"/admins/academic/{Id}", "/students/academic/{Id}"})
     public String delete(@PathVariable Long Id) {
 

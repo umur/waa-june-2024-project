@@ -18,4 +18,6 @@ public interface FeedbackService {
     List<FeedbackDto> findFeedbackByCategory(Long id);
 
     List<Object[]> findFeedbackByCategoryCount();
+
+    List<FeedbackDto> search(String search);
 }

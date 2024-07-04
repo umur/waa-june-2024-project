@@ -71,4 +71,12 @@ public class AcademicResServiceImp implements AcademicResService {
         academicResRepository.deleteById(fid);
         return "AcademicResource is deleted.";
     }
+
+    @Override
+    public List<AcademicResourceDto> searchByResourceName(String resname) {
+        List<AcademicResourceDto> result = new ArrayList<>();
+        List<AcademicResource>    res    = academicResRepository.findAcademicResourceByResourceTypeName(resname);
+        res.forEach(ar -> result.add(modelMapper.map(ar, AcademicResourceDto.class)));
+        return result;
+    }
 }

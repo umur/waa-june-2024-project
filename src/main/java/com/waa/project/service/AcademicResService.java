@@ -14,4 +14,6 @@ public interface AcademicResService {
     String update(AcademicResourceDto dto, Long fid);
 
     String delete(Long fid);
+
+    List<AcademicResourceDto> searchByResourceName(String resname);
 }

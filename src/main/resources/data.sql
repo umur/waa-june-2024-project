@@ -53,7 +53,7 @@ VALUES
 ('Coding Workshop', 'Hands-on coding workshop for beginners.', '2025-04-22', '11:00:00');
 
 -- temp
-INSERT INTO `waa-demo`.courses (name, code, major_id) VALUES
+INSERT INTO courses (name, code, major_id) VALUES
 ('Introduction to Programming', 'CS101', 1),
 ('Algorithm', 'CS102', 1),
 ('Business Accounting', 'MBA101', 2),
