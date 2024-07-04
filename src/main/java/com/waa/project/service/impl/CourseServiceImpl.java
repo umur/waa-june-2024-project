@@ -2,8 +2,11 @@ package com.waa.project.service.impl;
 
 import com.waa.project.dto.responses.CourseResponseDto;
 import com.waa.project.entity.Course;
+import com.waa.project.exception.ResourceNotFoundException;
 import com.waa.project.repository.CourseRepository;
 import com.waa.project.service.CourseService;
+import com.waa.project.util.CourseErrorMessage;
+import com.waa.project.util.EventsErrorMessage;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
@@ -32,7 +35,7 @@ public class CourseServiceImpl implements CourseService {
         if (course != null) {
             return courseMapper.map(course, CourseResponseDto.class);
         } else {
-            return null;
+            throw new ResourceNotFoundException(CourseErrorMessage.courseNotFound(id));
         }
     }
 }
