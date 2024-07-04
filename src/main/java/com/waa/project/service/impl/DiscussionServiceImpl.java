@@ -74,6 +74,7 @@ public class DiscussionServiceImpl implements DiscussionService {
 
         Discussion requestData = mapper.map(discussionDto, Discussion.class);
         requestData.setStudent(userData.getId());
+        requestData.setId(id);
 
         DiscussionCategory category = discussionCategoryRepository.findById(discussionDto.getCategory_id())
                                                                   .orElseThrow(() -> new RuntimeException(
