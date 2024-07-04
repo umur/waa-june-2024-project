@@ -36,10 +36,9 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> {
                     auth
-                            .requestMatchers("/users/login").permitAll()
-                            .requestMatchers("/users/refreshToken").permitAll()
-                            .requestMatchers("/users/**").hasRole("ADMIN")
+                            .requestMatchers("/users/login/**").permitAll()
                             .requestMatchers("/admins/**").hasRole("ADMIN")
+                            .requestMatchers("/students/**").permitAll()
                             .anyRequest().authenticated();
                 })
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

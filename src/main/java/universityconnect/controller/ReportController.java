@@ -34,11 +34,11 @@ public class ReportController {
         return ResponseEntity.ok(report);
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<ReportDTO> updateReport(@PathVariable long id,@RequestBody ReportDTO reportDTO){
-        ReportDTO report = reportService.updateReport(id,reportDTO);
-        return ResponseEntity.ok(report);
-    }
+//    @PutMapping("/{id}")
+//    public ResponseEntity<ReportDTO> updateReport(@PathVariable long id,@RequestBody ReportDTO reportDTO){
+//        ReportDTO report = reportService.updateReport(id,reportDTO);
+//        return ResponseEntity.ok(report);
+//    }
 
     @DeleteMapping("/{id}")
     public void deleteReport(@PathVariable long id){
