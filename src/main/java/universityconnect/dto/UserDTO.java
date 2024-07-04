@@ -10,7 +10,6 @@ public class UserDTO {
     private String password;
     private String email;
     private String address;
-    private AuditDataDTO auditData;
     private Role role;
     private int year;
     private String major;

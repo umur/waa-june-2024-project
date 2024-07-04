@@ -2,7 +2,6 @@ package universityconnect.controller;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import universityconnect.dto.ProfileDTO;
@@ -19,9 +18,20 @@ public class StudentController {
     private StudentService studentService;
 
     @GetMapping
-    public ResponseEntity<List<StudentDTO>> getAllStudents() {
-        List<StudentDTO> students = studentService.getAllStudents();
-        return ResponseEntity.ok(students);
+    public ResponseEntity<List<StudentDTO>> getAllStudents(@RequestParam(name = "year", required = false) Integer year,
+                                                           @RequestParam(name = "major", required = false) String major) {
+        if (year != null && major != null) {
+            List<StudentDTO> students = studentService.getStudentsByYearAndMajor(year, major);
+            return ResponseEntity.ok(students);
+        } else if (year != null) {
+            List<StudentDTO> students = studentService.getStudentsByYear(year);
+            return ResponseEntity.ok(students);
+        } else if (major != null) {
+            List<StudentDTO> students = studentService.getStudentsByMajor(major);
+            return ResponseEntity.ok(students);
+        }
+        return ResponseEntity.ok(studentService.getAllStudents());
+
     }
 
     @GetMapping("/{id}")
@@ -30,16 +40,16 @@ public class StudentController {
         return ResponseEntity.ok(studentDTO);
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<StudentDTO> updateStudent(@PathVariable long id, @RequestBody StudentDTO studentDTO) {
-        StudentDTO student = studentService.updateStudent(id, studentDTO);
-        return ResponseEntity.ok(student);
-    }
-
-    @DeleteMapping("/{id}")
-    public void deleteStudent(@PathVariable long id) {
-        studentService.deleteStudent(id);
-    }
+//    @PutMapping("/{id}")
+//    public ResponseEntity<StudentDTO> updateStudent(@PathVariable long id, @RequestBody StudentDTO studentDTO) {
+//        StudentDTO student = studentService.updateStudent(id, studentDTO);
+//        return ResponseEntity.ok(student);
+//    }
+//
+//    @DeleteMapping("/{id}")
+//    public void deleteStudent(@PathVariable long id) {
+//        studentService.deleteStudent(id);
+//    }
 
     @GetMapping("/{id}/profiles")
     public ResponseEntity<ProfileDTO> getProfileByStudentId(@PathVariable long id) {
@@ -47,19 +57,5 @@ public class StudentController {
         return ResponseEntity.ok(profileDTO);
     }
 
-    @GetMapping("/year/{year}")
-    public List<StudentDTO> getStudentsByYear(@PathVariable int year) {
-        return studentService.getStudentsByYear(year);
-    }
-
-    @GetMapping("/major/{major}")
-    public List<StudentDTO> getStudentsByMajor(@PathVariable String major) {
-        return studentService.getStudentsByMajor(major);
-    }
-
-    @GetMapping("/year/{year}/major/{major}")
-    public List<StudentDTO> getStudentsByYearAndMajor(@PathVariable int year, @PathVariable String major) {
-        return studentService.getStudentsByYearAndMajor(year, major);
-    }
 
 }

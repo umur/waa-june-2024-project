@@ -36,18 +36,10 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> {
                     auth
-                            .requestMatchers("/users/**").permitAll()
-                            .requestMatchers("/students/**").permitAll()
-                            .requestMatchers("/profiles/**").permitAll()
-                            .requestMatchers("/reports/**").permitAll()
-                            .requestMatchers("/blocks/**").permitAll()
-                            .requestMatchers("/resources/**").permitAll()
-                            .requestMatchers("/resource-categories/**").permitAll()
-                            .requestMatchers("/events/**").permitAll()
-                            .requestMatchers("/discussions/**").permitAll()
-                            .requestMatchers("/discussion-categories/**").permitAll()
-//                            .requestMatchers("/admins/**").hasRole("ADMIN")
-//                            .requestMatchers("/students/**").permitAll()
+                            .requestMatchers("/users/login").permitAll()
+                            .requestMatchers("/users/refreshToken").permitAll()
+                            .requestMatchers("/users/**").hasRole("ADMIN")
+                            .requestMatchers("/admins/**").hasRole("ADMIN")
                             .anyRequest().authenticated();
                 })
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

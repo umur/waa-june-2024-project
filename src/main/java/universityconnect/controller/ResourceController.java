@@ -70,11 +70,11 @@ public class ResourceController {
         return ResponseEntity.ok(resource);
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<ResourceDTO> updateResource(@PathVariable long id, @RequestBody ResourceDTO resourceDTO){
-        ResourceDTO resource = resourceService.updateResource(id,resourceDTO);
-        return ResponseEntity.ok(resource);
-    }
+//    @PutMapping("/{id}")
+//    public ResponseEntity<ResourceDTO> updateResource(@PathVariable long id, @RequestBody ResourceDTO resourceDTO){
+//        ResourceDTO resource = resourceService.updateResource(id,resourceDTO);
+//        return ResponseEntity.ok(resource);
+//    }
 
     @DeleteMapping("/{id}")
     public void deleteResource(@PathVariable long id){

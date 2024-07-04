@@ -6,7 +6,6 @@ import universityconnect.domain.*;
 import universityconnect.dto.UserDTO;
 import universityconnect.exception.EmailAlreadyExistsException;
 import universityconnect.exception.ResourceNotFoundException;
-import universityconnect.mapper.StudentMapper;
 import universityconnect.mapper.UserMapper;
 import universityconnect.repository.*;
 import universityconnect.service.UserService;
@@ -102,6 +101,12 @@ public class UserServiceImpl implements UserService {
         return auditData;
     }
 
+    private AuditData updateDefaultAuditData(AuditData auditData) {
+        auditData.setUpdatedBy("ADMIN");
+        auditData.setUpdatedOn(LocalDate.now());
+        return auditData;
+    }
+
     @Override
     public UserDTO getUserById(Long id) {
         User user = userRepository.findById(id)
@@ -128,8 +133,41 @@ public class UserServiceImpl implements UserService {
         existingUser.setPassword(userDTO.getPassword());
         existingUser.setRole(userDTO.getRole());
 
-        User updatedUser = userRepository.save(existingUser);
+        User user = switch (existingUser.getRole().name()) {
+            case "STUDENT" -> updateStudent(userDTO);
+            case "ADMIN" -> updateAdmin(userDTO);
+            default -> throw new IllegalArgumentException("Unsupported role: " + userDTO.getRole());
+        };
+
+        User updatedUser = userRepository.save(user);
         return userMapper.userToUserDTO(updatedUser);
+    }
+
+    private User updateStudent(UserDTO userDTO){
+        Student existingStudent = studentRepository.findById(userDTO.getId())
+                .orElseThrow(() -> new ResourceNotFoundException("Student Not Found with ID: " + userDTO.getId()));
+
+        existingStudent.setMajor(userDTO.getMajor());
+        existingStudent.setYear(userDTO.getYear());
+
+
+        existingStudent.setAuditData(updateDefaultAuditData(existingStudent.getAuditData()));
+
+        studentRepository.save(existingStudent);
+
+        return existingStudent;
+    }
+
+    private User updateAdmin(UserDTO userDTO){
+        Admin existingAdmin = adminRepository.findById(userDTO.getId())
+                .orElseThrow(() -> new ResourceNotFoundException("Admin Not Found with ID: " + userDTO.getId()));
+
+        existingAdmin.setDepartment(userDTO.getDepartment());
+        existingAdmin.setAuditData(updateDefaultAuditData(existingAdmin.getAuditData()));
+
+        adminRepository.save(existingAdmin);
+
+        return existingAdmin;
     }
 
     @Override
