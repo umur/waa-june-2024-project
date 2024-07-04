@@ -28,5 +28,4 @@ public class ModerationReport extends MetaData {
 
     private String actionComment;
 
-
 }
