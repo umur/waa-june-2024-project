@@ -3,6 +3,7 @@ package universityconnect.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import universityconnect.domain.Student;
 import universityconnect.domain.SurveyStudent;
 import universityconnect.dto.SurveyStudentDTO;
@@ -17,6 +18,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class SurveyStudentServiceImpl implements SurveyStudentService {
 
