@@ -4,6 +4,8 @@ import edu.university_connect.domain.entity.User;
 import edu.university_connect.domain.entity.discussionthread.Post;
 import lombok.Data;
 
+import java.time.LocalDateTime;
+
 @Data
 public class ModerationReportDto {
     private Long id;
@@ -12,4 +14,8 @@ public class ModerationReportDto {
     private PostDto post;
     private boolean actionTaken;
     private String actionComment;
+    LocalDateTime createdAt;
+    String createdBy;
+    LocalDateTime lastModifiedAt;
+    String lastModifiedBy;
 }
