@@ -11,5 +11,5 @@ public class DiscussionCommentsDto {
     private String studentFirstName;
     private String studentLastName;
     private Long   discussionId;
-    private Long   parentComment_id;
+    private Long   parentCommentIdId;
 }

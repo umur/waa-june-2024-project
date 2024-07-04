@@ -41,7 +41,7 @@ public class SubCommentServiceImpl implements SubCommentService {
         DiscussionComments requestData = mapper.map(commentsDto, DiscussionComments.class);
         requestData.setStudent(getUserId(user));
 
-        DiscussionComments parentComment = repository.findById(commentsDto.getParentComment_id())
+        DiscussionComments parentComment = repository.findById(commentsDto.getParentCommentIdId())
                                                      .orElseThrow(() -> new RuntimeException(
                                                              "Comment ID not found"));
 
