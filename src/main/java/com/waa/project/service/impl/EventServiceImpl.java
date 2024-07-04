@@ -6,9 +6,11 @@ import com.waa.project.dto.responses.EventsDto;
 import com.waa.project.dto.responses.StudentEventResponseDTO;
 import com.waa.project.entity.Event;
 import com.waa.project.entity.Student;
+import com.waa.project.exception.ResourceNotFoundException;
 import com.waa.project.repository.EventRepository;
 import com.waa.project.repository.StudentRepository;
 import com.waa.project.service.EventService;
+import com.waa.project.util.EventsErrorMessage;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
@@ -49,7 +51,7 @@ public class EventServiceImpl implements EventService {
         if (event != null) {
             return eventMapper.map(event, EventResponseDto.class);
         } else {
-            return null;
+            throw new ResourceNotFoundException(EventsErrorMessage.eventNotFound(id));
         }
     }
 
@@ -59,7 +61,7 @@ public class EventServiceImpl implements EventService {
         if (event != null) {
             eventRepository.delete(event);
         }else {
-            return;
+            throw new ResourceNotFoundException(EventsErrorMessage.eventNotFound(id));
         }
     }
 
@@ -71,7 +73,7 @@ public class EventServiceImpl implements EventService {
             Event updatedEvent = eventRepository.save(existingEvent);
             return eventMapper.map(updatedEvent, EventRequestDto.class);
         } else {
-            return null;
+            throw new ResourceNotFoundException(EventsErrorMessage.eventNotFound(id));
         }
 
     }
@@ -86,13 +88,13 @@ public class EventServiceImpl implements EventService {
             eventRepository.save(event);
             studentRepository.save(student);
             return eventMapper.map(event, EventRequestDto.class);
+        } else {
+            throw new ResourceNotFoundException(EventsErrorMessage.eventNotFound(eventId));
         }
-
-        return null;
     }
 
     @Override
-    public String removeEventReservation(Long eventId, Long studentId) {
+    public void removeEventReservation(Long eventId, Long studentId) {
         Event event = eventRepository.findById(eventId).orElse(null);
         Student student = studentRepository.findById(studentId).orElse(null);
         if (event != null && student != null) {
@@ -100,10 +102,9 @@ public class EventServiceImpl implements EventService {
             student.getEventList().remove(event);
             eventRepository.save(event);
             studentRepository.save(student);
-            return "Reservation removed.";
+        } else {
+            throw new ResourceNotFoundException(EventsErrorMessage.eventNotFound(eventId));
         }
-        return "Student or Event not found.";
-
     }
     @Override
     public List<EventsDto> getAttendeesForEvent(Long eventId) {

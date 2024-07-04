@@ -2,6 +2,9 @@ package com.waa.project.controller.course;
 
 import com.waa.project.dto.responses.CourseResponseDto;
 import com.waa.project.service.CourseService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,12 +22,13 @@ public class CourseController {
     }
 
     @GetMapping("")
-    public List<CourseResponseDto> getAllCourses() {
-        return courseService.getAllCourses();
+    public ResponseEntity<List<CourseResponseDto>> getAllCourses() {
+
+        return new ResponseEntity<>(courseService.getAllCourses(), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public CourseResponseDto getCourse(@PathVariable Long id) {
-        return courseService.getCourseById(id);
+    public ResponseEntity<CourseResponseDto> getCourse(@PathVariable Long id) {
+        return new ResponseEntity<>(courseService.getCourseById(id), HttpStatus.OK);
     }
 }
