@@ -11,10 +11,5 @@ public class QuestionDTO {
 
     public QuestionDTO() {}
 
-    public QuestionDTO(Long id, String title, List<Long> answerIds) {
-        this.id = id;
-        this.title = title;
-        this.answerIds = answerIds;
-    }
 }
 

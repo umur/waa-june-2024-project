@@ -1,8 +1,9 @@
 package universityconnect.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import universityconnect.domain.*;
+import universityconnect.dto.AnswerDTO;
 import universityconnect.dto.QuestionDTO;
 import universityconnect.dto.SurveyDTO;
 import universityconnect.dto.SurveyStudentDTO;
@@ -17,41 +18,47 @@ public class SurveyController {
     @Autowired
     private SurveyService surveyService;
 
-    @Autowired
-    private SurveyStudentService surveyStudentService;
-
     @GetMapping
-    public List<SurveyDTO> getAllSurveys() {
-        return surveyService.getAllSurveys();
+    public ResponseEntity<List<SurveyDTO>> getAllSurveys() {
+        return ResponseEntity.ok(surveyService.getAllSurveys());
     }
 
     @GetMapping("/{id}")
-    public SurveyDTO getSurveyById(@PathVariable Long id) {
-        return surveyService.getSurveyById(id);
-    }
-
-    @GetMapping("/student/{studentId}")
-    public List<SurveyStudent> getSurveysByStudent(@PathVariable Long studentId) {
-        return surveyStudentService.getSurveysByStudent(studentId);
+    public ResponseEntity<SurveyDTO> getSurveyById(@PathVariable Long id) {
+        return ResponseEntity.ok(surveyService.getSurveyById(id));
     }
 
     @PostMapping
-    public SurveyDTO createSurvey(@RequestBody SurveyDTO survey) {
-        return surveyService.createSurvey(survey);
-    }
-
-    @PostMapping("/questions")
-    public QuestionDTO createQuestion(@RequestBody QuestionDTO question) {
-        return surveyService.createQuestion(question);
-    }
-
-    @PostMapping("/student/{studentId}")
-    public SurveyStudentDTO submitSurvey(@PathVariable Long studentId, @RequestBody SurveyStudentDTO surveyStudent) {
-        return surveyStudentService.submitSurvey(studentId, surveyStudent);
+    public ResponseEntity<SurveyDTO> createSurvey(@RequestBody SurveyDTO survey) {
+        return ResponseEntity.ok(surveyService.createSurvey(survey));
     }
 
     @DeleteMapping("/{id}")
     public void deleteSurvey(@PathVariable Long id) {
         surveyService.deleteSurvey(id);
     }
+
+    @PostMapping("{surveyId}/questions")
+    public ResponseEntity<QuestionDTO> createQuestion(@PathVariable Long surveyId, @RequestBody QuestionDTO question) {
+        return ResponseEntity.ok(surveyService.createQuestion(surveyId, question));
+    }
+
+    @GetMapping("{surveyId}/questions")
+    public ResponseEntity<List<QuestionDTO>> getQuestionsBySurvey(@PathVariable Long surveyId) {
+        return ResponseEntity.ok(surveyService.getQuestionsBySurvey(surveyId));
+    }
+
+    @PostMapping("{surveyId}/students/{studentId}/questions/{questionId}/answers")
+    public ResponseEntity<?> createAnswer(@PathVariable Long surveyId, @PathVariable Long questionId,
+                                          @PathVariable Long studentId, @RequestBody AnswerDTO answer) {
+        surveyService.createAnswer(surveyId, questionId, studentId, answer);
+        return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/students/{studentId}")
+    public ResponseEntity<List<SurveyStudentDTO>> getSurveysByStudent(@PathVariable Long studentId) {
+        return ResponseEntity.ok(surveyService.getSurveysByStudent(studentId));
+    }
+
+
 }
