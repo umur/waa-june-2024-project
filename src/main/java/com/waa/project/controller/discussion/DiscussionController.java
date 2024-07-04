@@ -1,4 +1,4 @@
-package com.waa.project.controller;
+package com.waa.project.controller.discussion;
 
 import com.waa.project.dto.DiscussionDto;
 import com.waa.project.service.DiscussionService;
@@ -40,14 +40,14 @@ public class DiscussionController {
     @PutMapping("/students/discussion/{id}")
     public ResponseEntity<?> updateDiscussion(
             @RequestBody DiscussionDto discussionDto,
-            @PathVariable long id,
+            @PathVariable("id") long id,
             @AuthenticationPrincipal User user
                                              ) {
         return ResponseEntity.ok(discussionService.updateDiscussion(id, discussionDto, user));
     }
 
     @DeleteMapping("/students/discussion/{id}")
-    public ResponseEntity<?> deleteDiscussion(@PathVariable long id, @AuthenticationPrincipal User user) {
+    public ResponseEntity<?> deleteDiscussion(@PathVariable("id") long id, @AuthenticationPrincipal User user) {
 
         return ResponseEntity.ok(discussionService.deleteDiscussion(id, user));
     }
