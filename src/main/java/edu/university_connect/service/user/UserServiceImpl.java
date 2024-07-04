@@ -21,8 +21,10 @@ import edu.university_connect.repository.UserRepository;
 import edu.university_connect.service.profile.ProfileService;
 import edu.university_connect.service.role.RoleService;
 import edu.university_connect.service.student.StudentService;
+import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -36,6 +38,9 @@ import java.util.*;
 @Transactional
 @Slf4j
 public class UserServiceImpl implements UserService {
+
+    @Autowired
+    private EntityManager entityManager;
 
     private final UserRepository repository;
     private final RoleService roleService;
@@ -191,12 +196,12 @@ public class UserServiceImpl implements UserService {
     }
 
     public boolean blockUser(Long id, BlockRequest request) {
-        Optional<User> blockerOpt=repository.findByUsername(contextUser.getUser().getUsername());
         Optional<User> blockedOpt=repository.findById(request.getUserId());
-        if(blockerOpt.isEmpty() || blockedOpt.isEmpty()){
+        if(blockedOpt.isEmpty()){
             throw ServiceException.of(AppStatusCode.E40000,request.getUserId().toString());
         }
-        User blocker=blockerOpt.get();
+        User blocker=contextUser.getLoginUser().getUser();
+        entityManager.merge(blocker);
         List<User> blockedUsers=blocker.getBlockedUsers();
         blockedUsers.add(blockedOpt.get());
         blocker.setBlockedUsers(blockedUsers);
@@ -206,12 +211,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean unblockUser(Long id, BlockRequest request) {
-        Optional<User> blockerOpt=repository.findByUsername(contextUser.getUser().getUsername());
         Optional<User> blockedOpt=repository.findById(request.getUserId());
-        if(blockerOpt.isEmpty() || blockedOpt.isEmpty()){
+        if(blockedOpt.isEmpty()){
             throw ServiceException.of(AppStatusCode.E40000,request.getUserId().toString());
         }
-        User blocker=blockerOpt.get();
+        User blocker=contextUser.getLoginUser().getUser();
         List<User> blockedUsers=blocker.getBlockedUsers();
         blockedUsers.remove(blockedOpt.get());
         blocker.setBlockedUsers(blockedUsers);
