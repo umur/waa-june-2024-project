@@ -2,6 +2,7 @@ package universityconnect.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import universityconnect.domain.*;
 import universityconnect.dto.UserDTO;
 import universityconnect.dto.UserResponse;
@@ -18,6 +19,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@Transactional
 public class UserServiceImpl implements UserService {
 
     @Autowired

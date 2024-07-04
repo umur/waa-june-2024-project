@@ -2,6 +2,7 @@ package universityconnect.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import universityconnect.domain.Question;
 import universityconnect.domain.Survey;
 import universityconnect.dto.QuestionDTO;
@@ -12,12 +13,12 @@ import universityconnect.mapper.SurveyMapper;
 import universityconnect.repository.QuestionRepository;
 import universityconnect.repository.SurveyRepository;
 import universityconnect.service.SurveyService;
-import universityconnect.service.SurveyStudentService;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class SurveyServiceImpl implements SurveyService {
 
