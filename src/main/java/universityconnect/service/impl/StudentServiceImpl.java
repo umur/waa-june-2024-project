@@ -5,9 +5,11 @@ import org.springframework.stereotype.Service;
 import universityconnect.domain.*;
 import universityconnect.dto.ProfileDTO;
 import universityconnect.dto.StudentDTO;
+import universityconnect.dto.StudentResponse;
 import universityconnect.exception.ResourceNotFoundException;
 import universityconnect.mapper.ProfileMapper;
 import universityconnect.mapper.StudentMapper;
+import universityconnect.mapper.StudentResponseMapper;
 import universityconnect.repository.*;
 import universityconnect.service.StudentService;
 
@@ -38,11 +40,14 @@ public class StudentServiceImpl implements StudentService {
     @Autowired
     private ProfileMapper profileMapper;
 
+    @Autowired
+    private StudentResponseMapper studentResponseMapper;
+
     @Override
-    public List<StudentDTO> getAllStudents() {
+    public List<StudentResponse> getAllStudents() {
         List<Student> students = studentRepository.findAll();
         return students.stream()
-                .map(studentMapper::studentToStudentDTO)
+                .map(studentResponseMapper::studentToStudentResponse)
                 .collect(Collectors.toList());
     }
 
@@ -65,10 +70,10 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    public StudentDTO getStudentById(Long id) {
+    public StudentResponse getStudentById(Long id) {
         Student student = studentRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Student Not Found with ID: " + id));
-        return studentMapper.studentToStudentDTO(student);
+        return studentResponseMapper.studentToStudentResponse(student);
     }
 
     @Override
@@ -85,23 +90,23 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    public List<StudentDTO> getStudentsByYear(int year) {
+    public List<StudentResponse> getStudentsByYear(int year) {
         return studentRepository.findByYear(year).stream()
-                .map(studentMapper::studentToStudentDTO)
+                .map(studentResponseMapper::studentToStudentResponse)
                 .collect(Collectors.toList());
     }
 
     @Override
-    public List<StudentDTO> getStudentsByMajor(String major) {
+    public List<StudentResponse> getStudentsByMajor(String major) {
         return studentRepository.findByMajor(major).stream()
-                .map(studentMapper::studentToStudentDTO)
+                .map(studentResponseMapper::studentToStudentResponse)
                 .collect(Collectors.toList());
     }
 
     @Override
-    public List<StudentDTO> getStudentsByYearAndMajor(int year, String major) {
+    public List<StudentResponse> getStudentsByYearAndMajor(int year, String major) {
         return studentRepository.findByYearAndMajor(year, major).stream()
-                .map(studentMapper::studentToStudentDTO)
+                .map(studentResponseMapper::studentToStudentResponse)
                 .collect(Collectors.toList());
     }
 

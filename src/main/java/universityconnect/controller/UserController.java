@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import universityconnect.domain.Report;
 import universityconnect.dto.ReportDTO;
 import universityconnect.dto.UserDTO;
+import universityconnect.dto.UserResponse;
 import universityconnect.service.UserService;
 
 import java.util.List;
@@ -19,27 +20,27 @@ public class UserController {
     private UserService userService;
 
     @PostMapping
-    public ResponseEntity<UserDTO> createUser(@RequestBody UserDTO userDTO) {
-        UserDTO createdUser = userService.createUser(userDTO);
-        return new ResponseEntity<>(createdUser, HttpStatus.CREATED);
+    public ResponseEntity<?> createUser(@RequestBody UserDTO userDTO) {
+        userService.createUser(userDTO);
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<UserDTO> getUserById(@PathVariable Long id) {
-        UserDTO user = userService.getUserById(id);
+    public ResponseEntity<UserResponse> getUserById(@PathVariable Long id) {
+        UserResponse user = userService.getUserById(id);
         return ResponseEntity.ok(user);
     }
 
     @GetMapping
-    public ResponseEntity<List<UserDTO>> getAllUsers() {
-        List<UserDTO> users = userService.getAllUsers();
+    public ResponseEntity<List<UserResponse>> getAllUsers() {
+        List<UserResponse> users = userService.getAllUsers();
         return ResponseEntity.ok(users);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<UserDTO> updateUser(@PathVariable Long id, @RequestBody UserDTO userDTO) {
-        UserDTO updatedUser = userService.updateUser(id, userDTO);
-        return ResponseEntity.ok(updatedUser);
+    public ResponseEntity<?> updateUser(@PathVariable Long id, @RequestBody UserDTO userDTO) {
+        userService.updateUser(id, userDTO);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
@@ -49,26 +50,26 @@ public class UserController {
     }
 
     @GetMapping("/{id}/reporters")
-    public ResponseEntity<List<UserDTO>> getAllReportersByReportedId(@PathVariable long id){
-        List<UserDTO> reports = userService.getAllReporterUsersByReportedUserId(id);
+    public ResponseEntity<List<UserResponse>> getAllReportersByReportedId(@PathVariable long id){
+        List<UserResponse> reports = userService.getAllReporterUsersByReportedUserId(id);
         return ResponseEntity.ok(reports);
     }
 
     @GetMapping("/{id}/reporteds")
-    public ResponseEntity<List<UserDTO>> getAllReportedsByReporterId(@PathVariable long id){
-        List<UserDTO> reports = userService.getAllReportedUsersByReporterUserId(id);
+    public ResponseEntity<List<UserResponse>> getAllReportedsByReporterId(@PathVariable long id){
+        List<UserResponse> reports = userService.getAllReportedUsersByReporterUserId(id);
         return ResponseEntity.ok(reports);
     }
 
     @GetMapping("/{id}/blockers")
-    public ResponseEntity<List<UserDTO>> getAllBlockersByBlockedId(@PathVariable long id) {
-        List<UserDTO> blockedUsers = userService.getAllBlockerUsersByBlockedUserId(id);
+    public ResponseEntity<List<UserResponse>> getAllBlockersByBlockedId(@PathVariable long id) {
+        List<UserResponse> blockedUsers = userService.getAllBlockerUsersByBlockedUserId(id);
         return ResponseEntity.ok(blockedUsers);
     }
 
     @GetMapping("/{id}/blockeds")
-    public ResponseEntity<List<UserDTO>> getAllBlockedsByBlockerId(@PathVariable long id) {
-        List<UserDTO> blockingUsers = userService.getAllBlockedUsersByBlockerUserId(id);
+    public ResponseEntity<List<UserResponse>> getAllBlockedsByBlockerId(@PathVariable long id) {
+        List<UserResponse> blockingUsers = userService.getAllBlockedUsersByBlockerUserId(id);
         return ResponseEntity.ok(blockingUsers);
     }
 

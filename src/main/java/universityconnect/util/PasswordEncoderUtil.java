@@ -10,5 +10,4 @@ public class PasswordEncoderUtil {
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         return encoder.encode(rawPassword);
     }
-    
 }

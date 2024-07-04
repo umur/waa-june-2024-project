@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 import universityconnect.domain.*;
 import universityconnect.dto.DiscussionDTO;
 import universityconnect.domain.DiscussionSpecifications;
-import universityconnect.dto.DiscussionSearchResponseDTO;
+import universityconnect.dto.DiscussionSearchResponse;
 import universityconnect.exception.ResourceNotFoundException;
 import universityconnect.mapper.DiscussionMapper;
 import universityconnect.repository.DiscussionRepository;
@@ -82,7 +82,7 @@ public class DiscussionServiceImpl implements DiscussionService {
         return discussionRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("Discussion not found with id: "+id));
     }
 
-    public DiscussionSearchResponseDTO searchDiscussions(DiscussionSearchCriteria criteria, Pageable pageable) {
+    public DiscussionSearchResponse searchDiscussions(DiscussionSearchCriteria criteria, Pageable pageable) {
         Specification<Discussion> spec = DiscussionSpecifications.withCriteria(criteria);
         Page<Discussion> discussions = discussionRepository.findAll(spec, pageable);
 
@@ -90,7 +90,7 @@ public class DiscussionServiceImpl implements DiscussionService {
                 .map(DiscussionMapper.INSTANCE::discussionToDiscussionDTO)
                 .collect(Collectors.toList());
 
-        DiscussionSearchResponseDTO response = new DiscussionSearchResponseDTO();
+        DiscussionSearchResponse response = new DiscussionSearchResponse();
         response.setContent(discussionDTOs);
         response.setTotalPages(discussions.getTotalPages());
         response.setTotalElements(discussions.getTotalElements());
