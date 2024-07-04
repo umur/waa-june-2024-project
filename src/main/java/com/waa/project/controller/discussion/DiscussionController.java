@@ -1,4 +1,4 @@
-package com.waa.project.controller;
+package com.waa.project.controller.discussion;
 
 import com.waa.project.dto.DiscussionDto;
 import com.waa.project.service.DiscussionService;

@@ -1,4 +1,4 @@
-package com.waa.project.controller;
+package com.waa.project.controller.discussion;
 
 import com.waa.project.service.DiscussionCategoryService;
 import org.springframework.beans.factory.annotation.Autowired;

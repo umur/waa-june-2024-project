@@ -1,7 +1,7 @@
-package com.waa.project.controller;
+package com.waa.project.controller.comment;
 
 import com.waa.project.dto.DiscussionCommentsDto;
-import com.waa.project.service.DiscussionCommentsService;
+import com.waa.project.service.SubCommentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -12,41 +12,41 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1")
-public class DiscussionCommentController {
+public class SubCommentController {
 
     @Autowired
-    private DiscussionCommentsService commentsService;
+    private SubCommentService subCommentsService;
 
-    @GetMapping("/students/comments/{DiscussionId}")
+    @GetMapping("/students/sub-comments/{commentId}")
     public ResponseEntity<Page<?>> getComments(
             Pageable pageable,
             @AuthenticationPrincipal User user,
-            @PathVariable("DiscussionId") long id
+            @PathVariable("commentId") long commentId
                                               ) {
-        return ResponseEntity.ok(commentsService.getCommentsByDiscussionId(id, pageable));
+        return ResponseEntity.ok(subCommentsService.getSubCommentsByDiscussionId(commentId, pageable));
     }
 
-    @PostMapping("/students/comments")
+    @PostMapping("/students/sub-comments")
     public ResponseEntity<?> saveComment(
             @RequestBody DiscussionCommentsDto commentsDto,
             @AuthenticationPrincipal User user
                                         ) {
 
-        return ResponseEntity.ok(commentsService.createDiscussionComments(commentsDto, user));
+        return ResponseEntity.ok(subCommentsService.createSubDiscussionComments(commentsDto, user));
     }
 
-    @PutMapping("/students/comments/{id}")
+    @PutMapping("/students/sub-comments/{id}")
     public ResponseEntity<?> updateComment(
             @RequestBody DiscussionCommentsDto commentsDto,
             @PathVariable("id") long id,
             @AuthenticationPrincipal User user
                                           ) {
-        return ResponseEntity.ok(commentsService.updateDiscussionComments(id, commentsDto, user));
+        return ResponseEntity.ok(subCommentsService.updateSubDiscussionComments(id, commentsDto, user));
     }
 
-    @DeleteMapping("/students/comments/{id}")
+    @DeleteMapping("/students/sub-comments/{id}")
     public ResponseEntity<?> deleteComment(@PathVariable("id") long id, @AuthenticationPrincipal User user) {
 
-        return ResponseEntity.ok(commentsService.deleteDiscussionComments(id, user));
+        return ResponseEntity.ok(subCommentsService.deleteSubDiscussionComments(id, user));
     }
 }
