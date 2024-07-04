@@ -2,6 +2,7 @@ package com.waa.project.service.impl;
 
 import com.waa.project.contracts.CreateStudentRequest;
 import com.waa.project.contracts.StudentResponse;
+import com.waa.project.contracts.UpdateStudentProfileRequest;
 import com.waa.project.entity.Major;
 import com.waa.project.entity.Student;
 import com.waa.project.enums.RoleType;
@@ -87,5 +88,10 @@ public class StudentServiceImpl implements StudentService {
         userRepository.findByEmail(email).ifPresent(user -> {
             throw new ResourceAlreadyExistsException(UserErrorMessages.emailAlreadyExists(email));
         });
+    }
+
+    @Override
+    public StudentResponse updateStudentProfile(UpdateStudentProfileRequest updateStudentProfileRequest) {
+        return null;
     }
 }
