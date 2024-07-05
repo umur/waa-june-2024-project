@@ -41,9 +41,6 @@ public class ResourceController {
     @GetMapping
     public ResponseEntity<List<ResourceDTO>> getAllResources() throws IOException {
         List<ResourceDTO> resources = resourceService.getAllResources();
-
-        Resource resource = new ClassPathResource("dir/");
-        log.info("dir file name=----------------------"+resource.getURI().toString());
         return ResponseEntity.ok(resources);
     }
 
