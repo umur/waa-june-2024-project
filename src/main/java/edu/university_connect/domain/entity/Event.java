@@ -41,4 +41,11 @@ public class Event extends MetaData {
         }
         this.attendees.add(attendee);
     }
+
+    public void addInvitedUsers(User invitedUser) {
+        if(Objects.isNull(invitedUsers)){
+            invitedUsers = new ArrayList<>();
+        }
+        this.invitedUsers.add(invitedUser);
+    }
 }
