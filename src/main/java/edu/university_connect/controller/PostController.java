@@ -2,6 +2,7 @@ package edu.university_connect.controller;
 
 import edu.university_connect.model.contract.dto.PostDto;
 import edu.university_connect.model.contract.dto.ReplyDto;
+import edu.university_connect.model.contract.request.RequestUtils;
 import edu.university_connect.model.contract.request.discussionthread.PostRequest;
 import edu.university_connect.model.contract.response.ApiResponse;
 import edu.university_connect.model.enums.AppStatusCode;
@@ -9,7 +10,10 @@ import edu.university_connect.service.MessagingService;
 import edu.university_connect.service.post.PostService;
 import edu.university_connect.service.reply.ReplyService;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Pattern;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -25,12 +29,34 @@ public class PostController {
     private final ReplyService replyService;
     private final MessagingService messagingService;
 
-    @GetMapping
+    @GetMapping("/all")
     @PreAuthorize("hasAuthority('view_post_list')")
     public ResponseEntity<ApiResponse<List<PostDto>>> getAll() {
         String responseMessage = messagingService
                 .getResponseMessage(AppStatusCode.S20001, "post");
         return ResponseEntity.ok(ApiResponse.of(responseMessage, postService.getAll()));
+    }
+
+    @GetMapping
+    @PreAuthorize("hasAuthority('view_post_list')")
+    public ResponseEntity<ApiResponse<Page<PostDto>>> getPage(Pageable pageable) {
+        String responseMessage = messagingService
+                .getResponseMessage(AppStatusCode.S20001, "post");
+        return ResponseEntity.ok(ApiResponse.of(
+                responseMessage,
+                postService.getPage(RequestUtils.extractPagination(pageable)))
+        );
+    }
+
+    @GetMapping("/search")
+    @PreAuthorize("hasAuthority('view_post_list')")
+    public ResponseEntity<ApiResponse<Page<PostDto>>> getPage(@RequestParam String term, Pageable pageable) {
+        String responseMessage = messagingService
+                .getResponseMessage(AppStatusCode.S20001, "post");
+        return ResponseEntity.ok(ApiResponse.of(
+                responseMessage,
+                postService.search(term, RequestUtils.extractPagination(pageable)))
+        );
     }
 
     @GetMapping("/{id}")

@@ -29,7 +29,7 @@ public class ReplyServiceImpl implements ReplyService {
 
     @Override
     public List<ReplyDto> getAll() {
-        return replyRepository.findAll()
+        return replyRepository.findAllUnblockedReplies()
                 .stream()
                 .map(ReplyDtoMapper.MAPPER::entityToDto)
                 .toList();
@@ -65,11 +65,7 @@ public class ReplyServiceImpl implements ReplyService {
 
     @Override
     public ReplyDto update(Long id, ReplyRequest replyRequest) {
-        Optional<Reply> replyOpt = replyRepository.findById(id);
-        if (replyOpt.isEmpty()) {
-            throw ServiceException.of(AppStatusCode.E40000, "id reply");
-        }
-        Reply reply = replyOpt.get();
+        Reply reply = getReply(id);
         reply.setContent(replyRequest.getContent());
         Reply savedReply = replyRepository.save(reply);
         return ReplyDtoMapper.MAPPER.entityToDto(savedReply);
@@ -88,16 +84,7 @@ public class ReplyServiceImpl implements ReplyService {
     @Override
     public ReplyDto addReplyToReply(ReplyReplyRequest replyRequest) {
         Reply reply = ReplyDtoMapper.MAPPER.dtoToEntity(replyRequest);
-        Optional<Reply> optReplyTo = replyRepository.findById(replyRequest.getToReplyId());
-        if (optReplyTo.isEmpty()) {
-            throw ServiceException.of(
-                    AppStatusCode.E40000,
-                    "replyTo",
-                    replyRequest.getToReplyId().toString()
-            );
-        }
-
-        Reply replyThread = optReplyTo.get();
+        Reply replyThread = getReply(replyRequest.getToReplyId());
         reply.setReplyThread(replyThread);
         reply.setPost(replyThread.getPost());
         Reply savedReply = replyRepository.save(reply);
@@ -106,9 +93,9 @@ public class ReplyServiceImpl implements ReplyService {
     }
 
     private Reply getReply(Long id) {
-        Optional<Reply> replyOpt = replyRepository.findById(id);
+        Optional<Reply> replyOpt = replyRepository.findUnblockedReply(id);
         if (replyOpt.isEmpty()) {
-            throw ServiceException.of(AppStatusCode.E40000, "id reply", id.toString());
+            throw ServiceException.of(AppStatusCode.E40000, "reply", "id " + id);
         }
         return replyOpt.get();
     }
