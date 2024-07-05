@@ -34,7 +34,7 @@ jwt_configs:
 
 logging:
   level:
-    root: trace
+    root: info
     org:
       springframework:
         security: info

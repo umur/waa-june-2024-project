@@ -2,6 +2,7 @@ package edu.university_connect.config;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.AuditorAware;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;
@@ -15,6 +16,11 @@ public class AuditorAwareImpl implements AuditorAware<String> {
 
     @Override
     public Optional<String> getCurrentAuditor() {
-        return Optional.of(contextUser.getLoginUser().getUsername());
+        if(SecurityContextHolder.getContext().getAuthentication().getPrincipal().equals("anonymousUser")){
+            return Optional.of("anonymousUser");
+        }
+        else {
+            return Optional.of(contextUser.getUser().getUsername());
+        }
     }
 }

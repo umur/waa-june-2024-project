@@ -121,6 +121,11 @@ public class UserServiceImpl implements UserService {
         if(!data.getPassword().equals(data.getConfirmPassword())){
             throw ServiceException.of(AppStatusCode.E40003);
         }
+        Optional<User> existingUserOpt=repository.findByUsername(data.getUsername());
+        if(existingUserOpt.isPresent()){
+            log.error("User with username {} already exist",data.getUsername());
+            throw ServiceException.of(AppStatusCode.E40006,"user", "username= "+data.getUsername());
+        }
         Optional<Student> studentOpt=studentService.getStudentByEmail(data.getEmail());
         Optional<Role> roleOpt=roleService.getRoleByCode("normal-user");
         if(studentOpt.isEmpty()){
