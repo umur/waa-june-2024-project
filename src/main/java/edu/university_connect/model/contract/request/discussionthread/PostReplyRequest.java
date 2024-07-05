@@ -6,4 +6,5 @@ import lombok.Data;
 @Data
 public class PostReplyRequest extends ReplyRequest {
     @NotNull private Long postId;
+
 }

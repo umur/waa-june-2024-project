@@ -188,6 +188,6 @@ public class UserController {
         Pageable pageable = PageRequest.of(pageableReq.getPageNumber()>0? pageableReq.getPageNumber()-1 : 0,
                 pageableReq.getPageSize() ,
                 pageableReq.getSort());
-        return ResponseEntity.ok(new ApiResponse<Page<EventDto>>(responseMessage, eventService.getAllByPage(pageable)));
+        return ResponseEntity.ok(new ApiResponse<Page<EventDto>>(responseMessage, eventService.getPageByUser(id,pageable)));
     }
 }

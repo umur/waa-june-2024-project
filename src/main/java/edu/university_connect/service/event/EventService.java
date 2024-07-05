@@ -23,4 +23,6 @@ public interface EventService {
     UserDto addAttendeeForEvent(Long id, Long userid);
     void rsvpForEvent(Long eventId, Long userId);
     Page<UserDto> getAllAttendeeByPage(Long eventId, Pageable pageableReq);
+
+    Page<EventDto> getPageByUser(Long id, Pageable pageable);
 }

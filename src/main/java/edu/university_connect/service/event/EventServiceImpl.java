@@ -3,12 +3,9 @@ package edu.university_connect.service.event;
 import edu.university_connect.config.ContextUser;
 import edu.university_connect.domain.entity.Event;
 import edu.university_connect.domain.entity.User;
-import edu.university_connect.domain.entity.discussionthread.Category;
 import edu.university_connect.exception.ServiceException;
-import edu.university_connect.mapper.CategoryDtoMapper;
 import edu.university_connect.mapper.EventDtoMapper;
 import edu.university_connect.mapper.UserDtoMapper;
-import edu.university_connect.model.contract.dto.CategoryDto;
 import edu.university_connect.model.contract.dto.EventDto;
 import edu.university_connect.model.contract.dto.UserDto;
 import edu.university_connect.model.contract.request.event.EventRequest;
@@ -21,7 +18,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -121,4 +117,12 @@ public class EventServiceImpl implements EventService {
         Page<User> actionPage = eventRepository.findAllRsvpAttendeeByPage(eventId, pageableReq);
         return actionPage.map(UserDtoMapper.MAPPER::entityToDto);
     }
+
+
+    @Override
+    public Page<EventDto> getPageByUser(Long id, Pageable pageable) {
+        Page<Event> actionPage = eventRepository.findPageByUser(contextUser.getLoginUser().getUsername(),pageable);
+        return actionPage.map(EventDtoMapper.MAPPER::entityToDto);
+    }
+
 }
