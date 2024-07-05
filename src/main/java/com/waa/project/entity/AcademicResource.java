@@ -15,7 +15,7 @@ public class AcademicResource {
     @Column(name = "name", nullable = false)
     private String name;
     private String body;
-    private String files;
+    private String file;
 
     @ManyToOne
     private AcademicResourceType resourceType;

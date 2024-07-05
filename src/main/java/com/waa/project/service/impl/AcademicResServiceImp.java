@@ -1,14 +1,18 @@
 package com.waa.project.service.impl;
 
 import com.waa.project.dto.AcademicResourceDto;
+import com.waa.project.dto.AcademicResourceRequest;
 import com.waa.project.entity.AcademicResource;
 import com.waa.project.entity.AcademicResourceType;
 import com.waa.project.repository.AcademicResRepository;
 import com.waa.project.repository.AcademicResTypeRepository;
 import com.waa.project.service.AcademicResService;
+import com.waa.project.service.FileService;
+import com.waa.project.util.FileSaveLocations;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,6 +29,8 @@ public class AcademicResServiceImp implements AcademicResService {
     @Autowired
     private ModelMapper modelMapper;
 
+    @Autowired
+    private FileService fileService;
 
     @Override
     public List<AcademicResourceDto> getAllAcademicRes() {
@@ -40,11 +46,17 @@ public class AcademicResServiceImp implements AcademicResService {
     }
 
     @Override
-    public String save(AcademicResourceDto res) {
+    public String save(AcademicResourceRequest res, MultipartFile file) {
         AcademicResource resToSave = modelMapper.map(res, AcademicResource.class);
 
         AcademicResourceType resCategory =
-                academicResTypeRepository.findById(res.getResourceType().getId()).get();
+                academicResTypeRepository.findById(res.getResourceId()).get();
+
+        if (file != null && !file.isEmpty()) {
+            String folder = resCategory.getName().replace(" ", "_");
+            String filePath = fileService.saveFile(file, FileSaveLocations.academicResource(folder));
+            resToSave.setFile(filePath);
+        }
         resToSave.setResourceType(resCategory);
         academicResRepository.save(resToSave);
         return "AcademicResource saved successfully.";
@@ -75,7 +87,7 @@ public class AcademicResServiceImp implements AcademicResService {
     @Override
     public List<AcademicResourceDto> searchByResourceName(String resname) {
         List<AcademicResourceDto> result = new ArrayList<>();
-        List<AcademicResource>    res    = academicResRepository.findAcademicResourceByResourceTypeName(resname);
+        List<AcademicResource> res = academicResRepository.findAcademicResourceByResourceTypeName(resname);
         res.forEach(ar -> result.add(modelMapper.map(ar, AcademicResourceDto.class)));
         return result;
     }

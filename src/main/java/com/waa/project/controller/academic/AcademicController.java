@@ -1,11 +1,13 @@
 package com.waa.project.controller.academic;
 
 import com.waa.project.dto.AcademicResourceDto;
+import com.waa.project.dto.AcademicResourceRequest;
 import com.waa.project.service.AcademicResService;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -33,14 +35,14 @@ public class AcademicController {
     @PutMapping({"/admins/academic/{Id}", "/students/academic/{Id}"})
     public String update(
             @RequestBody AcademicResourceDto dto, @PathVariable Long Id
-                        ) {
+    ) {
         return academicResService.update(dto, Id);
     }
 
-    @PostMapping({"/admins/academic", "/students/academic"})
-    public String save(@RequestBody AcademicResourceDto dto) {
-
-        return academicResService.save(dto);
+    @PostMapping(value = {"/admins/academic", "/students/academic"}, consumes = "multipart/form-data")
+    public String save(@RequestPart(value = "formdata") AcademicResourceRequest request,
+                       @RequestPart(value = "file", required = false) MultipartFile file) {
+        return academicResService.save(request, file);
     }
 
     @GetMapping({"/admins/academic/search", "/students/academic/search"})
