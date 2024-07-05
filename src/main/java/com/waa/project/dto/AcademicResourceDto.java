@@ -10,8 +10,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class AcademicResourceDto {
 
-    private Long                 id;
-    private String               name;
-    //    private String description;
+    private Long id;
+    private String name;
+    private String fileName;
     private AcademicResourceType resourceType;
 }
