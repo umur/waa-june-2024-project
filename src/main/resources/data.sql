@@ -135,8 +135,8 @@ VALUES
 
 
 INSERT INTO `post` (category_id, content, user_id)
-VALUES (1, '', 1);
+VALUES (1, 1, 'In today''s digital age, cybersecurity plays a crucial role in protecting individuals, organizations, and governments from cyber threats. With the rapid advancement of technology, our reliance on digital systems has increased, making cybersecurity more critical than ever before.');
 
 
 INSERT INTO `reply` (content, post_id, user_id)
-VALUES ('', 1, 1);
+VALUES (1, 1, 'Many industries are subject to regulatory requirements regarding data protection and cybersecurity. Adhering to these regulations helps avoid penalties and legal issues.');
