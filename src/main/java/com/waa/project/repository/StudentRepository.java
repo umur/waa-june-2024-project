@@ -8,9 +8,12 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface StudentRepository extends JpaRepository<Student, Long> {
     @Query("SELECT e FROM Student s JOIN s.eventList e WHERE s.id = :studentId")
     List<Event> findEventsByStudentId(@Param("studentId") Long studentId);
+
+    Optional<Student> findStudentByUsername(String username);
 }
 
