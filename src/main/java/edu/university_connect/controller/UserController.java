@@ -180,11 +180,9 @@ public class UserController {
         apiResponse.setMessage(messagingService.getResponseMessage(AppStatusCode.S20000));
         return ResponseEntity.ok(apiResponse);
     }
-    //&& @contextUser.getLoginUser().getId() == #id
     @GetMapping("/{id}/events")
-    @PreAuthorize("hasAuthority('view_event_list')")
-    public ResponseEntity<ApiResponse<Page<EventDto>>> fetchEventsByUser(Pageable pageableReq){
-        System.out.println("id --> " + contextUser.getLoginUser().getId());
+    @PreAuthorize("hasAuthority('view_event_list') && @contextUser.getLoginUser().getId() == #id")
+    public ResponseEntity<ApiResponse<Page<EventDto>>> fetchEventsByUser(@PathVariable Long id, Pageable pageableReq){
         String responseMessage = messagingService
                 .getResponseMessage(AppStatusCode.S20001, new String[]{"event"});
         Pageable pageable = PageRequest.of(pageableReq.getPageNumber()>0? pageableReq.getPageNumber()-1 : 0,
