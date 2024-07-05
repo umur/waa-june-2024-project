@@ -1,14 +1,11 @@
 package edu.university_connect.service.user;
 
-import edu.university_connect.model.contract.dto.ProfileDto;
-import edu.university_connect.model.contract.dto.ResourceDto;
-import edu.university_connect.model.contract.dto.SearchDto;
+import edu.university_connect.model.contract.dto.*;
 import edu.university_connect.model.contract.request.auth.SignUpRequest;
 import edu.university_connect.model.contract.request.profile.ProfileRequest;
 import edu.university_connect.model.contract.request.user.BlockRequest;
 import edu.university_connect.model.contract.request.user.UserCreateRequest;
 import edu.university_connect.model.contract.request.user.UserUpdateRequest;
-import edu.university_connect.model.contract.dto.UserDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -40,4 +37,5 @@ public interface UserService {
     Page<UserDto> getBlockedUsers(Long id,Pageable pageable);
 
     Page<ResourceDto> getUserResources(Long id, Pageable pageable);
+    Page<SurveyDto> getUserSurveys(Long id, Pageable pageable);
 }

@@ -180,6 +180,19 @@ public class UserController {
         apiResponse.setMessage(messagingService.getResponseMessage(AppStatusCode.S20000));
         return ResponseEntity.ok(apiResponse);
     }
+
+    @GetMapping("/{id}/surveys")
+    @PreAuthorize("hasAuthority('view_survey') && @contextUser.getLoginUser().getId() == #id")
+    public ResponseEntity<ApiResponse<Page<SurveyDto>>> fetchUserSurveys(@PathVariable Long id, Pageable pageableReq) {
+        Pageable pageable = PageRequest.of(pageableReq.getPageNumber()>0? pageableReq.getPageNumber()-1 : 0,
+                pageableReq.getPageSize() ,
+                pageableReq.getSort());
+        Page<SurveyDto> response= service.getUserSurveys(id,pageable);
+        ApiResponse<Page<SurveyDto>> apiResponse =  new ApiResponse<Page<SurveyDto>>();
+        apiResponse.setResponseData(response);
+        apiResponse.setMessage(messagingService.getResponseMessage(AppStatusCode.S20000));
+        return ResponseEntity.ok(apiResponse);
+    }
     @GetMapping("/{id}/events")
     @PreAuthorize("hasAuthority('view_event_list') && @contextUser.getLoginUser().getId() == #id")
     public ResponseEntity<ApiResponse<Page<EventDto>>> fetchEventsByUser(@PathVariable Long id, Pageable pageableReq){
