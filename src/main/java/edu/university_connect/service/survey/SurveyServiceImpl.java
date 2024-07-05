@@ -1,9 +1,12 @@
 package edu.university_connect.service.survey;
 import edu.university_connect.config.ContextUser;
+import edu.university_connect.domain.entity.Resource;
 import edu.university_connect.domain.entity.User;
 import edu.university_connect.domain.entity.survey.Survey;
 import edu.university_connect.exception.ServiceException;
+import edu.university_connect.mapper.ResourceDtoMapper;
 import edu.university_connect.mapper.SurveyDtoMapper ;
+import edu.university_connect.model.contract.dto.ResourceDto;
 import edu.university_connect.model.contract.dto.SurveyDto;
 import edu.university_connect.model.contract.request.survey.SurveyCreateRequest;
 import edu.university_connect.model.contract.request.survey.SurveyUpdateRequest;
@@ -90,5 +93,11 @@ public class SurveyServiceImpl implements SurveyService {
 
     private Optional<Survey> getSurveyById(Long id){
         return repository.findById(id);
+    }
+
+    @Override
+    public Page<SurveyDto> getUserSurveyPage(Long id, Pageable pageable) {
+        Page<Survey> resourcePage = repository.getUserSurveyPage(id,pageable);
+        return resourcePage.map(SurveyDtoMapper.MAPPER::entityToDto);
     }
 }

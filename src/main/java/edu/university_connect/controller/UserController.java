@@ -1,10 +1,7 @@
 package edu.university_connect.controller;
 
 import edu.university_connect.config.ContextUser;
-import edu.university_connect.model.contract.dto.ProfileDto;
-import edu.university_connect.model.contract.dto.ResourceDto;
-import edu.university_connect.model.contract.dto.SearchDto;
-import edu.university_connect.model.contract.dto.UserDto;
+import edu.university_connect.model.contract.dto.*;
 import edu.university_connect.model.contract.request.profile.ProfileRequest;
 import edu.university_connect.model.contract.request.user.BlockRequest;
 import edu.university_connect.model.contract.request.user.UserCreateRequest;
@@ -177,6 +174,19 @@ public class UserController {
                 pageableReq.getSort());
         Page<ResourceDto> response= service.getUserResources(id,pageable);
         ApiResponse<Page<ResourceDto>> apiResponse =  new ApiResponse<Page<ResourceDto>>();
+        apiResponse.setResponseData(response);
+        apiResponse.setMessage(messagingService.getResponseMessage(AppStatusCode.S20000));
+        return ResponseEntity.ok(apiResponse);
+    }
+
+    @GetMapping("/{id}/surveys")
+    @PreAuthorize("hasAuthority('view_survey') && @contextUser.getLoginUser().getId() == #id")
+    public ResponseEntity<ApiResponse<Page<SurveyDto>>> fetchUserSurveys(@PathVariable Long id, Pageable pageableReq) {
+        Pageable pageable = PageRequest.of(pageableReq.getPageNumber()>0? pageableReq.getPageNumber()-1 : 0,
+                pageableReq.getPageSize() ,
+                pageableReq.getSort());
+        Page<SurveyDto> response= service.getUserSurveys(id,pageable);
+        ApiResponse<Page<SurveyDto>> apiResponse =  new ApiResponse<Page<SurveyDto>>();
         apiResponse.setResponseData(response);
         apiResponse.setMessage(messagingService.getResponseMessage(AppStatusCode.S20000));
         return ResponseEntity.ok(apiResponse);
