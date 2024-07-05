@@ -153,4 +153,18 @@ public class UserController {
         apiResponse.setMessage(messagingService.getResponseMessage(AppStatusCode.S20000));
         return ResponseEntity.ok(apiResponse);
     }
+
+
+    @GetMapping("/{id}/blocked-users")
+    @PreAuthorize("hasAuthority('view_user') && @contextUser.getLoginUser().getId() == #id")
+    public ResponseEntity<ApiResponse<Page<UserDto>>> blockUser(@PathVariable Long id,Pageable pageableReq) {
+        Pageable pageable = PageRequest.of(pageableReq.getPageNumber()>0? pageableReq.getPageNumber()-1 : 0,
+                pageableReq.getPageSize() ,
+                pageableReq.getSort());
+        Page<UserDto> response= service.getBlockedUsers(id,pageable);
+        ApiResponse<Page<UserDto>> apiResponse =  new ApiResponse<Page<UserDto>>();
+        apiResponse.setResponseData(response);
+        apiResponse.setMessage(messagingService.getResponseMessage(AppStatusCode.S20000));
+        return ResponseEntity.ok(apiResponse);
+    }
 }
