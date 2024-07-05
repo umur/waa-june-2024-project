@@ -45,6 +45,13 @@ public class UserServiceImpl implements UserService {
 		return userRepository.save(user);
 	}
 
+	public User deleteUser(Long id) {
+		User existUser = userRepository.findById(id).orElse(null);
+		if (existUser == null) throw new UserNotFound();
+		userRepository.delete(existUser);
+		return existUser;
+	}
+
 	public User updateUser(Long id, User user) {
 		User existUser = userRepository.findById(id).orElse(null);
 		if (existUser == null) return null;
