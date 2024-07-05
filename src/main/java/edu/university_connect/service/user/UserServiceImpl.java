@@ -8,14 +8,11 @@ import edu.university_connect.domain.entity.User;
 import edu.university_connect.exception.ServiceException;
 import edu.university_connect.mapper.ProfileDtoMapper;
 import edu.university_connect.mapper.UserDtoMapper;
-import edu.university_connect.model.contract.dto.ProfileDto;
-import edu.university_connect.model.contract.dto.ResourceDto;
-import edu.university_connect.model.contract.dto.SearchDto;
+import edu.university_connect.model.contract.dto.*;
 import edu.university_connect.model.contract.request.auth.SignUpRequest;
 import edu.university_connect.model.contract.request.profile.ProfileRequest;
 import edu.university_connect.model.contract.request.user.BlockRequest;
 import edu.university_connect.model.enums.AppStatusCode;
-import edu.university_connect.model.contract.dto.UserDto;
 import edu.university_connect.model.contract.request.user.UserCreateRequest;
 import edu.university_connect.model.contract.request.user.UserUpdateRequest;
 import edu.university_connect.repository.UserRepository;
@@ -23,6 +20,7 @@ import edu.university_connect.service.profile.ProfileService;
 import edu.university_connect.service.resource.ResourceService;
 import edu.university_connect.service.role.RoleService;
 import edu.university_connect.service.student.StudentService;
+import edu.university_connect.service.survey.SurveyService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -46,6 +44,7 @@ public class UserServiceImpl implements UserService {
     private final ProfileService profileService;
     private final PasswordEncoder passwordEncoder;
     private final ContextUser contextUser;
+    private final SurveyService surveyService;
 
 
     @Override
@@ -237,5 +236,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public Page<ResourceDto> getUserResources(Long id, Pageable pageable) {
         return resourceService.getUserResourcePage(id,pageable);
+    }
+
+    @Override
+    public Page<SurveyDto> getUserSurveys(Long id, Pageable pageable) {
+        return surveyService.getUserSurveyPage(id,pageable);
     }
 }
