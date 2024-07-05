@@ -1,8 +1,12 @@
 package universityconnect.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import universityconnect.domain.*;
@@ -13,6 +17,7 @@ import universityconnect.exception.ResourceNotFoundException;
 import universityconnect.mapper.DiscussionMapper;
 import universityconnect.repository.DiscussionRepository;
 import universityconnect.repository.DiscussionThreadRepository;
+import universityconnect.repository.UserRepository;
 import universityconnect.service.DiscussionCategoryService;
 import universityconnect.service.DiscussionService;
 import universityconnect.service.UserService;
@@ -25,12 +30,14 @@ import java.util.stream.Collectors;
 @Service
 @Transactional
 @RequiredArgsConstructor
+@Slf4j
 public class DiscussionServiceImpl implements DiscussionService {
     private final DiscussionRepository discussionRepository;
     private final DiscussionMapper mapper;
     private final DiscussionCategoryService discussionCategoryService;
     private final UserService userService;
     private final DiscussionThreadRepository discussionThreadRepository;
+    private final UserRepository userRepository;
     @Override
     public DiscussionDTO createDiscussion(DiscussionDTO discussionDTO) {
         Discussion discussion = mapper.discussionDTOToDiscussion(discussionDTO);
@@ -54,7 +61,50 @@ public class DiscussionServiceImpl implements DiscussionService {
 
     @Override
     public List<DiscussionDTO> getAllDiscussion() {
-        return discussionRepository.findAll().stream().map(mapper::discussionToDiscussionDTO).toList();
+        List<Discussion> discussions = discussionRepository.findAll();
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if(!authentication.isAuthenticated()){
+            throw new RuntimeException("User is not authenticated!");
+        }
+        if(!authentication.getAuthorities().toString().equals("ROLE_ADMIN")){
+            User user = userRepository.findByEmail(authentication.getName()).orElseThrow(()->new ResourceNotFoundException("User not found with email"));
+
+//            discussions = discussions.stream().filter(discussion ->
+//                user.getBlockedUserLists().stream()
+//                        .map(Block::getBlockedUser)
+//                        .map(User::getId)
+//                        .noneMatch(blockedUserId -> blockedUserId.equals(discussion.getUser().getId()))
+//            ).toList();
+//
+//            discussions = discussions.stream().filter(discussion ->
+//                    user.getBlockedUserLists().stream()
+//                            .map(Block::getBlockerUser)
+//                            .map(User::getId)
+//                            .noneMatch(blockerUserId -> blockerUserId.equals(discussion.getUser().getId()))
+//            ).toList();
+            discussions = getBlockedFilter(discussions,user);
+
+        }
+
+        return discussions.stream().map(mapper::discussionToDiscussionDTO).toList();
+    }
+
+    private List<Discussion> getBlockedFilter(List<Discussion> discussions,User user){
+        discussions = discussions.stream().filter(discussion ->
+                user.getBlockedUserLists().stream()
+                        .map(Block::getBlockedUser)
+                        .map(User::getId)
+                        .noneMatch(blockedUserId -> blockedUserId.equals(discussion.getUser().getId()))
+        ).toList();
+
+        discussions = discussions.stream().filter(discussion ->
+                user.getBlockedUserLists().stream()
+                        .map(Block::getBlockerUser)
+                        .map(User::getId)
+                        .noneMatch(blockerUserId -> blockerUserId.equals(discussion.getUser().getId()))
+        ).toList();
+
+        return discussions;
     }
 
     @Override
@@ -87,6 +137,16 @@ public class DiscussionServiceImpl implements DiscussionService {
     public DiscussionSearchResponse searchDiscussions(DiscussionSearchCriteria criteria, Pageable pageable) {
         Specification<Discussion> spec = DiscussionSpecifications.withCriteria(criteria);
         Page<Discussion> discussions = discussionRepository.findAll(spec, pageable);
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if(!authentication.isAuthenticated()){
+            throw new RuntimeException("User is not authenticated!");
+        }
+        if(!authentication.getAuthorities().toString().equals("ROLE_ADMIN")) {
+            User user = userRepository.findByEmail(authentication.getName()).orElseThrow(() -> new ResourceNotFoundException("User not found with email"));
+
+            List<Discussion> filterDiscussions = getBlockedFilter(discussions.getContent(),user);
+            discussions = new PageImpl<>(filterDiscussions,pageable,discussions.getTotalElements());
+        }
 
         List<DiscussionDTO> discussionDTOs = discussions.getContent().stream()
                 .map(DiscussionMapper.INSTANCE::discussionToDiscussionDTO)

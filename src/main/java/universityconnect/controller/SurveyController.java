@@ -38,6 +38,7 @@ public class SurveyController {
         surveyService.deleteSurvey(id);
     }
 
+
     @PostMapping("{surveyId}/questions")
     public ResponseEntity<QuestionDTO> createQuestion(@PathVariable Long surveyId, @RequestBody QuestionDTO question) {
         return ResponseEntity.ok(surveyService.createQuestion(surveyId, question));
