@@ -1,0 +1,146 @@
+API Tests:
+
+1. insert query for location type
+INSERT INTO `course_attendance_system`.`location_type` (`id`, `type`) VALUES ('1', 'Hall');
+INSERT INTO `course_attendance_system`.`location_type` (`id`, `type`) VALUES ('2', 'Library');
+
+2. insert query for location
+INSERT INTO `course_attendance_system`.`location` (`capacity`, `id`, `type_id`, `name`) 
+VALUES ('25', '1', '1', 'Verlly Hall');
+
+3. create faculty
+POST => http://localhost:8080/sys-admin/faculty
+{
+    "birthDate": "1990-05-15",
+    "emailAddress": "example@example.com",
+    "firstName": "John",
+    "lastName": "Doe",
+    "userName": "johndoe",
+    "genderType": "MALE",
+    "salutation": "Dr.",
+    "hobbies": [
+        "Reading",
+        "Gardening"
+    ]
+}
+
+4. create student
+POST http://localhost:8080/sys-admin/students
+{
+    "birthDate": "1990-12-24",
+    "emailAddress": "test@test.com",
+    "firstName": "John 3",
+    "lastName": "Kim 3",
+    "genderType": "MALE",
+    "entry": "Entry test",
+    "facultyId": 1,
+    "alternateId": 1,
+    "applicantId": 1,
+    "studentId": 11111,
+    "barCode": "11111"
+}
+
+5. create course
+POST http://localhost:8080/sys-admin/courses
+{
+    "credits": 4.0,
+    "description": "FPP",
+    "code": "CS333",
+    "name": "FPP",
+    "department": "compro",
+    "prerequisites": []
+}
+{
+    "credits": 4.0,
+    "description": "MPP",
+    "code": "CS444",
+    "name": "MPP",
+    "department": "compro",
+    "prerequisites": [1]
+}
+
+6. create course offering
+POST http://localhost:8080/sys-admin/course-offerings
+{
+    "credits": 4.0,
+    "room": "V17",
+    "startDate": "2024-06-16",
+    "endDate": "2024-06-19",
+    "capacity": 50,
+    "courseOfferingType": "ON_CAMPUS",
+    "courseId": 1,
+    "facultyId": 1
+}
+{
+    "credits": 4.0,
+    "room": "V17",
+    "startDate": "2024-06-16",
+    "endDate": "2024-06-19",
+    "capacity": 50,
+    "courseOfferingType": "ON_CAMPUS",
+    "courseId": 2,
+    "facultyId": 1
+}
+
+7. create course registration
+POST http://localhost:8080/student-view/course-registrations
+{
+    "studentId": 2,
+    "courseOfferingId": 2,
+    "grade": "A+"
+}
+
+8. create attendance record
+POST http://localhost:8080/sys-admin/attendance-record
+{
+  "scanDateTime": "2024-06-19T12:34:56",
+  "studentId":2,
+  "locationId":1 ,
+  "sessionId":1
+}
+
+
+Use-Cases
+1. Get the list of courses and grade
+GET http://localhost:8080/student-view/course-offerings
+Add studentId = 2 in header
+
+
+2. Get the list of sessions and attendances
+GET http://localhost:8080/student-view/course-offerings/1/attendance
+Add studentId = 2 in header
+
+3. Get list of attendanceRecords with Details
+GET http://localhost:8080/student-view/attendance-records
+Add studentId = 2 in header
+
+If studentID doesn't exit, it return nothing.
+
+4. Get all Course Offering Informations by Id
+GET http://localhost:8080/student-view/course-offerings/1
+
+5. Get Attendance Records via excel
+GET http://localhost:8080/admin-view/course-offerings/1/attendance
+
+6. 
+
+7. Get All Course Offerings by Id
+GET http://localhost:8080/admin-view/course-offerings/1
+
+8. Get All Details of Student
+GET http://localhost:8080/admin-view/students/2
+
+
+Error: 
+
+Case4 An Expected Error, if id doesn't exit
+http://localhost:8080/student-view/course-offerings/1
+
+Case7 GetAllCourseOfferingsWithDetails
+http://localhost:8080/admin-view/course-offerings
+
+
+Admin COntroller 
+getAttendanceByOfferingId
+
+
