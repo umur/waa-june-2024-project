@@ -48,9 +48,10 @@ public class Student extends User {
     @PrePersist
     protected void onCreate() {
         extraActivities = new HashSet<>();
-        interest         = new HashSet<>();
-        achievements     = new HashSet<>();
-        eventList        = new ArrayList<>();
-        auditData        = new AuditData();
+        interest        = new HashSet<>();
+        achievements    = new HashSet<>();
+        eventList       = new ArrayList<>();
+        auditData       = new AuditData();
+        picture         = "/uploads/defaults/profile_20240705.png";
     }
 }
