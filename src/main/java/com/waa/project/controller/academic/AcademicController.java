@@ -1,6 +1,7 @@
 package com.waa.project.controller.academic;
 
 import com.waa.project.dto.AcademicResourceDto;
+import com.waa.project.dto.AcademicResourceRequest;
 import com.waa.project.service.AcademicResService;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
@@ -39,10 +40,9 @@ public class AcademicController {
     }
 
     @PostMapping(value = {"/admins/academic", "/students/academic"}, consumes = "multipart/form-data")
-    public String save(@RequestBody AcademicResourceDto dto,
-                       @RequestPart("file") MultipartFile file) {
-        System.out.println("file ===" + file);
-        return academicResService.save(dto);
+    public String save(@RequestPart(value = "formdata") AcademicResourceRequest request,
+                       @RequestPart(value = "file", required = false) MultipartFile file) {
+        return academicResService.save(request, file);
     }
 
     @GetMapping({"/admins/academic/search", "/students/academic/search"})
