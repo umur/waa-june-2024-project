@@ -30,6 +30,14 @@ public class SurveyQuestionServiceImpl implements SurveyQuestionService {
     }
 
     @Override
+    public List<SurveyQuestionDto> getSurveyQuestionsBySurveyId(Long serveyId) {
+        return repository.getSurveyQuestionsBySurveyId(serveyId)
+                .stream()
+                .map(SurveyQuestionDtoMapper.MAPPER::entityToDto)
+                .toList();
+    }
+
+    @Override
     public List<SurveyQuestionDto> getAll() {
         return repository.findAll()
                 .stream()
@@ -47,6 +55,8 @@ public class SurveyQuestionServiceImpl implements SurveyQuestionService {
             throw ServiceException.of(AppStatusCode.E40000, "survey","id = "+id.toString());
         }
     }
+
+
 
     @Override
     public SurveyQuestionDto create(SurveyQuestionCreateRequest createRequest) {

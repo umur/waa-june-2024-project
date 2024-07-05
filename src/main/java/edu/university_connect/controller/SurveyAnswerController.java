@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/surveyResponses")
+@RequestMapping("/survey-answers")
 @CrossOrigin
 @Slf4j
 public class SurveyAnswerController {
@@ -39,6 +39,16 @@ public class SurveyAnswerController {
         apiResponse.setMessage(messagingService.getResponseMessage(AppStatusCode.S20001,new String[]{"surveyResponse"}));
         return ResponseEntity.ok(apiResponse);
     }
+    @GetMapping("/survey-question/{surveyQuestionId}")
+    @PreAuthorize("hasAuthority('view_survey_response_list')")
+    public ResponseEntity<ApiResponse<List<SurveyAnswerDto>>> getSurveyAnswersBySurveyQuestionId(@PathVariable Long surveyQuestionId) {
+        List<SurveyAnswerDto> response= service.getSurveyAnswersBySurveyQuestionId(surveyQuestionId);
+        ApiResponse<List<SurveyAnswerDto>> apiResponse =  new ApiResponse<List<SurveyAnswerDto>>();
+        apiResponse.setResponseData(response);
+        apiResponse.setMessage(messagingService.getResponseMessage(AppStatusCode.S20001,new String[]{"surveyResponse"}));
+        return ResponseEntity.ok(apiResponse);
+    }
+
 
     @GetMapping("")
     @PreAuthorize("hasAuthority('view_survey_response_list')")
@@ -53,6 +63,7 @@ public class SurveyAnswerController {
         return ResponseEntity.ok(apiResponse);
 
     }
+
 
     @PostMapping("")
     @PreAuthorize("hasAuthority('create_survey_response')")
