@@ -1,14 +1,20 @@
 package edu.university_connect.controller;
 
 import edu.university_connect.config.ContextUser;
+import edu.university_connect.model.contract.dto.CategoryDto;
 import edu.university_connect.model.contract.dto.EventDto;
+import edu.university_connect.model.contract.dto.UserDto;
 import edu.university_connect.model.contract.request.event.EventRequest;
+import edu.university_connect.model.contract.request.user.AttendenceRequest;
 import edu.university_connect.model.contract.response.ApiResponse;
 import edu.university_connect.model.enums.AppStatusCode;
 import edu.university_connect.service.MessagingService;
 import edu.university_connect.service.event.EventService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -75,6 +81,36 @@ public class EventController {
         String message = messagingService.getResponseMessage(AppStatusCode.S20002, new String[]{"event rsvp"});
         ApiResponse<Boolean> apiResponse = new ApiResponse<>(message, true);
         apiResponse.setStatus(true);
+        return ResponseEntity.ok(apiResponse);
+    }
+
+
+    @PostMapping("{id}/attendee")
+    @PreAuthorize("hasAuthority('create_event_attendance')")
+    public ResponseEntity<ApiResponse<Boolean>> addEventAttendee(@Valid @PathVariable Long id,
+                                                                 @RequestBody AttendenceRequest attendenceRequest) {
+        UserDto userDto = eventService.addAttendeeForEvent(id, attendenceRequest.getUserId());
+        String uname = userDto.getUsername();
+        String message = messagingService.getResponseMessage(
+                AppStatusCode.S20002, new String[]{"attendee ", uname});
+        ApiResponse<Boolean> apiResponse = new ApiResponse<>(message, true);
+        apiResponse.setStatus(true);
+        return ResponseEntity.ok(apiResponse);
+    }
+
+    @GetMapping("/{id}/attendees")
+    @PreAuthorize("hasAuthority('view_event_attendance_list')")
+    public ResponseEntity<ApiResponse<Page<UserDto>>> eventRsvpAttendeeByPage(
+            @PathVariable Long id,
+            Pageable pageableReq) {
+        Pageable pageable = PageRequest.of(pageableReq.getPageNumber() > 0 ? pageableReq.getPageNumber() - 1 : 0,
+                pageableReq.getPageSize(),
+                pageableReq.getSort());
+
+        Page<UserDto> allRsvpResponder = eventService.getAllAttendeeByPage(id, pageable);
+        ApiResponse<Page<UserDto>> apiResponse = new ApiResponse<Page<UserDto>>();
+        apiResponse.setResponseData(allRsvpResponder);
+        apiResponse.setMessage(messagingService.getResponseMessage(AppStatusCode.S20001, new String[]{"category"}));
         return ResponseEntity.ok(apiResponse);
     }
 }
