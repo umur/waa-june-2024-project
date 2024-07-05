@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -32,7 +34,7 @@ public class Student extends User {
 
     @ElementCollection
     @CollectionTable(name = "extra_activities", joinColumns = @JoinColumn(name = "student_id"))
-    private Set<String> extra_activities;
+    private Set<String> extraActivities;
 
     @ManyToOne
     private Major major;
@@ -42,4 +44,14 @@ public class Student extends User {
 
     @Embedded
     private AuditData auditData;
+
+    @PrePersist
+    protected void onCreate() {
+        extraActivities = new HashSet<>();
+        interest        = new HashSet<>();
+        achievements    = new HashSet<>();
+        eventList       = new ArrayList<>();
+        auditData       = new AuditData();
+        picture         = "/uploads/defaults/profile_20240705.png";
+    }
 }

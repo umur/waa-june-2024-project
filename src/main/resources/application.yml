@@ -6,16 +6,10 @@ spring:
       expiration: 3600
       refreshExpiration: 36000
 
-  multipart:
-    enabled: true
-    max-file-size: 2MB
-    max-request-size: 2MB
-    location: /tmp
-
   datasource:
     url: jdbc:mysql://localhost:3306/waa_student_connect
     username: root
-    password: Root@123
+    password: 123456
     driver-class-name: com.mysql.cj.jdbc.Driver
 
   jpa:
@@ -32,5 +26,12 @@ spring:
     init:
       mode: always
 
-  file:
-    upload-dir: uploads
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 20MB
+      max-request-size: 20MB
+
+  web:
+    resources:
+      static-locations: file:${user.dir}

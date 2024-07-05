@@ -21,6 +21,10 @@ public class UserErrorMessages {
         return "User with email " + email + " already exists.";
     }
 
+    public static String usernameAlreadyExists(String username) {
+        return "User with username " + username + " already exists.";
+    }
+
     public static String currentPasswordIsIncorrect() {
         return INCORRECT_PASSWORD;
     }

@@ -15,7 +15,7 @@ public interface EventService {
     public EventRequestDto update(EventRequestDto eventRequestDTO, Long id);
 
     public EventRequestDto addEventReservation(Long eventId, Long studentId);
-    public String removeEventReservation(Long eventId, Long studentId);
+    public void removeEventReservation(Long eventId, Long studentId);
 
     public List<EventsDto> getAttendeesForEvent(Long eventId);
     public List<StudentEventResponseDTO> getEventsByStudentId(Long studentId);

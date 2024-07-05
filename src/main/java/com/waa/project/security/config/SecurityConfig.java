@@ -2,6 +2,7 @@ package com.waa.project.security.config;
 
 import com.waa.project.enums.RoleType;
 import com.waa.project.security.filter.JwtTokenFilter;
+import com.waa.project.security.util.AuthErrorMessages;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -45,8 +46,7 @@ public class SecurityConfig {
                    .exceptionHandling(
                            exceptionHandler -> exceptionHandler.authenticationEntryPoint(
                                    (request, response, authException) -> response.sendError(
-                                           HttpServletResponse.SC_UNAUTHORIZED, authException.getMessage())
-                                                                                        )
+                                           HttpServletResponse.SC_UNAUTHORIZED, AuthErrorMessages.invalidToken()))
                                      )
                    .addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class)
                    .build();

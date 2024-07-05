@@ -1,5 +1,6 @@
 package com.waa.project.security.filter;
 
+import com.waa.project.security.util.AuthErrorMessages;
 import com.waa.project.security.util.JwtTokenUtil;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -10,6 +11,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -51,9 +53,16 @@ public class JwtTokenFilter extends OncePerRequestFilter {
         }
 
         // Get user identity and set it on the spring security context
-        UserDetails userDetails =
-                userDetailsService.loadUserByUsername(jwtTokenUtil.getUsernameFromToken(token));
 
+        UserDetails userDetails;
+
+        try {
+            userDetails =
+                    userDetailsService.loadUserByUsername(jwtTokenUtil.getUsernameFromToken(token));
+        } catch (UsernameNotFoundException e) {
+            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, AuthErrorMessages.invalidToken());
+            return;
+        }
 
         UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
                 userDetails, null, userDetails.getAuthorities());

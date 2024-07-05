@@ -19,7 +19,7 @@ values (1, "student1", "{noop}123", "Student", "1", "student1@gmail.com", null, 
 
 -- temp
 insert into students(id, student_code, major_id, academic_years, picture)
-values (1, "159880", 1, "2024", "1234");
+values (1, "159880", 1, "2024", "/uploads/defaults/profile_20240705.png");
 
 insert into users(id, username, password, first_name, last_name, email, birth_date, gender_type, account_status,
                   role_type, user_type)
