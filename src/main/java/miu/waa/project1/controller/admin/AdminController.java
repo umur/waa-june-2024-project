@@ -29,9 +29,11 @@ public class AdminController {
 	}
 
 	@GetMapping("/accounts")
-	public ResponseEntity<?> getAllUserAccount() {
+	public ResponseEntity<?> getAllAccounts(@RequestParam(required = false) String major,
+											@RequestParam(required = false) Integer entryYear,
+											@RequestParam(required = false) String keyword) {
 		try {
-			List<User> item = userService.getAll();
+			List<User> item = userService.findByMajorEntryYearAndRelevant(major, entryYear, keyword);
 			return ResponseEntity.ok().body(item);
 		} catch (Exception e) {
 			return ResponseEntity.badRequest().body(e.getMessage());
