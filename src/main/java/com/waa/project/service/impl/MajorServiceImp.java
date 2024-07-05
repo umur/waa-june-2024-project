@@ -1,6 +1,9 @@
 package com.waa.project.service.impl;
 
 import com.waa.project.dto.MajorDto;
+import com.waa.project.dto.requests.EventRequestDto;
+import com.waa.project.dto.responses.MajorResponseDto;
+import com.waa.project.entity.Event;
 import com.waa.project.entity.Major;
 import com.waa.project.repository.MajorRepository;
 import com.waa.project.service.MajorService;
@@ -22,34 +25,30 @@ public class MajorServiceImp implements MajorService {
     private ModelMapper modelMapper;
 
     @Override
-    public List<MajorDto> getAllMajor() {
-        List<MajorDto> list = new ArrayList<>();
-        majorRepository.findAll().forEach(feed -> list.add(modelMapper.map(feed, MajorDto.class)));
-        return list;
+    public List<MajorResponseDto> getAllMajor() {
+        return majorRepository.findAll().stream().map(major -> modelMapper.map(major, MajorResponseDto.class)).toList();
     }
 
     @Override
-    public MajorDto getMajor(Long majorId) {
-        Major major = majorRepository.findById(majorId).get();
-        return modelMapper.map(major, MajorDto.class);
+    public MajorResponseDto getMajor(Long majorId) {
+        Major major = majorRepository.findById(majorId).orElseThrow(NoSuchElementException::new);
+        return modelMapper.map(major, MajorResponseDto.class);
     }
 
     @Override
-    public String save(MajorDto major) {
+    public MajorDto save(MajorDto major) {
         Major dataToSave = modelMapper.map(major, Major.class);
-        majorRepository.save(dataToSave);
-        return "Major saved successfully.";
+        return modelMapper.map(majorRepository.save(dataToSave), MajorDto.class);
     }
 
     @Override
-    public String update(MajorDto major, Long fid) {
+    public MajorDto update(MajorDto major, Long fid) {
         Major majorToUpdate = majorRepository.findById(fid)
                                              .orElseThrow(
                                                      () -> new NoSuchElementException("No major was found."));
         majorToUpdate.setName(major.getName());
         majorToUpdate.setDescription(major.getDescription());
-        majorRepository.save(majorToUpdate);
-        return "Major is updated.";
+        return modelMapper.map(majorToUpdate, MajorDto.class);
     }
 
     @Override

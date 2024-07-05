@@ -1,14 +1,20 @@
 package com.waa.project.controller.major;
 
 import com.waa.project.dto.MajorDto;
+import com.waa.project.dto.responses.MajorResponseDto;
 import com.waa.project.service.MajorService;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@Validated
 @RestController
 @AllArgsConstructor
 @NoArgsConstructor
@@ -19,32 +25,30 @@ public class MajorController {
     private MajorService majorService;
 
     @GetMapping("/majors")
-    public List<MajorDto> getAllMajor() {
-
-        return majorService.getAllMajor();
+    public ResponseEntity<List<MajorResponseDto>> getAllMajor() {
+        return new ResponseEntity<>(majorService.getAllMajor(), HttpStatus.OK);
     }
 
     @GetMapping("/majors/{Id}")
-    public MajorDto getMajor(@PathVariable Long Id) {
-
-        return majorService.getMajor(Id);
+    public ResponseEntity<MajorResponseDto> getMajor(@PathVariable Long Id) {
+        return new ResponseEntity<>(majorService.getMajor(Id), HttpStatus.OK);
     }
 
     @PutMapping("/admins/majors/{Id}")
-    public String update(
-            @RequestBody MajorDto dto, @PathVariable Long Id
+    public ResponseEntity<MajorDto> update(@Valid
+            @RequestBody MajorDto major, @PathVariable Long Id
                         ) {
-        return majorService.update(dto, Id);
+        return new ResponseEntity<>(majorService.update(major, Id), HttpStatus.OK);
     }
 
     @PostMapping("/admins/majors")
-    public String save(@RequestBody MajorDto dto) {
-        return majorService.save(dto);
+    public ResponseEntity<MajorDto> save( @Valid @RequestBody MajorDto major) {
+
+        return new ResponseEntity<>(majorService.save(major), HttpStatus.CREATED);
     }
 
     @DeleteMapping("/admins/majors/{Id}")
-    public String delete(@PathVariable Long Id) {
-
-        return majorService.delete(Id);
+    public ResponseEntity<String> delete(@PathVariable Long Id) {
+        return new ResponseEntity<>(majorService.delete(Id), HttpStatus.OK);
     }
 }
