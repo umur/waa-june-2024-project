@@ -79,6 +79,7 @@ public class SurveyServiceImpl implements SurveyService {
             return SurveyDtoMapper .MAPPER.entityToDto(survey);
         }
         else {
+
             throw ServiceException.of(AppStatusCode.E40000, "survey");
         }
     }
