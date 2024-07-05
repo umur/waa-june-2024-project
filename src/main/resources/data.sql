@@ -58,3 +58,7 @@ INSERT INTO courses (name, code, major_id) VALUES
 ('Algorithm', 'CS102', 1),
 ('Business Accounting', 'MBA101', 2),
 ('Taxation', 'MBA102', 2);
+
+-- temp
+insert into academic_resource_types(id, name)
+values (1, "Study Guide");

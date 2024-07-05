@@ -43,6 +43,11 @@ public class FeedbackController {
         return feedbackService.search(search);
     }
 
+    @GetMapping("/feedbacks/titlewithid/{title}/{id}")
+    public List<FeedbackDto> findWithTitle(@PathVariable String title, @PathVariable Long id) {
+        return feedbackService.findByTitleAndId(title, id);
+    }
+
     @GetMapping("/feedbacks/category/{Id}")
     public List<FeedbackDto> getFeedByCategory(@PathVariable Long Id) {
         return feedbackService.findFeedbackByCategory(Id);
@@ -53,7 +58,7 @@ public class FeedbackController {
             @RequestBody FeedbackDto feedbackDto,
             @PathVariable Long Id,
             @AuthenticationPrincipal UserDetails userDetails
-                        ) {
+    ) {
         Long currentUser = null;
 
         if (userDetails != null && userDetails.getUsername() != null) {
@@ -83,16 +88,16 @@ public class FeedbackController {
     public Map<String, Integer> findFeedbackByCategoryCount() {
         List<Object[]> results = feedbackService.findFeedbackByCategoryCount();
         return results.stream()
-                      .collect(Collectors.toMap(
-                              result -> (String) result[0],
-                              result -> ((Long) result[1]).intValue()
-                                               ));
+                .collect(Collectors.toMap(
+                        result -> (String) result[0],
+                        result -> ((Long) result[1]).intValue()
+                ));
 
     }
 
     @GetMapping("/feedbacks/showMe")
     public Map<String, String> showMe(@AuthenticationPrincipal UserDetails userDetails) {
-        var                 result   = userService.findByUsername(userDetails.getUsername());
+        var result = userService.findByUsername(userDetails.getUsername());
         Map<String, String> response = new HashMap<>();
         response.put("name", result.getUsername());
         response.put("email", result.getUsername());

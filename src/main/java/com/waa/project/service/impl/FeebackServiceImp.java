@@ -114,8 +114,8 @@ public class FeebackServiceImp implements FeedbackService {
 
     @Override
     public List<FeedbackDto> findFeedbackByCategory(Long id) {
-        List<FeedbackDto> list     = new ArrayList<>();
-        List<Feedback>    feedback = feedbackRepository.findFeedbackByCategoryId(id);
+        List<FeedbackDto> list = new ArrayList<>();
+        List<Feedback> feedback = feedbackRepository.findFeedbackByCategoryId(id);
         feedback.forEach(feed -> list.add(modelMapper.map(feed, FeedbackDto.class)));
         return list;
     }
@@ -127,9 +127,17 @@ public class FeebackServiceImp implements FeedbackService {
 
     @Override
     public List<FeedbackDto> search(String title) {
-        List<Feedback>    result = feedbackRepository.findFeedbackByCategoryName(title);
-        List<FeedbackDto> res    = new ArrayList<>();
+        List<Feedback> result = feedbackRepository.findFeedbackByCategoryName(title);
+        List<FeedbackDto> res = new ArrayList<>();
         result.forEach(f -> res.add(modelMapper.map(f, FeedbackDto.class)));
         return res;
+    }
+
+    @Override
+    public List<FeedbackDto> findByTitleAndId(String title, Long id) {
+        List<FeedbackDto> list = new ArrayList<>();
+        List<Feedback> feedbacks = feedbackRepository.findFeedbackByTitleContainingAndIdIsGreaterThan(title, id);
+        feedbacks.forEach(f -> list.add(modelMapper.map(f, FeedbackDto.class)));
+        return list;
     }
 }

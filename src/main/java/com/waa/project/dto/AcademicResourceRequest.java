@@ -1,17 +1,16 @@
 package com.waa.project.dto;
 
-import com.waa.project.entity.AcademicResourceType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.File;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class AcademicResourceDto {
-
-    private Long id;
+public class AcademicResourceRequest {
     private String name;
-    private String file;
-    private AcademicResourceType resourceType;
+    private File file;
+    private Long resourceId;
 }
