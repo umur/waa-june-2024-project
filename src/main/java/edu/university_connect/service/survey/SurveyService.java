@@ -16,5 +16,6 @@ public interface SurveyService {
     SurveyDto update(Long id, SurveyUpdateRequest updateRequest);
 
     boolean delete(Long id);
+    Page<SurveyDto> getUserSurveyPage(Long id, Pageable pageable);
 
 }

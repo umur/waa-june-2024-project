@@ -1,11 +1,11 @@
 package edu.university_connect.controller;
-import edu.university_connect.model.contract.dto.SurveyResponseDto;
-import edu.university_connect.model.contract.request.survey.SurveyResponseCreateRequest;
-import edu.university_connect.model.contract.request.survey.SurveyResponseUpdateRequest;
+import edu.university_connect.model.contract.dto.SurveyAnswerDto;
+import edu.university_connect.model.contract.request.survey.SurveyAnswerCreateRequest;
+import edu.university_connect.model.contract.request.survey.SurveyAnswerUpdateRequest;
 import edu.university_connect.model.contract.response.ApiResponse;
 import edu.university_connect.model.enums.AppStatusCode;
 import edu.university_connect.service.MessagingService;
-import edu.university_connect.service.survey.SurveyResponseService;
+import edu.university_connect.service.survey.SurveyAnswerService;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -18,57 +18,69 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/surveyResponses")
+@RequestMapping("/survey-answers")
 @CrossOrigin
 @Slf4j
-public class SurveyResponseController {
-    private final SurveyResponseService service;
+public class SurveyAnswerController {
+    private final SurveyAnswerService service;
 
     private final MessagingService messagingService;
 
-    public SurveyResponseController(SurveyResponseService service, MessagingService messagingService) {
+    public SurveyAnswerController(SurveyAnswerService service, MessagingService messagingService) {
         this.service = service;
         this.messagingService = messagingService;
     }
     @GetMapping("/all")
     @PreAuthorize("hasAuthority('view_survey_response_list')")
-    public ResponseEntity<ApiResponse<List<SurveyResponseDto>>> getAll() {
-        List<SurveyResponseDto> response= service.getAll();
-        ApiResponse<List<SurveyResponseDto>> apiResponse =  new ApiResponse<List<SurveyResponseDto>>();
+    public ResponseEntity<ApiResponse<List<SurveyAnswerDto>>> getAll() {
+        List<SurveyAnswerDto> response= service.getAll();
+        ApiResponse<List<SurveyAnswerDto>> apiResponse =  new ApiResponse<List<SurveyAnswerDto>>();
         apiResponse.setResponseData(response);
         apiResponse.setMessage(messagingService.getResponseMessage(AppStatusCode.S20001,new String[]{"surveyResponse"}));
         return ResponseEntity.ok(apiResponse);
     }
+    @GetMapping("/survey-question/{surveyQuestionId}")
+    @PreAuthorize("hasAuthority('view_survey_response_list')")
+    public ResponseEntity<ApiResponse<List<SurveyAnswerDto>>> getSurveyAnswersBySurveyQuestionId(@PathVariable Long surveyQuestionId) {
+        List<SurveyAnswerDto> response= service.getSurveyAnswersBySurveyQuestionId(surveyQuestionId);
+        ApiResponse<List<SurveyAnswerDto>> apiResponse =  new ApiResponse<List<SurveyAnswerDto>>();
+        apiResponse.setResponseData(response);
+        apiResponse.setMessage(messagingService.getResponseMessage(AppStatusCode.S20001,new String[]{"surveyResponse"}));
+        return ResponseEntity.ok(apiResponse);
+    }
+
 
     @GetMapping("")
     @PreAuthorize("hasAuthority('view_survey_response_list')")
-    public ResponseEntity<ApiResponse<Page<SurveyResponseDto>>> getPage(Pageable pageableReq) {
+    public ResponseEntity<ApiResponse<Page<SurveyAnswerDto>>> getPage(Pageable pageableReq) {
         Pageable pageable = PageRequest.of(pageableReq.getPageNumber()>0? pageableReq.getPageNumber()-1 : 0,
                 pageableReq.getPageSize() ,
                 pageableReq.getSort());
-        Page<SurveyResponseDto> response= service.getPage(pageable);
-        ApiResponse<Page<SurveyResponseDto>> apiResponse =  new ApiResponse<Page<SurveyResponseDto>>();
+        Page<SurveyAnswerDto> response= service.getPage(pageable);
+        ApiResponse<Page<SurveyAnswerDto>> apiResponse =  new ApiResponse<Page<SurveyAnswerDto>>();
         apiResponse.setResponseData(response);
         apiResponse.setMessage(messagingService.getResponseMessage(AppStatusCode.S20001,new String[]{"surveyResponse"}));
         return ResponseEntity.ok(apiResponse);
 
     }
+
+
     @PostMapping("")
     @PreAuthorize("hasAuthority('create_survey_response')")
-    public ResponseEntity<ApiResponse<SurveyResponseDto>> create(@Valid @RequestBody SurveyResponseCreateRequest createRequest) {
-        SurveyResponseDto response= service.create(createRequest);
-        ApiResponse<SurveyResponseDto> apiResponse =  new ApiResponse<SurveyResponseDto>();
-        apiResponse.setResponseData(response);
-       apiResponse.setMessage(messagingService.getResponseMessage(AppStatusCode.S20002,new String[]{"surveyResponse"}));
+    public ResponseEntity<ApiResponse<List<SurveyAnswerDto>>> create(@Valid @RequestBody List<SurveyAnswerCreateRequest> createRequests) {
+        List<SurveyAnswerDto> responses = service.create(createRequests);
+        ApiResponse<List<SurveyAnswerDto>> apiResponse = new ApiResponse<>();
+        apiResponse.setResponseData(responses);
+        apiResponse.setMessage(messagingService.getResponseMessage(AppStatusCode.S20002, new String[]{"surveyResponses"}));
         return ResponseEntity.ok(apiResponse);
-
     }
+
 
     @GetMapping("/{id}")
     @PreAuthorize("hasAuthority('view_survey_response')")
-    public ResponseEntity<ApiResponse<SurveyResponseDto>> get(@PathVariable Long id) {
-        SurveyResponseDto response= service.getById(id);
-        ApiResponse<SurveyResponseDto> apiResponse =  new ApiResponse<SurveyResponseDto>();
+    public ResponseEntity<ApiResponse<SurveyAnswerDto>> get(@PathVariable Long id) {
+        SurveyAnswerDto response= service.getById(id);
+        ApiResponse<SurveyAnswerDto> apiResponse =  new ApiResponse<SurveyAnswerDto>();
         apiResponse.setResponseData(response);
         apiResponse.setMessage(messagingService.getResponseMessage(AppStatusCode.S20003,new String[]{"surveyResponse"}));
         return ResponseEntity.ok(apiResponse);
@@ -77,10 +89,10 @@ public class SurveyResponseController {
 
     @PutMapping("/{id}")
     @PreAuthorize("hasAuthority('modify_survey_response')")
-    public ResponseEntity<ApiResponse<SurveyResponseDto>> update(@Valid @RequestBody SurveyResponseUpdateRequest updateRequest,
-                                                         @PathVariable Long id) {
-        SurveyResponseDto response= service.update(id,updateRequest);
-        ApiResponse<SurveyResponseDto> apiResponse =  new ApiResponse<SurveyResponseDto>();
+    public ResponseEntity<ApiResponse<SurveyAnswerDto>> update(@Valid @RequestBody SurveyAnswerUpdateRequest updateRequest,
+                                                               @PathVariable Long id) {
+        SurveyAnswerDto response= service.update(id,updateRequest);
+        ApiResponse<SurveyAnswerDto> apiResponse =  new ApiResponse<SurveyAnswerDto>();
         apiResponse.setResponseData(response);
         apiResponse.setMessage(messagingService.getResponseMessage(AppStatusCode.S20004,new String[]{"surveyResponse"}));
         return ResponseEntity.ok(apiResponse);

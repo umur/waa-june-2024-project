@@ -6,8 +6,7 @@ import lombok.Data;
 import java.time.LocalDate;
 
 @Data
-public class SurveyResponseCreateRequest {
-
+public class SurveyAnswerUpdateRequest {
     private  Long surveyQuestionId;
     @NotBlank
     @NotEmpty

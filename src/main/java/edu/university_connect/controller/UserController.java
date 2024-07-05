@@ -11,6 +11,7 @@ import edu.university_connect.model.contract.response.ApiResponse;
 import edu.university_connect.model.enums.AppStatusCode;
 import edu.university_connect.service.MessagingService;
 import edu.university_connect.service.post.PostService;
+import edu.university_connect.service.event.EventService;
 import edu.university_connect.service.user.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -31,6 +32,7 @@ import java.util.List;
 public class UserController {
     private final UserService service;
     private final PostService postService;
+    private final EventService eventService;
     private final ContextUser contextUser;
     private final MessagingService messagingService;
 
@@ -191,5 +193,28 @@ public class UserController {
         apiResponse.setResponseData(response);
         apiResponse.setMessage(messagingService.getResponseMessage(AppStatusCode.S20000));
         return ResponseEntity.ok(apiResponse);
+    }
+
+    @GetMapping("/{id}/surveys")
+    @PreAuthorize("hasAuthority('view_survey') && @contextUser.getLoginUser().getId() == #id")
+    public ResponseEntity<ApiResponse<Page<SurveyDto>>> fetchUserSurveys(@PathVariable Long id, Pageable pageableReq) {
+        Pageable pageable = PageRequest.of(pageableReq.getPageNumber()>0? pageableReq.getPageNumber()-1 : 0,
+                pageableReq.getPageSize() ,
+                pageableReq.getSort());
+        Page<SurveyDto> response= service.getUserSurveys(id,pageable);
+        ApiResponse<Page<SurveyDto>> apiResponse =  new ApiResponse<Page<SurveyDto>>();
+        apiResponse.setResponseData(response);
+        apiResponse.setMessage(messagingService.getResponseMessage(AppStatusCode.S20000));
+        return ResponseEntity.ok(apiResponse);
+    }
+    @GetMapping("/{id}/events")
+    @PreAuthorize("hasAuthority('view_event_list') && @contextUser.getLoginUser().getId() == #id")
+    public ResponseEntity<ApiResponse<Page<EventDto>>> fetchEventsByUser(@PathVariable Long id, Pageable pageableReq){
+        String responseMessage = messagingService
+                .getResponseMessage(AppStatusCode.S20001, new String[]{"event"});
+        Pageable pageable = PageRequest.of(pageableReq.getPageNumber()>0? pageableReq.getPageNumber()-1 : 0,
+                pageableReq.getPageSize() ,
+                pageableReq.getSort());
+        return ResponseEntity.ok(new ApiResponse<Page<EventDto>>(responseMessage, eventService.getAllByPage(pageable)));
     }
 }
