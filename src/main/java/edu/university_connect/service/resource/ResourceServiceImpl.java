@@ -57,6 +57,7 @@ public class ResourceServiceImpl implements ResourceService {
     @Override
     public ResourceDto create(ResourceRequest createRequest) {
         Resource resource = ResourceDtoMapper.MAPPER.dtoToEntity(createRequest);
+        resource.setUser(contextUser.getLoginUser().getUser());
         Resource savedResource = repository.save(resource);
         return ResourceDtoMapper.MAPPER.entityToDto(savedResource);
     }
@@ -149,6 +150,12 @@ public class ResourceServiceImpl implements ResourceService {
             throw ServiceException.of(AppStatusCode.E50009);
         }
         return fileResource;
+    }
+
+    @Override
+    public Page<ResourceDto> getUserResourcePage(Long id, Pageable pageable) {
+        Page<Resource> resourcePage = repository.getUserResourcePage(id,pageable);
+        return resourcePage.map(ResourceDtoMapper.MAPPER::entityToDto);
     }
 
 

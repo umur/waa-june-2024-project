@@ -2,6 +2,7 @@ package edu.university_connect.controller;
 
 import edu.university_connect.config.ContextUser;
 import edu.university_connect.model.contract.dto.ProfileDto;
+import edu.university_connect.model.contract.dto.ResourceDto;
 import edu.university_connect.model.contract.dto.SearchDto;
 import edu.university_connect.model.contract.dto.UserDto;
 import edu.university_connect.model.contract.request.profile.ProfileRequest;
@@ -157,12 +158,25 @@ public class UserController {
 
     @GetMapping("/{id}/blocked-users")
     @PreAuthorize("hasAuthority('view_user') && @contextUser.getLoginUser().getId() == #id")
-    public ResponseEntity<ApiResponse<Page<UserDto>>> blockUser(@PathVariable Long id,Pageable pageableReq) {
+    public ResponseEntity<ApiResponse<Page<UserDto>>> getBlockedUsers(@PathVariable Long id,Pageable pageableReq) {
         Pageable pageable = PageRequest.of(pageableReq.getPageNumber()>0? pageableReq.getPageNumber()-1 : 0,
                 pageableReq.getPageSize() ,
                 pageableReq.getSort());
         Page<UserDto> response= service.getBlockedUsers(id,pageable);
         ApiResponse<Page<UserDto>> apiResponse =  new ApiResponse<Page<UserDto>>();
+        apiResponse.setResponseData(response);
+        apiResponse.setMessage(messagingService.getResponseMessage(AppStatusCode.S20000));
+        return ResponseEntity.ok(apiResponse);
+    }
+
+    @GetMapping("/{id}/resources")
+    @PreAuthorize("hasAuthority('view_resource') && @contextUser.getLoginUser().getId() == #id")
+    public ResponseEntity<ApiResponse<Page<ResourceDto>>> fetchUserResources(@PathVariable Long id, Pageable pageableReq) {
+        Pageable pageable = PageRequest.of(pageableReq.getPageNumber()>0? pageableReq.getPageNumber()-1 : 0,
+                pageableReq.getPageSize() ,
+                pageableReq.getSort());
+        Page<ResourceDto> response= service.getUserResources(id,pageable);
+        ApiResponse<Page<ResourceDto>> apiResponse =  new ApiResponse<Page<ResourceDto>>();
         apiResponse.setResponseData(response);
         apiResponse.setMessage(messagingService.getResponseMessage(AppStatusCode.S20000));
         return ResponseEntity.ok(apiResponse);

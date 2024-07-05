@@ -1,6 +1,7 @@
 package edu.university_connect.service.user;
 
 import edu.university_connect.model.contract.dto.ProfileDto;
+import edu.university_connect.model.contract.dto.ResourceDto;
 import edu.university_connect.model.contract.dto.SearchDto;
 import edu.university_connect.model.contract.request.auth.SignUpRequest;
 import edu.university_connect.model.contract.request.profile.ProfileRequest;
@@ -37,4 +38,6 @@ public interface UserService {
     boolean unblockUser(Long id, BlockRequest request);
 
     Page<UserDto> getBlockedUsers(Long id,Pageable pageable);
+
+    Page<ResourceDto> getUserResources(Long id, Pageable pageable);
 }
