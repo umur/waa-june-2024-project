@@ -9,6 +9,7 @@ import edu.university_connect.model.contract.request.user.UserUpdateRequest;
 import edu.university_connect.model.contract.response.ApiResponse;
 import edu.university_connect.model.enums.AppStatusCode;
 import edu.university_connect.service.MessagingService;
+import edu.university_connect.service.event.EventService;
 import edu.university_connect.service.user.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -28,6 +29,7 @@ import java.util.List;
 @Slf4j
 public class UserController {
     private final UserService service;
+    private final EventService eventService;
 
     private final ContextUser contextUser;
 
@@ -190,5 +192,15 @@ public class UserController {
         apiResponse.setResponseData(response);
         apiResponse.setMessage(messagingService.getResponseMessage(AppStatusCode.S20000));
         return ResponseEntity.ok(apiResponse);
+    }
+    @GetMapping("/{id}/events")
+    @PreAuthorize("hasAuthority('view_event_list') && @contextUser.getLoginUser().getId() == #id")
+    public ResponseEntity<ApiResponse<Page<EventDto>>> fetchEventsByUser(@PathVariable Long id, Pageable pageableReq){
+        String responseMessage = messagingService
+                .getResponseMessage(AppStatusCode.S20001, new String[]{"event"});
+        Pageable pageable = PageRequest.of(pageableReq.getPageNumber()>0? pageableReq.getPageNumber()-1 : 0,
+                pageableReq.getPageSize() ,
+                pageableReq.getSort());
+        return ResponseEntity.ok(new ApiResponse<Page<EventDto>>(responseMessage, eventService.getAllByPage(pageable)));
     }
 }
