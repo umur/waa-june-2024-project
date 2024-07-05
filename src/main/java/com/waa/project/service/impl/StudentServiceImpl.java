@@ -11,7 +11,9 @@ import com.waa.project.exception.ResourceNotFoundException;
 import com.waa.project.repository.MajorRepository;
 import com.waa.project.repository.StudentRepository;
 import com.waa.project.repository.UserRepository;
+import com.waa.project.service.FileService;
 import com.waa.project.service.StudentService;
+import com.waa.project.util.FileSaveLocations;
 import com.waa.project.util.MajorErrorMessages;
 import com.waa.project.util.StudentErrorMessages;
 import com.waa.project.util.UserErrorMessages;
@@ -21,6 +23,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 @Service
 public class StudentServiceImpl implements StudentService {
@@ -29,19 +32,20 @@ public class StudentServiceImpl implements StudentService {
     private final MajorRepository   majorRepository;
     private final PasswordEncoder   passwordEncoder;
     private final UserRepository    userRepository;
+    private final FileService       fileService;
 
     public StudentServiceImpl(
             StudentRepository studentRepository,
             ModelMapper modelMapper,
             MajorRepository majorRepository,
-            PasswordEncoder passwordEncoder,
-            UserRepository userRepository
+            PasswordEncoder passwordEncoder, UserRepository userRepository, FileService fileService
                              ) {
         this.studentRepository = studentRepository;
         this.modelMapper       = modelMapper;
         this.majorRepository   = majorRepository;
         this.passwordEncoder   = passwordEncoder;
         this.userRepository    = userRepository;
+        this.fileService       = fileService;
     }
 
     @Override
@@ -91,7 +95,21 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    public StudentResponse updateStudentProfile(UpdateStudentProfileRequest updateStudentProfileRequest) {
-        return null;
+    public StudentResponse updateStudentProfile(
+            String username, UpdateStudentProfileRequest updateStudentProfileRequest, MultipartFile picture
+                                               ) {
+        Student student = studentRepository.findStudentByUsername(username)
+                                           .orElseThrow(() -> new ResourceNotFoundException(
+                                                   StudentErrorMessages.studentNotFound(username)));
+
+        modelMapper.map(updateStudentProfileRequest, student);
+
+        if (picture != null && !picture.isEmpty()) {
+            String picturePath = fileService.saveFile(picture, FileSaveLocations.studentProfile(username));
+
+            student.setPicture(picturePath);
+        }
+
+        return modelMapper.map(studentRepository.save(student), StudentResponse.class);
     }
 }
