@@ -9,6 +9,7 @@ import edu.university_connect.exception.ServiceException;
 import edu.university_connect.mapper.ProfileDtoMapper;
 import edu.university_connect.mapper.UserDtoMapper;
 import edu.university_connect.model.contract.dto.ProfileDto;
+import edu.university_connect.model.contract.dto.ResourceDto;
 import edu.university_connect.model.contract.dto.SearchDto;
 import edu.university_connect.model.contract.request.auth.SignUpRequest;
 import edu.university_connect.model.contract.request.profile.ProfileRequest;
@@ -19,12 +20,11 @@ import edu.university_connect.model.contract.request.user.UserCreateRequest;
 import edu.university_connect.model.contract.request.user.UserUpdateRequest;
 import edu.university_connect.repository.UserRepository;
 import edu.university_connect.service.profile.ProfileService;
+import edu.university_connect.service.resource.ResourceService;
 import edu.university_connect.service.role.RoleService;
 import edu.university_connect.service.student.StudentService;
-import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -39,12 +39,10 @@ import java.util.*;
 @Slf4j
 public class UserServiceImpl implements UserService {
 
-    @Autowired
-    private EntityManager entityManager;
-
     private final UserRepository repository;
     private final RoleService roleService;
     private final StudentService studentService;
+    private final ResourceService resourceService;
     private final ProfileService profileService;
     private final PasswordEncoder passwordEncoder;
     private final ContextUser contextUser;
@@ -201,12 +199,12 @@ public class UserServiceImpl implements UserService {
     }
 
     public boolean blockUser(Long id, BlockRequest request) {
+        Optional<User> blockerOpt=repository.findByUsername(contextUser.getUser().getUsername());
         Optional<User> blockedOpt=repository.findById(request.getUserId());
-        if(blockedOpt.isEmpty()){
+        if(blockerOpt.isEmpty() || blockedOpt.isEmpty()){
             throw ServiceException.of(AppStatusCode.E40000,request.getUserId().toString());
         }
-        User blocker=contextUser.getLoginUser().getUser();
-        entityManager.merge(blocker);
+        User blocker=blockerOpt.get();
         List<User> blockedUsers=blocker.getBlockedUsers();
         blockedUsers.add(blockedOpt.get());
         blocker.setBlockedUsers(blockedUsers);
@@ -216,16 +214,28 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean unblockUser(Long id, BlockRequest request) {
+        Optional<User> blockerOpt=repository.findByUsername(contextUser.getUser().getUsername());
         Optional<User> blockedOpt=repository.findById(request.getUserId());
-        if(blockedOpt.isEmpty()){
+        if(blockerOpt.isEmpty() || blockedOpt.isEmpty()){
             throw ServiceException.of(AppStatusCode.E40000,request.getUserId().toString());
         }
-        User blocker=contextUser.getLoginUser().getUser();
+        User blocker=blockerOpt.get();
         List<User> blockedUsers=blocker.getBlockedUsers();
         blockedUsers.remove(blockedOpt.get());
         blocker.setBlockedUsers(blockedUsers);
         repository.save(blocker);
         return true;
 
+    }
+
+    @Override
+    public Page<UserDto> getBlockedUsers(Long id,Pageable pageable) {
+        Page<User> page = repository.findBlockedUsers(id,pageable);
+        return page.map(UserDtoMapper.MAPPER::entityToDto);
+    }
+
+    @Override
+    public Page<ResourceDto> getUserResources(Long id, Pageable pageable) {
+        return resourceService.getUserResourcePage(id,pageable);
     }
 }

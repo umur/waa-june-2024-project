@@ -45,8 +45,8 @@ public class User extends MetaData {
 //    @OneToMany(mappedBy = "user")
 //    private List<Reply> replies;
 
-//    @OneToMany(mappedBy="user")
-//    private  List<Resource> resources;
+    @OneToMany(mappedBy="user")
+    private  List<Resource> resources;
 
 //    @OneToMany(mappedBy = "creator")
 //    private  List<Survey> createdSurveys;

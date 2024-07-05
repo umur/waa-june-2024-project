@@ -25,4 +25,6 @@ public interface ResourceService {
     ResourceDto handleFileUpload(MultipartFile[] files, Long id);
 
     Resource loadResource(String filename, Long id);
+
+    Page<ResourceDto> getUserResourcePage(Long id, Pageable pageable);
 }
