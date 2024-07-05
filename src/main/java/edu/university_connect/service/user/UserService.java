@@ -35,4 +35,6 @@ public interface UserService {
     boolean blockUser(Long id, BlockRequest request);
 
     boolean unblockUser(Long id, BlockRequest request);
+
+    Page<UserDto> getBlockedUsers(Long id,Pageable pageable);
 }
