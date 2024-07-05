@@ -2,8 +2,10 @@ package edu.university_connect.service.survey;
 import edu.university_connect.domain.entity.survey.SurveyQuestion;
 import edu.university_connect.domain.entity.survey.SurveyResponse;
 import edu.university_connect.exception.ServiceException;
+import edu.university_connect.mapper.SurveyQuestionDtoMapper;
 import edu.university_connect.mapper.SurveyResponseDtoMapper;
 import edu.university_connect.model.contract.dto.SurveyAnswerDto;
+import edu.university_connect.model.contract.dto.SurveyQuestionDto;
 import edu.university_connect.model.contract.request.survey.SurveyAnswerCreateRequest;
 import edu.university_connect.model.contract.request.survey.SurveyAnswerUpdateRequest;
 import edu.university_connect.model.enums.AppStatusCode;
@@ -36,6 +38,14 @@ public class SurveyAnswerServiceImpl implements SurveyAnswerService {
     @Override
     public List<SurveyAnswerDto> getAll() {
         return repository.findAll()
+                .stream()
+                .map(SurveyResponseDtoMapper.MAPPER::entityToDto)
+                .toList();
+    }
+
+    @Override
+    public List<SurveyAnswerDto> getSurveyAnswersBySurveyQuestionId(Long serveyQuestionId) {
+        return repository.getSurveyAnswersBySurveyQuestionId(serveyQuestionId)
                 .stream()
                 .map(SurveyResponseDtoMapper.MAPPER::entityToDto)
                 .toList();

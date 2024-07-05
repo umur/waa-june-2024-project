@@ -40,6 +40,16 @@ public class SurveyQuestionController {
         return ResponseEntity.ok(apiResponse);
     }
 
+    @GetMapping("/survey/{surveyId}")
+    @PreAuthorize("hasAuthority('view_survey_questionnaire_list')")
+    public ResponseEntity<ApiResponse<List<SurveyQuestionDto>>> getSurveyQuestionsBySurveyId(@PathVariable Long surveyId) {
+        List<SurveyQuestionDto> response= service.getSurveyQuestionsBySurveyId(surveyId);
+        ApiResponse<List<SurveyQuestionDto>> apiResponse =  new ApiResponse<List<SurveyQuestionDto>>();
+        apiResponse.setResponseData(response);
+        apiResponse.setMessage(messagingService.getResponseMessage(AppStatusCode.S20001,new String[]{"surveyQuestion"}));
+        return ResponseEntity.ok(apiResponse);
+    }
+
     @GetMapping("")
     @PreAuthorize("hasAuthority('view_survey_questionnaire_list')")
     public ResponseEntity<ApiResponse<Page<SurveyQuestionDto>>> getPage(Pageable pageableReq) {

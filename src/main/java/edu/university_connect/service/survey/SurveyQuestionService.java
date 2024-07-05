@@ -14,4 +14,5 @@ public interface SurveyQuestionService {
     SurveyQuestionDto create(SurveyQuestionCreateRequest createRequest);
     SurveyQuestionDto update(Long id, SurveyQuestionUpdateRequest updateRequest);
     boolean delete(Long id);
+    List<SurveyQuestionDto> getSurveyQuestionsBySurveyId(Long serveyId);
 }
