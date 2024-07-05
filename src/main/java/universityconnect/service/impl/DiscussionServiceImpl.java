@@ -8,10 +8,11 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import universityconnect.domain.*;
 import universityconnect.dto.DiscussionDTO;
 import universityconnect.domain.DiscussionSpecifications;
-import universityconnect.dto.DiscussionSearchResponseDTO;
+import universityconnect.dto.DiscussionSearchResponse;
 import universityconnect.exception.ResourceNotFoundException;
 import universityconnect.mapper.DiscussionMapper;
 import universityconnect.repository.DiscussionRepository;
@@ -27,6 +28,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 @Slf4j
 public class DiscussionServiceImpl implements DiscussionService {
@@ -132,7 +134,7 @@ public class DiscussionServiceImpl implements DiscussionService {
         return discussionRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("Discussion not found with id: "+id));
     }
 
-    public DiscussionSearchResponseDTO searchDiscussions(DiscussionSearchCriteria criteria, Pageable pageable) {
+    public DiscussionSearchResponse searchDiscussions(DiscussionSearchCriteria criteria, Pageable pageable) {
         Specification<Discussion> spec = DiscussionSpecifications.withCriteria(criteria);
         Page<Discussion> discussions = discussionRepository.findAll(spec, pageable);
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -150,7 +152,7 @@ public class DiscussionServiceImpl implements DiscussionService {
                 .map(DiscussionMapper.INSTANCE::discussionToDiscussionDTO)
                 .collect(Collectors.toList());
 
-        DiscussionSearchResponseDTO response = new DiscussionSearchResponseDTO();
+        DiscussionSearchResponse response = new DiscussionSearchResponse();
         response.setContent(discussionDTOs);
         response.setTotalPages(discussions.getTotalPages());
         response.setTotalElements(discussions.getTotalElements());

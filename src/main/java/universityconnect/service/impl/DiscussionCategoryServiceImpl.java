@@ -2,6 +2,7 @@ package universityconnect.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import universityconnect.domain.DiscussionCategory;
 import universityconnect.dto.DiscussionCategoryDTO;
 import universityconnect.exception.ResourceNotFoundException;
@@ -12,6 +13,7 @@ import universityconnect.service.DiscussionCategoryService;
 import java.util.List;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class DiscussionCategoryServiceImpl implements DiscussionCategoryService {
     private final DiscussionCategoryRepository discussionCategoryRepository;

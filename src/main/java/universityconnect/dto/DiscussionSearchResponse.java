@@ -5,7 +5,7 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-public class DiscussionSearchResponseDTO {
+public class DiscussionSearchResponse {
 
     private List<DiscussionDTO> content;
     private int totalPages;

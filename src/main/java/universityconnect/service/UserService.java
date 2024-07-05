@@ -2,15 +2,16 @@ package universityconnect.service;
 
 import universityconnect.domain.User;
 import universityconnect.dto.UserDTO;
+import universityconnect.dto.UserResponse;
 
 import java.util.List;
 
 public interface UserService {
     UserDTO createUser(UserDTO userDTO);
 
-    UserDTO getUserById(Long id);
+    UserResponse getUserById(Long id);
 
-    List<UserDTO> getAllUsers();
+    List<UserResponse> getAllUsers();
 
     UserDTO updateUser(Long id, UserDTO userDTO);
 
@@ -18,13 +19,13 @@ public interface UserService {
 
     User findById(Long userId);
 
-    List<UserDTO> getAllReportedUsersByReporterUserId(Long id);
+    List<UserResponse> getAllReportedUsersByReporterUserId(Long id);
 
-    List<UserDTO> getAllReporterUsersByReportedUserId(Long id);
+    List<UserResponse> getAllReporterUsersByReportedUserId(Long id);
 
-    List<UserDTO> getAllBlockedUsersByBlockerUserId(Long id);
+    List<UserResponse> getAllBlockedUsersByBlockerUserId(Long id);
 
-    List<UserDTO> getAllBlockerUsersByBlockedUserId(Long id);
+    List<UserResponse> getAllBlockerUsersByBlockedUserId(Long id);
 
 
 }

@@ -24,7 +24,6 @@ import universityconnect.service.ResourceService;
 import universityconnect.service.StorageService;
 
 @Service
-
 public class FileSystemStorageService implements StorageService {
     private final Path rootLocation;
     @Autowired
