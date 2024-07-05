@@ -96,4 +96,14 @@ public class DiscussionServiceImpl implements DiscussionService {
 
         return mapper.map(discussion, DiscussionDto.class);
     }
+
+    @Override
+    public DiscussionDto searching(String text) {
+        System.out.println("Text:" + text);
+        Discussion discussion = repository.findAllByTitleContainingIgnoreCaseOrBodyContainingIgnoreCase(text, text)
+                                          .orElseThrow(() -> new RuntimeException(
+                                                  "Data Not found"));
+        System.out.println("Output:" + discussion);
+        return mapper.map(discussion, DiscussionDto.class);
+    }
 }

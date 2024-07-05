@@ -23,4 +23,7 @@ public interface DiscussionCommentsRepository extends JpaRepository<DiscussionCo
             nativeQuery = true
     )
     Page<DiscussionComments> findByParentCommentId(Long parentCommentId, Pageable pageable);
+
+    void deleteAllByParentCommentId(DiscussionComments id);
+
 }

@@ -80,6 +80,7 @@ public class DiscussionCommentsServiceImpl implements DiscussionCommentsService 
         DiscussionComments dataById = repository.findByIdAndStudentId(id, userId)
                                                 .orElseThrow(() -> new RuntimeException("Comment ID not found"));
 
+        repository.deleteAllByParentCommentId(dataById);
         repository.deleteByIdAndStudentId(id, userId);
 
         return mapper.map(dataById, DiscussionCommentsDto.class);

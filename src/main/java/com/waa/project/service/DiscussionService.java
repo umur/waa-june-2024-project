@@ -16,4 +16,6 @@ public interface DiscussionService {
     DiscussionDto updateDiscussion(long id, DiscussionDto discussionDto, User user);
 
     DiscussionDto deleteDiscussion(long id, User user);
+
+    DiscussionDto searching(String text);
 }
