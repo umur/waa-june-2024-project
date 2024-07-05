@@ -46,7 +46,15 @@ values (1, "Social Party");
 
 -- temp
 INSERT INTO events (name, description, event_date, event_time)
-VALUES ('Harriet"s Birthday', 'Come have fun and celebrate.', '2024-08-08', '09:00:00'),
-       ('Book Fair', 'Book fair with stalls from various publishers and authors.', '2024-11-12', '14:00:00'),
-       ('Fitness Bootcamp', 'Outdoor fitness bootcamp for all levels.', '2025-03-10', '07:00:00'),
-       ('Coding Workshop', 'Hands-on coding workshop for beginners.', '2025-04-22', '11:00:00');
+VALUES
+('Harriet"s Birthday', 'Come have fun and celebrate.', '2024-08-08', '09:00:00'),
+('Book Fair', 'Book fair with stalls from various publishers and authors.', '2024-11-12', '14:00:00'),
+('Fitness Bootcamp', 'Outdoor fitness bootcamp for all levels.', '2025-03-10', '07:00:00'),
+('Coding Workshop', 'Hands-on coding workshop for beginners.', '2025-04-22', '11:00:00');
+
+-- temp
+INSERT INTO courses (name, code, major_id) VALUES
+('Introduction to Programming', 'CS101', 1),
+('Algorithm', 'CS102', 1),
+('Business Accounting', 'MBA101', 2),
+('Taxation', 'MBA102', 2);

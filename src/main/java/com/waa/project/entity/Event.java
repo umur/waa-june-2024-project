@@ -31,12 +31,6 @@ public class Event {
 
     private String files;
 
-//    @ManyToOne
-//    private Admin createdByAdmin;
-//
-//    @ManyToOne
-//    private DiscussionCategory category;
-
     @ManyToMany
     private List<Student> attendedStudents;
 

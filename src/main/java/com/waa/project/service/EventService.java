@@ -1,22 +1,22 @@
 package com.waa.project.service;
 
-import com.waa.project.dto.requests.EventDTO;
-import com.waa.project.dto.requests.StudentEventDTO;
-import com.waa.project.entity.Event;
-import com.waa.project.entity.Student;
+import com.waa.project.dto.requests.EventRequestDto;
+import com.waa.project.dto.responses.EventResponseDto;
+import com.waa.project.dto.responses.EventsDto;
+import com.waa.project.dto.responses.StudentEventResponseDTO;
 
 import java.util.List;
 
 public interface EventService {
-    public List<EventDTO> findAll();
-    public EventDTO save(EventDTO eventDTO);
-    public EventDTO findById(Long id);
+    public List<EventResponseDto> findAll();
+    public EventRequestDto save(EventRequestDto eventRequestDTO);
+    public EventResponseDto findById(Long id);
     public void deleteById(Long id);
-    public EventDTO update(EventDTO eventDTO,  Long id);
+    public EventRequestDto update(EventRequestDto eventRequestDTO, Long id);
 
-    public EventDTO addEventReservation(Long eventId, Long studentId);
-    public String removeEventReservation(Long eventId, Long studentId);
+    public EventRequestDto addEventReservation(Long eventId, Long studentId);
+    public void removeEventReservation(Long eventId, Long studentId);
 
-    public List<StudentEventDTO> getAttendeesForEvent(Long eventId);
-    public List<EventDTO> getEventsByStudentId(Long studentId);
+    public List<EventsDto> getAttendeesForEvent(Long eventId);
+    public List<StudentEventResponseDTO> getEventsByStudentId(Long studentId);
 }

@@ -33,7 +33,7 @@ public class FeebackCategoryServiceImp implements FeedbackCategoryService {
     @Override
     public FeedbackCategoryDto getCategory(Long feedId) {
 
-        return modelMapper.map(feedbackCategoryRepository.findById(feedId), FeedbackCategoryDto.class);
+        return modelMapper.map(feedbackCategoryRepository.findById(feedId).get(), FeedbackCategoryDto.class);
     }
 
     @Override

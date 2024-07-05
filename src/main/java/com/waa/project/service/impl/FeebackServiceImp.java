@@ -49,11 +49,11 @@ public class FeebackServiceImp implements FeedbackService {
     }
 
     @Override
-    public String save(FeedbackDto feedback, Long userId) {
-        Feedback feedbackToSave = modelMapper.map(feedback, Feedback.class);
+    public String save(FeedbackDto dto, Long userId) {
+        Feedback feedbackToSave = modelMapper.map(dto, Feedback.class);
 
         FeedbackCategory feedbackCategory =
-                feedbackCategoryRepository.findById(feedback.getFeedbackCategory().getId()).get();
+                feedbackCategoryRepository.findById(dto.getFeedbackCategory().getId()).get();
         feedbackToSave.setCategory(feedbackCategory);
 
         if (userId != null) {
@@ -123,5 +123,13 @@ public class FeebackServiceImp implements FeedbackService {
     @Override
     public List<Object[]> findFeedbackByCategoryCount() {
         return feedbackRepository.findFeedbackByCategoryCount();
+    }
+
+    @Override
+    public List<FeedbackDto> search(String title) {
+        List<Feedback>    result = feedbackRepository.findFeedbackByCategoryName(title);
+        List<FeedbackDto> res    = new ArrayList<>();
+        result.forEach(f -> res.add(modelMapper.map(f, FeedbackDto.class)));
+        return res;
     }
 }

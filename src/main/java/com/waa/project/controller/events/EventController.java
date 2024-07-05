@@ -1,10 +1,13 @@
 package com.waa.project.controller.events;
 
-import com.waa.project.dto.requests.EventDTO;
-import com.waa.project.dto.requests.StudentEventDTO;
-import com.waa.project.entity.Student;
+import com.waa.project.dto.requests.EventRequestDto;
+import com.waa.project.dto.responses.EventResponseDto;
+import com.waa.project.dto.responses.EventsDto;
+import com.waa.project.dto.responses.StudentEventResponseDTO;
 import com.waa.project.service.EventService;
 import com.waa.project.service.UserService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
@@ -24,54 +27,56 @@ public class EventController {
     }
 
     @GetMapping("/events")
-    public List<EventDTO> getAllEvents() {
-        return eventService.findAll();
+    public ResponseEntity<List<EventResponseDto>> getAllEvents() {
+        return new ResponseEntity<>(eventService.findAll(), HttpStatus.OK);
     }
 
     @GetMapping("/events/{id}")
-    public EventDTO getEvent(@PathVariable Long id) {
-        return eventService.findById(id);
+    public ResponseEntity<EventResponseDto> getEvent(@PathVariable Long id) {
+        return new ResponseEntity<>(eventService.findById(id), HttpStatus.OK);
     }
 
     @PostMapping("/admins/events")
-    public EventDTO createEvent(@RequestBody EventDTO eventDTO) {
-        return eventService.save(eventDTO);
+    public ResponseEntity<EventRequestDto> createEvent(@RequestBody EventRequestDto eventRequestDTO) {
+        return new ResponseEntity<> (eventService.save(eventRequestDTO), HttpStatus.CREATED);
     }
 
     @PutMapping("/admins/events/{id}")
-    public EventDTO updateEvent(@PathVariable Long id, @RequestBody EventDTO eventDTO) {
-        return eventService.update(eventDTO, id);
+    public ResponseEntity<EventRequestDto> updateEvent(@PathVariable Long id, @RequestBody EventRequestDto eventRequestDTO) {
+        return new ResponseEntity<> (eventService.update(eventRequestDTO, id), HttpStatus.OK);
     }
 
     @DeleteMapping("/admins/events/{id}")
-    public void deleteEvent(@PathVariable Long id) {
+    public ResponseEntity<String> deleteEvent(@PathVariable Long id) {
         eventService.deleteById(id);
+        return new ResponseEntity<>("Event deleted successfully", HttpStatus.OK);
     }
 
     // Get all  attendees for an events by admin
     @GetMapping("/admins/events/{eventId}/attendees")
-    public List<StudentEventDTO> getEventAttendees(@PathVariable Long eventId) {
-        return  eventService.getAttendeesForEvent(eventId);
+    public ResponseEntity<List<EventsDto>> getEventAttendees(@PathVariable Long eventId) {
+        return new ResponseEntity<>(eventService.getAttendeesForEvent(eventId), HttpStatus.OK);
     }
 
     @GetMapping("/students/events/{studentId}/events")
-    public List<EventDTO> getEventsByStudentId(@PathVariable Long studentId) {
-        return eventService.getEventsByStudentId(studentId);
+    public ResponseEntity<List<StudentEventResponseDTO> >getEventsByStudentId(@PathVariable Long studentId) {
+        return new ResponseEntity<>(eventService.getEventsByStudentId(studentId), HttpStatus.OK);
     }
     @PostMapping("/students/events/{eventId}/reservation")
-    public EventDTO addEventReservation(@PathVariable Long eventId,
-                                @AuthenticationPrincipal UserDetails
+    public ResponseEntity<EventRequestDto> addEventReservation(@PathVariable Long eventId,
+                                               @AuthenticationPrincipal UserDetails
                                  userDetails) {
 
        var currentUser = userService.findByUsername(userDetails.getUsername());
 
-       return eventService.addEventReservation(eventId, currentUser.getId());
+       return new ResponseEntity<>(eventService.addEventReservation(eventId, currentUser.getId()), HttpStatus.CREATED);
     }
 
     @DeleteMapping("/students/events/{eventId}/reservation")
-    public void removeEventReservation(@PathVariable Long eventId,@AuthenticationPrincipal UserDetails
+    public ResponseEntity<String> removeEventReservation(@PathVariable Long eventId,@AuthenticationPrincipal UserDetails
             userDetails) {
         var currentUser = userService.findByUsername(userDetails.getUsername());
          eventService.removeEventReservation(eventId, currentUser.getId());
+         return new ResponseEntity<>("Reservation deleted successfully", HttpStatus.OK);
     }
 }
