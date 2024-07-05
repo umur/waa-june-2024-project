@@ -1,10 +1,7 @@
 package edu.university_connect.controller;
 
 import edu.university_connect.config.ContextUser;
-import edu.university_connect.model.contract.dto.ProfileDto;
-import edu.university_connect.model.contract.dto.ResourceDto;
-import edu.university_connect.model.contract.dto.SearchDto;
-import edu.university_connect.model.contract.dto.UserDto;
+import edu.university_connect.model.contract.dto.*;
 import edu.university_connect.model.contract.request.profile.ProfileRequest;
 import edu.university_connect.model.contract.request.user.BlockRequest;
 import edu.university_connect.model.contract.request.user.UserCreateRequest;
@@ -12,6 +9,7 @@ import edu.university_connect.model.contract.request.user.UserUpdateRequest;
 import edu.university_connect.model.contract.response.ApiResponse;
 import edu.university_connect.model.enums.AppStatusCode;
 import edu.university_connect.service.MessagingService;
+import edu.university_connect.service.event.EventService;
 import edu.university_connect.service.user.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -31,6 +29,7 @@ import java.util.List;
 @Slf4j
 public class UserController {
     private final UserService service;
+    private final EventService eventService;
 
     private final ContextUser contextUser;
 
@@ -180,5 +179,17 @@ public class UserController {
         apiResponse.setResponseData(response);
         apiResponse.setMessage(messagingService.getResponseMessage(AppStatusCode.S20000));
         return ResponseEntity.ok(apiResponse);
+    }
+    //&& @contextUser.getLoginUser().getId() == #id
+    @GetMapping("/{id}/events")
+    @PreAuthorize("hasAuthority('view_event_list')")
+    public ResponseEntity<ApiResponse<Page<EventDto>>> fetchEventsByUser(Pageable pageableReq){
+        System.out.println("id --> " + contextUser.getLoginUser().getId());
+        String responseMessage = messagingService
+                .getResponseMessage(AppStatusCode.S20001, new String[]{"event"});
+        Pageable pageable = PageRequest.of(pageableReq.getPageNumber()>0? pageableReq.getPageNumber()-1 : 0,
+                pageableReq.getPageSize() ,
+                pageableReq.getSort());
+        return ResponseEntity.ok(new ApiResponse<Page<EventDto>>(responseMessage, eventService.getAllByPage(pageable)));
     }
 }

@@ -34,11 +34,9 @@ public class EventServiceImpl implements EventService {
     private final ContextUser contextUser;
 
     @Override
-    public List<EventDto> getAll() {
-        return eventRepository.findAll()
-                .stream()
-                .map(EventDtoMapper.MAPPER::entityToDto)
-                .toList();
+    public Page<EventDto> getAllByPage(Pageable pageable) {
+        Page<Event> actionPage = eventRepository.findAll(pageable);
+        return actionPage.map(EventDtoMapper.MAPPER::entityToDto);
     }
 
     @Override

@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface EventService {
-    List<EventDto> getAll();
+    Page<EventDto> getAllByPage(Pageable pageable);
 
     EventDto getById(Long id);
 

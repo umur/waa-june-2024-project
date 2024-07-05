@@ -32,10 +32,13 @@ public class EventController {
 
     @GetMapping
     @PreAuthorize("hasAuthority('view_event_list')")
-    public ResponseEntity<ApiResponse<List<EventDto>>> getAll() {
+    public ResponseEntity<ApiResponse<Page<EventDto>>> getEventsByPage(Pageable pageableReq) {
         String responseMessage = messagingService
                 .getResponseMessage(AppStatusCode.S20001, new String[]{"event"});
-        return ResponseEntity.ok(new ApiResponse<List<EventDto>>(responseMessage, eventService.getAll()));
+        Pageable pageable = PageRequest.of(pageableReq.getPageNumber()>0? pageableReq.getPageNumber()-1 : 0,
+                pageableReq.getPageSize() ,
+                pageableReq.getSort());
+        return ResponseEntity.ok(new ApiResponse<Page<EventDto>>(responseMessage, eventService.getAllByPage(pageable)));
     }
 
     @GetMapping("/{id}")
