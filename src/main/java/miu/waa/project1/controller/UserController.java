@@ -171,6 +171,16 @@ public class UserController {
         catch (UserNotFound ex) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
+    }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteUser(@PathVariable Long id) {
+        try {
+            userService.deleteUser(id);
+            return ResponseEntity.status(HttpStatus.OK).build();
+        }
+        catch (Exception ex) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
     }
 }
