@@ -2,8 +2,6 @@ package edu.university_connect.service.auth;
 
 import edu.university_connect.config.jwt.JwtTokenProvider;
 import edu.university_connect.exception.ServiceException;
-import edu.university_connect.model.contract.dto.UserDto;
-import edu.university_connect.model.contract.request.auth.SignUpRequest;
 import edu.university_connect.model.enums.AppStatusCode;
 import edu.university_connect.model.SecurityUser;
 import edu.university_connect.model.enums.TokenType;
