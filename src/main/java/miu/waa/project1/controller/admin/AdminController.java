@@ -4,6 +4,8 @@ import lombok.RequiredArgsConstructor;
 import miu.waa.project1.common.AccountStatus;
 import miu.waa.project1.model.User;
 import miu.waa.project1.service.UserService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -31,10 +33,11 @@ public class AdminController {
 	@GetMapping("/accounts")
 	public ResponseEntity<?> getAllAccounts(@RequestParam(required = false) String major,
 											@RequestParam(required = false) Integer entryYear,
-											@RequestParam(required = false) String keyword) {
+											@RequestParam(required = false) String keyword,
+											Pageable pageable) {
 		try {
-			List<User> item = userService.findByMajorEntryYearAndRelevant(major, entryYear, keyword);
-			return ResponseEntity.ok().body(item);
+			Page<User> accounts = userService.findByMajorEntryYearAndRelevant(major, entryYear, keyword, pageable);
+			return ResponseEntity.ok().body(accounts);
 		} catch (Exception e) {
 			return ResponseEntity.badRequest().body(e.getMessage());
 		}

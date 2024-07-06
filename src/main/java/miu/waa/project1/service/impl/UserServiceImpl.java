@@ -7,6 +7,8 @@ import miu.waa.project1.exception.UserNotFound;
 import miu.waa.project1.model.User;
 import miu.waa.project1.repository.UserRepository;
 import miu.waa.project1.service.UserService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -20,12 +22,8 @@ public class UserServiceImpl implements UserService {
 	private final PasswordEncoder passwordEncoder;
 
 	@Override
-	public List<User> findByMajorEntryYearAndRelevant(
-			String major,
-			Integer entryYear,
-			String keyword
-	) {
-		return userRepository.findByMajorEntryYearAndRelevant(major, entryYear, keyword);
+	public Page<User> findByMajorEntryYearAndRelevant(String major, Integer entryYear, String keyword, Pageable pageable) {
+		return userRepository.findByMajorEntryYearAndRelevant(major, entryYear, keyword, pageable);
 	}
 
 	public User getUserById(Long id) {

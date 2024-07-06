@@ -9,6 +9,10 @@ import miu.waa.project1.model.User;
 import miu.waa.project1.service.impl.ActivityServiceImpl;
 import miu.waa.project1.service.impl.InterestServiceImpl;
 import miu.waa.project1.service.impl.UserServiceImpl;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -16,6 +20,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @RestController
@@ -27,11 +33,13 @@ public class UserController {
     private final ActivityServiceImpl activityService;
 
     @GetMapping
-    public List<User> searchByMajorEntryYearAndRelevant(
+    public ResponseEntity<Page<User>> searchByMajorEntryYearAndRelevant(
             @RequestParam(required = false) String major,
             @RequestParam(required = false) Integer entryYear,
-            @RequestParam(required = false) String keyword) {
-        return userService.findByMajorEntryYearAndRelevant(major, entryYear, keyword);
+            @RequestParam(required = false) String keyword,
+            Pageable pageable) {
+        Page<User> userPage = userService.findByMajorEntryYearAndRelevant(major, entryYear, keyword, pageable);
+        return ResponseEntity.ok(userPage);
     }
 
     @GetMapping("/{id}")
