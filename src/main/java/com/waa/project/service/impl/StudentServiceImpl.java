@@ -112,4 +112,10 @@ public class StudentServiceImpl implements StudentService {
 
         return modelMapper.map(studentRepository.save(student), StudentResponse.class);
     }
+
+    @Override
+    public Page<StudentResponse> searchStudents(String text, Pageable pageable) {
+        return studentRepository.searchByText(text, pageable)
+                                .map(student -> modelMapper.map(student, StudentResponse.class));
+    }
 }

@@ -6,7 +6,6 @@ import com.waa.project.contracts.UpdateStudentProfileRequest;
 import com.waa.project.security.exception.ActionForbiddenException;
 import com.waa.project.security.util.AuthErrorMessages;
 import com.waa.project.service.StudentService;
-import com.waa.project.service.impl.UserServiceImpl;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -23,18 +22,24 @@ import org.springframework.web.multipart.MultipartFile;
 @RequestMapping("/api/v1")
 public class StudentController {
 
-    private final StudentService  studentService;
-    private final UserServiceImpl userServiceImpl;
+    private final StudentService studentService;
 
-    public StudentController(StudentService studentService, UserServiceImpl userServiceImpl) {
-        this.studentService  = studentService;
-        this.userServiceImpl = userServiceImpl;
+    public StudentController(StudentService studentService) {
+        this.studentService = studentService;
     }
 
 
     @GetMapping({"/students", "/admins/students"})
-    public ResponseEntity<Page<StudentResponse>> getAllStudents(Pageable pageable) {
-        return ResponseEntity.ok(studentService.findAll(pageable));
+    public ResponseEntity<Page<StudentResponse>> getAllStudents(
+            Pageable pageable,
+            @RequestParam(value = "search", required = false) String searchText
+                                                               ) {
+
+        if (searchText != null) {
+            return ResponseEntity.ok(studentService.searchStudents(searchText, pageable));
+        } else {
+            return ResponseEntity.ok(studentService.findAll(pageable));
+        }
     }
 
     @GetMapping({"/students/{id}", "/admins/students/{id}"})

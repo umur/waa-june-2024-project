@@ -19,4 +19,6 @@ public interface StudentService {
             UpdateStudentProfileRequest updateStudentProfileRequest,
             MultipartFile picture
                                         );
+
+    Page<StudentResponse> searchStudents(String text, Pageable pageable);
 }
