@@ -55,8 +55,7 @@ public class ResourceServiceImpl implements ResourceService {
             r.setDescription(resource.getDescription());
             r.setUrl(resource.getUrl());
             r.setType(resource.getType());
-            return resourceRepository.save(r);
-
+            return resourceRepository.save(r);//
         }
         return null;
     }

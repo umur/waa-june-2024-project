@@ -14,6 +14,5 @@ public interface ResourceService {
     Resource updateResource(Long id, Resource resource);
     void deleteResource(Long id);
     List<Resource> getResourcesByUserId(Long userId);
-
     Resource upload(MultipartFile multipartFile, String desc);
 }

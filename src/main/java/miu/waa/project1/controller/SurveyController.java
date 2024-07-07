@@ -3,6 +3,7 @@ package miu.waa.project1.controller;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
+import miu.waa.project1.dto.SurveyDTO;
 import miu.waa.project1.model.Survey;
 import miu.waa.project1.service.SurveyService;
 import org.springframework.web.bind.annotation.*;
@@ -31,12 +32,12 @@ public class SurveyController {
     }
 
     @PostMapping("")
-    public void createSurvey(@RequestBody Survey survey) {
+    public void createSurvey(@RequestBody SurveyDTO survey) {
         surveyService.createSurvey(survey);
     }
 
     @PutMapping("/{id}")
-    public void updateSurvey(@PathVariable Long id,@RequestBody Survey survey) {
+    public void updateSurvey(@PathVariable Long id,@RequestBody SurveyDTO survey) {
         surveyService.updateSurvey(id, survey);
     }
 }
