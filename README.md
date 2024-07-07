@@ -1,9 +1,17 @@
 
 
+
 ## University Connect
  
 **University Connect** is a dedicated social media platform designed exclusively for university students. The platform aims to foster a sense of community, enhance academic collaboration, and provide a space for students to connect, share, and grow together within their academic environment. University Connect will serve as a comprehensive digital hub, integrating features tailored to the unique needs of university students.
 
+####  About team:
+* Si Duy Truong
+* Van Manh Nguyen
+* Minh Toan Nguyen
+* Link demo:
+	* https://drive.google.com/drive/folders/1l7cGx6F5oDb3B4KsccnTGM3t1kIIij0s
+--- 
 ####  Key Features
 --- 
 * Profile Creation
