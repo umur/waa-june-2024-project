@@ -76,4 +76,9 @@ public class EventServiceImpl implements EventService {
         }
         return 0;
     }
+
+    @Override
+    public Event getEvent(Long id) {
+        return eventRepository.findById(id).orElse(null);
+    }
 }

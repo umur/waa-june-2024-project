@@ -4,10 +4,14 @@ import lombok.RequiredArgsConstructor;
 import miu.waa.project1.dto.CreateOrUpdateDiscussionRequest;
 import miu.waa.project1.model.Discussion;
 import miu.waa.project1.service.impl.DiscussionServiceImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1/discussion")
@@ -15,9 +19,20 @@ import java.util.List;
 public class DiscussionController {
 	private final DiscussionServiceImpl discussionService;
 
-	@GetMapping
-	public ResponseEntity<List<Discussion>> getAll() {
-		return ResponseEntity.ok().body(discussionService.getAll());
+	@GetMapping("")
+	public ResponseEntity<List<Discussion>> getAll(
+			@RequestParam Optional<Integer> pageNumber,
+			@RequestParam Optional<String> sortBy,
+			@RequestParam Optional<Integer> total,
+			@RequestParam Optional<Integer> keyword
+	) {
+		Pageable pageRequest = PageRequest.of(
+				pageNumber.orElse(0),
+				total.orElse(10),
+				Sort.Direction.ASC,
+				sortBy.orElse("id")
+		);
+		return ResponseEntity.ok().body(discussionService.getAll(pageRequest, keyword == null ? "" : String.valueOf(keyword)));
 	}
 
 	@GetMapping("/{id}")

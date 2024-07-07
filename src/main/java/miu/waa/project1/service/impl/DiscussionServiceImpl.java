@@ -6,6 +6,7 @@ import miu.waa.project1.model.DiscussionCategory;
 import miu.waa.project1.repository.DiscussionCategoryRepository;
 import miu.waa.project1.repository.DiscussionRepository;
 import miu.waa.project1.service.DiscussionService;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,7 +19,7 @@ public class DiscussionServiceImpl implements DiscussionService {
 	private final DiscussionCategoryRepository categoryRepository;
 
 	@Override
-	public List<Discussion> getAll() {
+	public List<Discussion> getAll(Pageable pageable, String keyword) {
 		return discussionRepository.findAll();
 	}
 

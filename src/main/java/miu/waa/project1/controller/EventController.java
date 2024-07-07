@@ -22,6 +22,11 @@ public class EventController {
         return eventService.getEvents();
     }
 
+    @GetMapping("/{id}")
+    public Event getEvent(@PathVariable Long id) {
+        return eventService.getEvent(id);
+    }
+
     @PostMapping
     public Event createEvent(Event event) {
         return eventService.createEvent(event);

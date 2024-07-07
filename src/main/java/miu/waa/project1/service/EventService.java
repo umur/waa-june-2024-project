@@ -12,4 +12,5 @@ public interface EventService {
     void attendEvent(Long id, Long userId);
     void cancelAttendance(Long id, Long userId);
     int getAttendees(Long id);
+    Event getEvent(Long id);
 }
