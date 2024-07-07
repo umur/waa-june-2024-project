@@ -104,6 +104,9 @@ public class StudentServiceImpl implements StudentService {
 
         modelMapper.map(updateStudentProfileRequest, student);
 
+
+        student.setPassword(passwordEncoder.encode(updateStudentProfileRequest.getPassword()));
+
         if (picture != null && !picture.isEmpty()) {
             String picturePath = fileService.saveFile(picture, FileSaveLocations.studentProfile(username));
 

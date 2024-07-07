@@ -1,6 +1,7 @@
 package com.waa.project.config;
 
 import com.waa.project.contracts.CreateStudentRequest;
+import com.waa.project.contracts.UpdateStudentProfileRequest;
 import com.waa.project.entity.Student;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.PropertyMap;
@@ -20,6 +21,18 @@ public class MapperConfig {
             protected void configure() {
                 skip().setMajor(null);
                 skip().setId(null);
+            }
+        });
+
+        modelMapper.addMappings(new PropertyMap<UpdateStudentProfileRequest, Student>() {
+            @Override
+            protected void configure() {
+                skip().setMajor(null);
+                skip().setId(null);
+                skip().setAchievements(null);
+                skip().setInterest(null);
+                skip().setEventList(null);
+                skip().setExtraActivities(null);
             }
         });
 
