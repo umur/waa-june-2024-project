@@ -3,6 +3,7 @@ package miu.waa.project1.controller;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
+import miu.waa.project1.dto.EventDTO;
 import miu.waa.project1.model.Event;
 import miu.waa.project1.service.EventService;
 import org.springframework.web.bind.annotation.*;
@@ -28,12 +29,12 @@ public class EventController {
     }
 
     @PostMapping
-    public Event createEvent(Event event) {
+    public Event createEvent(@RequestBody EventDTO event) {
         return eventService.createEvent(event);
     }
 
     @PutMapping("/{id}")
-    public void updateEvent(@PathVariable Long id, @RequestBody Event event) {
+    public void updateEvent(@PathVariable Long id, @RequestBody EventDTO event) {
         eventService.updateEvent(id, event);
     }
 

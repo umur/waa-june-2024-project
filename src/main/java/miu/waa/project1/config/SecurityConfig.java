@@ -38,7 +38,9 @@ public class SecurityConfig {
                 .requestMatchers("/api/v1/category/**").hasAnyAuthority(ADMIN.name(), STUDENT.name())
                 .requestMatchers("/api/v1/discussion/**").hasAnyAuthority(ADMIN.name(), STUDENT.name())
                 .requestMatchers("/api/v1/thread/**").hasAnyAuthority(ADMIN.name(), STUDENT.name())
+                    .requestMatchers("/api/v1/events/**").hasAnyAuthority(ADMIN.name(), STUDENT.name())
                 .requestMatchers("/resources/**").permitAll() // allow access to resources folder
+
                 .anyRequest().authenticated())
             .sessionManagement(session -> session.sessionCreationPolicy(STATELESS))
             .authenticationProvider(authenticationProvider)

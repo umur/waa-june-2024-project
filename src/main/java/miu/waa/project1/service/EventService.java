@@ -1,12 +1,13 @@
 package miu.waa.project1.service;
 
+import miu.waa.project1.dto.EventDTO;
 import miu.waa.project1.model.Event;
 
 import java.util.List;
 
 public interface EventService {
-    Event createEvent(Event event);
-    void updateEvent(Long id, Event event);
+    Event createEvent(EventDTO event);
+    void updateEvent(Long id, EventDTO event);
     void deleteEvent(Long id);
     List<Event> getEvents();
     void attendEvent(Long id, Long userId);

@@ -1,6 +1,7 @@
 package miu.waa.project1.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import miu.waa.project1.dto.EventDTO;
 import miu.waa.project1.model.Event;
 import miu.waa.project1.model.User;
 import miu.waa.project1.repository.EventRepository;
@@ -8,6 +9,8 @@ import miu.waa.project1.repository.UserRepository;
 import miu.waa.project1.service.EventService;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Service
@@ -18,20 +21,31 @@ public class EventServiceImpl implements EventService {
 
 
     @Override
-    public Event createEvent(Event event) {
+    public Event createEvent(EventDTO e) {
+        Event event = new Event();
+        event.setLocation(e.getLocation());
+        event.setName(e.getName());
+        event.setCapacity(e.getCapacity());
+        event.setDescription(e.getDescription());
+        event.setStartDate(e.getStartDate());
+        event.setEndDate(e.getEndDate());
         return eventRepository.save(event);
     }
 
     @Override
-    public void updateEvent(Long id, Event e) {
+    public void updateEvent(Long id, EventDTO e) {
         Event event = eventRepository.findById(id).orElse(null);
         if (event != null) {
+//            LocalDate date = LocalDate.of(e.getEndDate().getYear(), e.getEndDate().getMonth(), e.getEndDate().getDayOfMonth());
+
             event.setName(e.getName());
             event.setDescription(e.getDescription());
             event.setStartDate(e.getStartDate());
             event.setEndDate(e.getEndDate());
             event.setLocation(e.getLocation());
             event.setCapacity(e.getCapacity());
+            event.setStartDate(LocalDate.of(e.getStartDate().getYear(), e.getStartDate().getMonth(), e.getStartDate().getDayOfMonth()));
+            event.setEndDate(LocalDate.of(e.getEndDate().getYear(), e.getEndDate().getMonth(), e.getEndDate().getDayOfMonth()));
         }
         eventRepository.save(event);
     }
