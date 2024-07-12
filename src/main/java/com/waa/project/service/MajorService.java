@@ -1,17 +1,18 @@
 package com.waa.project.service;
 
 import com.waa.project.dto.MajorDto;
+import com.waa.project.dto.responses.MajorResponseDto;
 
 import java.util.List;
 
 public interface MajorService {
-    List<MajorDto> getAllMajor();
+    List<MajorResponseDto> getAllMajor();
 
-    MajorDto getMajor(Long Id);
+    MajorResponseDto getMajor(Long Id);
 
-    String save(MajorDto param);
+    MajorDto save(MajorDto major);
 
-    String update(MajorDto param, Long Id);
+    MajorDto update(MajorDto param, Long Id);
 
     String delete(Long Id);
 

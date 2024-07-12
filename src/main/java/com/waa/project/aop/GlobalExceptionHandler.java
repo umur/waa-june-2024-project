@@ -22,6 +22,8 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponse> handleException(Exception e) {
         ErrorResponse errorResponse = new ErrorResponse();
+
+        e.printStackTrace();
         errorResponse.setMessage(e.getMessage());
 
         return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -70,12 +72,12 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Map<String, String>> handleException(MethodArgumentNotValidException e) {
         List<ValidationErrorResponse.FieldError> fieldErrors = e.getFieldErrors()
-                                                                .stream()
-                                                                .map(fieldError -> new ValidationErrorResponse.FieldError(
-                                                                        fieldError.getField(),
-                                                                        fieldError.getDefaultMessage()
-                                                                ))
-                                                                .toList();
+                .stream()
+                .map(fieldError -> new ValidationErrorResponse.FieldError(
+                        fieldError.getField(),
+                        fieldError.getDefaultMessage()
+                ))
+                .toList();
 
         ValidationErrorResponse errorResponse = new ValidationErrorResponse();
         errorResponse.setErrors(fieldErrors);

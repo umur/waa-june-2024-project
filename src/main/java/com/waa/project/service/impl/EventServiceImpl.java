@@ -1,5 +1,6 @@
 package com.waa.project.service.impl;
 
+import com.waa.project.contracts.StudentResponse;
 import com.waa.project.dto.requests.EventRequestDto;
 import com.waa.project.dto.responses.EventResponseDto;
 import com.waa.project.dto.responses.EventsDto;
@@ -12,6 +13,8 @@ import com.waa.project.repository.StudentRepository;
 import com.waa.project.service.EventService;
 import com.waa.project.util.EventsErrorMessage;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
 
@@ -33,10 +36,9 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public List<EventResponseDto> findAll() {
-        return eventRepository.findAll().stream()
-                              .map(event -> eventMapper.map(event, EventResponseDto.class))
-                              .collect(Collectors.toList());
+    public Page<EventResponseDto> findAll(Pageable pageable) {
+        return eventRepository.findAll(pageable)
+                              .map(event -> eventMapper.map(event, EventResponseDto.class));
     }
 
     @Override
@@ -117,5 +119,12 @@ public class EventServiceImpl implements EventService {
         return studentRepository.findEventsByStudentId(studentId).stream()
                               .map(event -> eventMapper.map(event, StudentEventResponseDTO.class))
                               .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<EventResponseDto> searchByName(String name) {
+        List<Event> events =
+                eventRepository.findByNameContaining(name).stream().filter(event -> event.getName().toLowerCase().contains(name.toLowerCase())).toList();
+        return events.stream().map(event -> eventMapper.map(event, EventResponseDto.class)).collect(Collectors.toList());
     }
 }

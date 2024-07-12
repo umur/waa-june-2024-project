@@ -6,14 +6,19 @@ import com.waa.project.dto.responses.EventsDto;
 import com.waa.project.dto.responses.StudentEventResponseDTO;
 import com.waa.project.service.EventService;
 import com.waa.project.service.UserService;
+import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@Validated
 @RestController
 @RequestMapping("/api/v1")
 public class EventController {
@@ -27,8 +32,8 @@ public class EventController {
     }
 
     @GetMapping("/events")
-    public ResponseEntity<List<EventResponseDto>> getAllEvents() {
-        return new ResponseEntity<>(eventService.findAll(), HttpStatus.OK);
+    public ResponseEntity<Page<EventResponseDto>> getAllEvents(Pageable pageable) {
+        return new ResponseEntity<>(eventService.findAll(pageable), HttpStatus.OK);
     }
 
     @GetMapping("/events/{id}")
@@ -37,12 +42,13 @@ public class EventController {
     }
 
     @PostMapping("/admins/events")
-    public ResponseEntity<EventRequestDto> createEvent(@RequestBody EventRequestDto eventRequestDTO) {
+    public ResponseEntity<EventRequestDto> createEvent( @Valid  @RequestBody EventRequestDto eventRequestDTO) {
         return new ResponseEntity<> (eventService.save(eventRequestDTO), HttpStatus.CREATED);
     }
 
     @PutMapping("/admins/events/{id}")
-    public ResponseEntity<EventRequestDto> updateEvent(@PathVariable Long id, @RequestBody EventRequestDto eventRequestDTO) {
+    public ResponseEntity<EventRequestDto> updateEvent(@Valid @PathVariable Long id,
+                                                       @RequestBody EventRequestDto eventRequestDTO) {
         return new ResponseEntity<> (eventService.update(eventRequestDTO, id), HttpStatus.OK);
     }
 
@@ -78,5 +84,10 @@ public class EventController {
         var currentUser = userService.findByUsername(userDetails.getUsername());
          eventService.removeEventReservation(eventId, currentUser.getId());
          return new ResponseEntity<>("Reservation deleted successfully", HttpStatus.OK);
+    }
+
+    @GetMapping("/events/search")
+    public ResponseEntity<List<EventResponseDto>> searchEvents(@RequestParam String name) {
+        return new ResponseEntity<>(eventService.searchByName(name), HttpStatus.OK);
     }
 }

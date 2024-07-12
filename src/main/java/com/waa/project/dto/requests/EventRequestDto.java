@@ -6,6 +6,7 @@ import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -21,10 +22,10 @@ public class EventRequestDto {
     @NotNull(message = "Description cannot be null.")
     @NotBlank(message = "Description cannot be blank.")
     private String    description;
-    @NotNull(message = "Event Date cannot be null.")
-    @NotBlank(message = "Event Date  cannot be blank.")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @NotNull(message = "Event date cannot be blank")
     private LocalDate eventDate;
-    @NotNull(message = "Event Time cannot be null.")
-    @NotBlank(message = "Event Time  cannot be blank.")
+    @DateTimeFormat(pattern = "HH-MM-SS")
+    @NotNull(message = "Event time cannot be blank")
     private LocalTime eventTime;
 }
