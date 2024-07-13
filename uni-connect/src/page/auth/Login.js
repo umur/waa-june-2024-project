@@ -42,7 +42,7 @@ function Login() {
             else {
                 if(response.errors){
                     const formWithErrs=processErrors(response.errors,requestForm);
-                    setRequestForm(formWithErrs);
+                    setRequestForm({...formWithErrs});
                 }
                 alert(response.message);
             }

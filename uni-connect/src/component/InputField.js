@@ -12,6 +12,7 @@ function InputField(props) {
           placeholder={props.placeholder}
         />
       </div>
+
     </div>
      );
 }

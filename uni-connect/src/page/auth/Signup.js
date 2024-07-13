@@ -1,6 +1,6 @@
 import { useState } from "react";
 import InputField from "../../component/InputField";
-import { createFormFieldObject, getFormField, getObjectFromFormFieldObject, setFieldError } from "../../util/RequestFormUtil";
+import { createFormFieldObject, getFormField, getObjectFromFormFieldObject, processErrors, setFieldError } from "../../util/RequestFormUtil";
 import { EMAIL_REGEX, EMPTY_STRING_REGEX, PASSWORD_REGEX } from "../../constant/Regex";
 import {  apiSignUp } from "../../action/ApiActions";
 import { Link } from "react-router-dom";
@@ -33,7 +33,10 @@ function SignUp() {
                 setRequestForm(initForm());
             }
             else {
-
+                if(response.errors){
+                    const formWithErrs=processErrors(response.errors,requestForm);
+                    setRequestForm({...formWithErrs});
+                }
                 alert(response.message);
             }
         }
