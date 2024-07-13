@@ -20,7 +20,7 @@ public interface ResourceService {
     boolean delete(Long id);
 
 
-    Page<ResourceDto> getPage(Pageable pageable);
+    Page<ResourceDto> getPage(Pageable pageable,String keyword);
 
     ResourceDto handleFileUpload(MultipartFile[] files, Long id);
 

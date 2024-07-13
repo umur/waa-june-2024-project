@@ -41,11 +41,11 @@ public class ResourceController {
 
     @GetMapping("")
     @PreAuthorize("hasAuthority('view_resource_list')")
-    public ResponseEntity<ApiResponse<Page<ResourceDto>>> getPage(Pageable pageableReq) {
+    public ResponseEntity<ApiResponse<Page<ResourceDto>>> getPage(Pageable pageableReq,@RequestParam String keyword) {
         Pageable pageable = PageRequest.of(pageableReq.getPageNumber()>0? pageableReq.getPageNumber()-1 : 0,
                 pageableReq.getPageSize() ,
                 pageableReq.getSort());
-        Page<ResourceDto> response= service.getPage(pageable);
+        Page<ResourceDto> response= service.getPage(pageable,keyword);
         ApiResponse<Page<ResourceDto>> apiResponse =  new ApiResponse<Page<ResourceDto>>();
         apiResponse.setResponseData(response);
         apiResponse.setMessage(messagingService.getResponseMessage(AppStatusCode.S20001,new String[]{"resource"}));

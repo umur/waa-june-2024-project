@@ -105,8 +105,8 @@ public class ResourceServiceImpl implements ResourceService {
     }
 
     @Override
-    public Page<ResourceDto> getPage(Pageable pageable) {
-        Page<Resource> resourcePage = repository.findAll(pageable);
+    public Page<ResourceDto> getPage(Pageable pageable,String keyword) {
+        Page<Resource> resourcePage = repository.findAllByTitleContainingIgnoreCase(pageable,keyword);
         return resourcePage.map(ResourceDtoMapper.MAPPER::entityToDto);
     }
 
