@@ -4,11 +4,6 @@ import './index.css';
 import 'bootstrap/dist/css/bootstrap.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import {
-
-  RouterProvider,
-} from "react-router-dom";
-import { router } from './router/Router';
 import { AuthProvider } from './context/AuthContext';
 import { AxiosInterceptor } from './action/AxiosInstance';
 
@@ -17,7 +12,7 @@ root.render(
   <React.StrictMode>
     <AuthProvider>
       <AxiosInterceptor>
-        <RouterProvider router={router} />
+        <App />
       </AxiosInterceptor>
     </AuthProvider>
   </React.StrictMode>

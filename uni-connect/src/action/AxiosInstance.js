@@ -2,7 +2,6 @@ import axios from 'axios';
 import ApiRoutes, { API_BASE_URL } from "../constant/ApiRoutes";
 import { AuthContext } from '../context/AuthContext';
 import { useContext } from 'react';
-import { exceptionResponse } from './ApiActions';
 
 const axiosInstance = axios.create({
   baseURL: API_BASE_URL,
@@ -17,6 +16,9 @@ const AxiosInterceptor = ({ children }) => {
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
+    else{
+      logoutAction();
+    }
     return config;
   }, function (error) {
     console.log('Request Interceptor Error:', error);
@@ -30,19 +32,18 @@ const AxiosInterceptor = ({ children }) => {
     },
     async function (error) {
       const originalRequest = error.config;
-      console.log("assas",error)
+      console.log("Error in api response",error)
       if (error?.response?.status === 403 && !originalRequest._retry) {
         console.log("Probably token expired or attempt made for unauthorized resource");
         originalRequest._retry = true;
         //attempting login with refresh token
         const refreshTokenResponse = await refreshToken();
-
+        console.log(refreshTokenResponse);
         if (refreshTokenResponse && refreshTokenResponse.status == 200) {
           //trying the original failed request after getting new token from refresh token
           originalRequest.headers['Authorization'] = `Bearer ${refreshTokenResponse.data.data.accessToken}`;
           return axiosInstance(originalRequest);
         }
-        return exceptionResponse("apiSignUp", {});
       }
       throw error;
     }
@@ -56,8 +57,8 @@ const AxiosInterceptor = ({ children }) => {
   }
 
   function logoutAction() {
-    sessionStorage.removeItem('user');
     logOut();
+    sessionStorage.removeItem('user');
   }
 
 
@@ -76,6 +77,7 @@ const AxiosInterceptor = ({ children }) => {
         }
       }
       else {
+        console.log("No Refresh Token in memory");
         logoutAction();
       }
       return { status: 403 };
