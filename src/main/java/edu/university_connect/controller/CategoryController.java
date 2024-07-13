@@ -76,9 +76,9 @@ public class CategoryController {
 
     @GetMapping("/{id}/posts")
     @PreAuthorize("hasAuthority('view_post_list')")
-    public ResponseEntity<ApiResponse<List<PostDto>>> getPosts(@PathVariable Long id) {
-        String message = messagingService.getResponseMessage(AppStatusCode.S20003, "category");
-        return ResponseEntity.ok(ApiResponse.of(message, postService.getAll(id)));
+    public ResponseEntity<ApiResponse<Page<PostDto>>> getPosts(@PathVariable Long id, Pageable pageable) {
+        String message = messagingService.getResponseMessage(AppStatusCode.S20003, "post");
+        return ResponseEntity.ok(ApiResponse.of(message, postService.getPage(id, pageable)));
 
     }
 

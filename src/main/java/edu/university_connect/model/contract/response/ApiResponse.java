@@ -1,6 +1,5 @@
 package edu.university_connect.model.contract.response;
 
-
 import edu.university_connect.model.enums.AppStatusCode;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
@@ -28,17 +27,23 @@ public class ApiResponse<T> implements Serializable {
     }
 
     public static <T> ApiResponse<T> of(String message, T data) {
-        return new ApiResponse<>(message, data);
+        ApiResponse<T> response = new ApiResponse<>(message, data);
+        response.setStatus(true);
+        return response;
     }
 
-    public ApiResponse(boolean status, T data) {
+    public ApiResponse(boolean status, String message, T data) {
         this.status = status;
+        this.message = message;
         this.data = data;
     }
 
-    public ApiResponse(String message, T data){
-        setMessage(message);
-        setData(data);
+    public ApiResponse(boolean status, T data) {
+        this(status, null, data);
+    }
+
+    public ApiResponse(String message, T data) {
+        this(true, message, data);
     }
 
     public String getCode() {
@@ -47,11 +52,13 @@ public class ApiResponse<T> implements Serializable {
         }
         return code;
     }
+
     public void setResponseData(T response) {
         data=response;
         status=true;
         code=AppStatusCode.S20000.name();
     }
+
     public void setResponseData(T response,AppStatusCode appStatusCode) {
         data=response;
         status=true;
