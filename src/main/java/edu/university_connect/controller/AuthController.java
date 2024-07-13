@@ -14,7 +14,9 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -34,8 +36,6 @@ public class AuthController {
 
     @PostMapping("/sign-in")
     public ResponseEntity<ApiResponse<AuthenticationResponse>> signIn(@Valid @RequestBody AuthenticationRequest data) {
-
-
         AuthenticationResponse response = service.authenticate(new UsernamePasswordAuthenticationToken
                     (data.getUsername(), data.getPassword()));
         ApiResponse<AuthenticationResponse> apiResponse =  new ApiResponse<AuthenticationResponse>();

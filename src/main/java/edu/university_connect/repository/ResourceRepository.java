@@ -10,4 +10,6 @@ public interface ResourceRepository extends JpaRepository<Resource, Long> {
 
     @Query("SELECT r FROM Resource r WHERE r.user.id = :id")
     Page<Resource> getUserResourcePage(Long id, Pageable pageable);
+
+    Page<Resource> findAllByTitleContainingIgnoreCase(Pageable pageable,String title);
 }
