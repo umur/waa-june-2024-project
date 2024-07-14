@@ -4,6 +4,7 @@ import { createFormFieldObject, getFormField, getObjectFromFormFieldObject, proc
 import { EMAIL_REGEX, EMPTY_STRING_REGEX, PASSWORD_REGEX } from "../../constant/Regex";
 import { apiSignUp } from "../../action/ApiActions";
 import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
 
 function SignUp() {
 
@@ -29,7 +30,7 @@ function SignUp() {
         if (validateRequestForm()) {
             const response = await apiSignUp(getObjectFromFormFieldObject(requestForm));
             if (response.status) {
-                alert(response.message);
+                toast.success(response.message);
                 setRequestForm(initForm());
             }
             else {
@@ -37,7 +38,7 @@ function SignUp() {
                     const formWithErrs = processErrors(response.errors, requestForm);
                     setRequestForm({ ...formWithErrs });
                 }
-                alert(response.message);
+                toast.error(response.message);
             }
         }
     };
@@ -83,7 +84,7 @@ function SignUp() {
             <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
                 <form className="space-y-6" onSubmit={handleSubmit}>
                     <div>
-                        <label for="email" className="block text-sm font-medium leading-6 text-gray-900">Email address</label>
+                        <label htmlFor="email" className="block text-sm font-medium leading-6 text-gray-900">Email address</label>
                         <div className="mt-2">
                             <InputField
                                 type="email"
@@ -98,7 +99,7 @@ function SignUp() {
                         </div>
                     </div>
                     <div>
-                        <label for="email" className="block text-sm font-medium leading-6 text-gray-900">Username</label>
+                        <label htmlFor="email" className="block text-sm font-medium leading-6 text-gray-900">Username</label>
                         <div className="mt-2">
                             <InputField
                                 type="text"
@@ -115,7 +116,7 @@ function SignUp() {
 
                     <div>
                         <div className="flex items-center justify-between">
-                            <label for="password" className="block text-sm font-medium leading-6 text-gray-900">Password</label>
+                            <label htmlFor="password" className="block text-sm font-medium leading-6 text-gray-900">Password</label>
                         </div>
                         <div className="mt-2">
                             <InputField
@@ -133,7 +134,7 @@ function SignUp() {
                     </div>
                     <div>
                         <div className="flex items-center justify-between">
-                            <label for="confirmPassword" className="block text-sm font-medium leading-6 text-gray-900">Confirm Password</label>
+                            <label htmlFor="confirmPassword" className="block text-sm font-medium leading-6 text-gray-900">Confirm Password</label>
                         </div>
                         <div className="mt-2">
                             <InputField

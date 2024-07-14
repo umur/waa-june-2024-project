@@ -6,6 +6,7 @@ import { apiLogin } from "../../action/ApiActions";
 import { decodeToken } from "../../util/JwtDecodeUtil";
 import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../context/AuthContext";
+import { toast } from "react-toastify";
 
 function Login() {
     const { logIn } = useContext(AuthContext);
@@ -35,8 +36,7 @@ function Login() {
             const response = await apiLogin(getObjectFromFormFieldObject(requestForm));
             if (response.status) {
                 sessionStorage.setItem("user", JSON.stringify(response.data));
-                alert(response.message);
-                console.log("Decoded Token", decodeToken(response.data.accessToken))
+                toast.success(response.message);
                 setRequestForm(initForm());
                 logIn(response.data);
                 navigate('/');
@@ -46,7 +46,7 @@ function Login() {
                     const formWithErrs = processErrors(response.errors, requestForm);
                     setRequestForm({ ...formWithErrs });
                 }
-                alert(response.message);
+                toast.error(response.message);
             }
         }
 
@@ -82,7 +82,7 @@ function Login() {
                 <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
                     <form className="space-y-6" onSubmit={handleSubmit}>
                         <div>
-                            <label for="email" className="block text-sm font-medium leading-6 text-gray-900">Email address</label>
+                            <label htmlFor="email" className="block text-sm font-medium leading-6 text-gray-900">Email address</label>
                             <div className="mt-2">
                                 <InputField
                                     type="text"
@@ -99,7 +99,7 @@ function Login() {
 
                         <div>
                             <div className="flex items-center justify-between">
-                                <label for="password" className="block text-sm font-medium leading-6 text-gray-900">Password</label>
+                                <label htmlFor="password" className="block text-sm font-medium leading-6 text-gray-900">Password</label>
                             </div>
                             <div className="mt-2">
                                 <InputField
