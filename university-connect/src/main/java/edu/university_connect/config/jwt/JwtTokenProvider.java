@@ -54,7 +54,7 @@ public class JwtTokenProvider {
         Claims claims;
         if (addClaims) {
             if (!authorities.isEmpty()) {
-                claims = Jwts.claims().subject(username).add(AUTHORITIES_KEY, authorities.stream()
+                claims = Jwts.claims().subject(username).add("userId",securityUser.getId()).add(AUTHORITIES_KEY, authorities.stream()
                         .map(GrantedAuthority::getAuthority).collect(joining(","))).build();
             }
             else{
