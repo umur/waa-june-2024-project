@@ -3,6 +3,15 @@ export function setTokens(accessToken = '', refreshToken = '') {
   localStorage.setItem('refresh-token', refreshToken);
 }
 
+export function checkTokens() {
+  const tokens = getTokens();
+
+  if (tokens.accessToken === '' || tokens.accessToken.length !== 0) {
+    return;
+  }
+
+  setTokens();
+}
 export function getTokens() {
   return {
     accessToken: localStorage.getItem('access-token') || '',

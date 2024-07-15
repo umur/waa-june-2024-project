@@ -1,7 +1,7 @@
 import setupAxios from './axios';
-import {setTokens} from './token';
+import {checkTokens} from './token';
 
 export default function setup() {
+  checkTokens();
   setupAxios();
-  setTokens();
 }
