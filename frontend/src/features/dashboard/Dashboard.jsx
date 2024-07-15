@@ -1,22 +1,26 @@
 import {useNavigate} from 'react-router';
 import {useEffect} from 'react';
 import {setTokens} from '../../core/setup/token';
+import getCurrentProfile from '../../core/utils/current-profile';
+import {Roles} from '../../core/constants';
+import StudentDashboard from './dashboard-student';
+import AdminDashboard from './dashboard-admin';
 
 export default function Dashboard() {
-  var accessToken = localStorage.getItem('access-token');
   const navigate = useNavigate();
 
-  useEffect(() => {
-    console.log(accessToken === null || accessToken === undefined || accessToken === '');
+  const profile = getCurrentProfile();
 
-    if (!accessToken) {
+  useEffect(() => {
+    if (profile === null || profile === undefined) {
       navigate('/login');
     }
-  }, [accessToken]);
+  }, [profile]);
 
   return (
     <>
-      Dashboard Page
+      {profile && profile.role === Roles.ADMIN ? <StudentDashboard /> : <AdminDashboard />}
+      <p>{JSON.stringify(getCurrentProfile())}</p>
       <button
         onClick={() => {
           setTokens();
