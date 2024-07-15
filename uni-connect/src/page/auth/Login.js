@@ -36,6 +36,7 @@ function Login() {
             const response = await apiLogin(getObjectFromFormFieldObject(requestForm));
             if (response.status) {
                 sessionStorage.setItem("user", JSON.stringify(response.data));
+                console.log(decodeToken(response.data.accessToken))
                 toast.success(response.message);
                 setRequestForm(initForm());
                 logIn(response.data);

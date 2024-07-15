@@ -1,33 +1,45 @@
 import { useEffect, useState } from "react";
 import { apiFetchUsers } from "../action/ApiActions";
-import { Link } from "react-router-dom";
+import AsideLeft from "../component/AsideLeft";
+import MobileNavBar from "../component/MobileNavBar";
+import { AsideRight } from "../component/AsideRight";
+import { AiOutlineArrowUp } from "react-icons/ai";
 
 function Home() {
 
-    let [vari,setVari]=useState(1);
-    const userId=1;
+    let [sampleVar, setSampleVar] = useState(1);
+    const userId = 1;
 
-    async function  fetchUsers(){
-        const response=await apiFetchUsers();
-        
+    async function fetchUsers() {
+        const response = await apiFetchUsers();
+
     }
 
     useEffect(() => {
         fetchUsers();
-    }, [vari]);
+    }, [sampleVar]);
 
     return (
         <div>
-            Search bar to search and filter posts
+            <MobileNavBar />
 
-            This below could be side bar
-            1.Resource Library //Student find/manage
-            2. Events //find/rsvp
-            3.Students //Student find/view profile
-            4. Surveys
-            <Link to={`/users/${userId}/profile`}>Profile</Link> 
-            <h1 onClick={()=>{setVari(vari+1)}}> Home Page</h1>
-            
+            <div className="flex justify-center px-5 sm:px-32 md:mt-4">
+                <div className="flex h-screen w-screen">
+
+                    <AsideLeft />
+
+                    <main className="md:mx-4 w-full sm:basis-2/3">
+                        <header className="mb-4 text-center">
+                            <h1 className="text-3xl font-bold text-black">Home</h1>
+                        </header>
+                    </main>
+
+                    <AsideRight />
+                    <a href="#">
+                        <AiOutlineArrowUp className="hidden sm:block fixed bottom-0 right-20 bg-blue-300 text-slate-50 text-5xl p-3 rounded-full mb-2 mr-20 hover:bg-blue-500" />
+                    </a>
+                </div>
+            </div>
         </div>
     );
 }

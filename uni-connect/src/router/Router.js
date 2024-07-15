@@ -10,6 +10,7 @@ import Home from "../page/home";
 import Profile from "../page/profile/Profile";
 import ProtectedRoute from "./ProtectedRoute";
 import AnonymousRoute from "./AnonymousRoute";
+import Resource from "../page/resources/Resource";
 
 
 const Router = () => {
@@ -31,6 +32,10 @@ const Router = () => {
       {
         path: "/users/:id/profile",
         element: <ProtectedRoute element={<Profile />} />,
+      },
+      {
+        path: "/resources",
+        element: <ProtectedRoute element={<Resource />} />,
       },
       {
         path: "*",
