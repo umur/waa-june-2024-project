@@ -3,6 +3,7 @@ package com.waa.project.service.impl;
 import com.waa.project.dto.DiscussionCommentsDto;
 import com.waa.project.entity.Discussion;
 import com.waa.project.entity.DiscussionComments;
+import com.waa.project.exception.ResourceNotFoundException;
 import com.waa.project.repository.DiscussionCommentsRepository;
 import com.waa.project.repository.DiscussionRepository;
 import com.waa.project.security.contract.AuthUserResponse;
@@ -15,6 +16,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 public class DiscussionCommentsServiceImpl implements DiscussionCommentsService {
@@ -43,8 +46,8 @@ public class DiscussionCommentsServiceImpl implements DiscussionCommentsService 
         requestData.setStudent(getUserId(user));
 
         Discussion discussion = discusRepository.findById(commentsDto.getDiscussionId())
-                                                .orElseThrow(() -> new RuntimeException(
-                                                        "Discussion ID not found"));
+                                                .orElseThrow(() -> new ResourceNotFoundException(
+                                                        "Cannot Searchable for that Discussion"));
         requestData.setDiscussion(discussion);
 
         DiscussionComments responseData = repository.save(requestData);
@@ -57,14 +60,16 @@ public class DiscussionCommentsServiceImpl implements DiscussionCommentsService 
         Long userId = getUserId(user);
 
         DiscussionComments dataById = repository.findByIdAndStudentId(id, userId)
-                                                .orElseThrow(() -> new RuntimeException("Discussion ID not found"));
+                                                .orElseThrow(
+                                                        () -> new ResourceNotFoundException(
+                                                                "Cannot Searchable for that Discussion"));
         DiscussionComments requestData = mapper.map(commentsDto, DiscussionComments.class);
         requestData.setStudent(userId);
         requestData.setId(id);
 
         Discussion discussion = discusRepository.findById(commentsDto.getDiscussionId())
-                                                .orElseThrow(() -> new RuntimeException(
-                                                        "Discussion ID not found"));
+                                                .orElseThrow(() -> new ResourceNotFoundException(
+                                                        "Cannot Searchable for that Discussion"));
         requestData.setDiscussion(discussion);
 
         DiscussionComments responseData = repository.save(requestData);
@@ -78,11 +83,23 @@ public class DiscussionCommentsServiceImpl implements DiscussionCommentsService 
         Long userId = getUserId(user);
 
         DiscussionComments dataById = repository.findByIdAndStudentId(id, userId)
-                                                .orElseThrow(() -> new RuntimeException("Comment ID not found"));
+                                                .orElseThrow(
+                                                        () -> new ResourceNotFoundException(
+                                                                "Cannot Searchable for that Comments"));
 
+        repository.deleteAllByParentCommentId(dataById);
         repository.deleteByIdAndStudentId(id, userId);
 
         return mapper.map(dataById, DiscussionCommentsDto.class);
+    }
+
+    @Override
+    public void deleteAllCommentsByDiscussionId(Discussion discussion) {
+
+        List<DiscussionComments> comments = repository.findAllByDiscussionId(discussion.getId());
+        List<Long>               ids      = comments.stream().map(c -> c.getId()).toList();
+        repository.deleteAllByParentCommentIds(ids);
+        repository.deleteByDiscussionId(discussion.getId());
     }
 
     private Long getUserId(User user) {
