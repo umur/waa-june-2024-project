@@ -1,0 +1,37 @@
+spring:
+  application:
+    name: project
+    jwt:
+      secret: secretsecretsecretsecretsecretsss
+      expiration: 3600
+      refreshExpiration: 36000
+
+  datasource:
+    url: jdbc:mysql://localhost:3306/waa-demo
+    username: root
+    password: Root@123
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQLDialect
+        format_sql: true
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: true
+    defer-datasource-initialization: true
+
+  sql:
+    init:
+      mode: always
+
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 20MB
+      max-request-size: 20MB
+
+  web:
+    resources:
+      static-locations: file:${user.dir}
