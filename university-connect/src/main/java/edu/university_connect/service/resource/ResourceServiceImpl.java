@@ -111,10 +111,10 @@ public class ResourceServiceImpl implements ResourceService {
     public Page<ResourceDto> getPage(Pageable pageable,String keyword) {
         Page<Resource> resourcePage;
         if(Objects.isNull(keyword) || keyword.isEmpty()){
-            resourcePage = repository.findAllOrderByCreatedAtDesc(pageable, keyword);
+            resourcePage = repository.findAll(pageable);
         }
         else {
-            resourcePage = repository.findAllByTitleContainingIgnoreCaseOrderByCreatedAtDesc(pageable, keyword);
+            resourcePage = repository.findAllByTitleContainingIgnoreCase(keyword,pageable);
         }
         return resourcePage.map(ResourceDtoMapper.MAPPER::entityToDto);
     }

@@ -59,7 +59,10 @@ function Resources() {
                             loader={<h4>Loading...</h4>}
                         >
                             {resources.map((resource) => (
+                                <>
                                 <Resource key={resource.id} resource={resource} />
+                                </>
+
                             ))}
                         </InfiniteScroll>
 

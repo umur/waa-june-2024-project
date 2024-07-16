@@ -1,11 +1,26 @@
 import { Link } from "react-router-dom";
 import ResourceFile from "./ResourceFile";
 import { apiDownloadResource } from "../../action/ApiActions";
+import { useEffect, useRef, useState } from "react";
 
 function Resource(props) {
-    function downloadFile(file){
-        const response=apiDownloadResource({filename:file},props.resource.id);
+    const [downloadUrl, setDownloadUrl] = useState(null);
+    const [filename, setFilename] = useState("");
+    const downloadLinkRef = useRef(null);
+    function downloadFile(file) {
+        setFilename(file);
+        const response = apiDownloadResource({ filename: file }, props.resource.id);
+        // const blob = response;
+        // const url = window.URL.createObjectURL(blob);
+        // setDownloadUrl(url);
     }
+
+    useEffect(() => {
+        if (downloadUrl) {
+            downloadLinkRef.current.click();
+        }
+    }, [downloadUrl]);
+
 
     return (
         <div className="bg-white p-4 rounded-lg shadow-md mb-4">
@@ -24,13 +39,17 @@ function Resource(props) {
             {
                 props.resource.files ? (
                     <>
-                    {
-                            props.resource.files.map((file)=>{
+                        {
+                            props.resource.files.map((file) => {
                                 return (
-                                    <ResourceFile downloadFile={downloadFile} key={file} file={file} url={props.resource.url} />
+                                    <div key={file}>
+                                        <ResourceFile downloadFile={downloadFile}  file={file} url={props.resource.url} />
+                                    </div>
                                 )
                             })
                         }
+
+                        <a href={downloadUrl} ref={downloadLinkRef} download={filename} style={{ display: 'none' }}>Download</a>
                     </>
                 ) : (
                     <></>
