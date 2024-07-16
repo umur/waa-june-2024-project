@@ -9,6 +9,7 @@ import universityconnect.service.BlockService;
 import java.util.List;
 
 @RestController
+@CrossOrigin
 @RequestMapping("/blocks")
 @RequiredArgsConstructor
 public class BlockController {

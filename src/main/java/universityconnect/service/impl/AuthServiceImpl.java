@@ -10,9 +10,11 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
+import universityconnect.domain.User;
 import universityconnect.domain.request.LoginRequest;
 import universityconnect.domain.request.RefreshTokenRequest;
 import universityconnect.domain.response.LoginResponse;
+import universityconnect.repository.UserRepository;
 import universityconnect.service.AuthService;
 import universityconnect.util.JwtUtil;
 
@@ -23,6 +25,7 @@ public class AuthServiceImpl implements AuthService {
     private final AuthenticationManager authenticationManager;
     private final JwtUtil jwtUtil;
     private final UserDetailsService userDetailsService;
+    private final UserRepository userRepository;
     private static final Logger logger = LoggerFactory.getLogger(AuthServiceImpl.class);
 
     @Override
@@ -36,7 +39,8 @@ public class AuthServiceImpl implements AuthService {
             logger.debug("User authenticated: {}", userDetails.getUsername());
             String accessToken = jwtUtil.generateToken(userDetails);
             String refreshToken = jwtUtil.generateRefreshToken(userDetails.getUsername());
-            return new LoginResponse(accessToken, refreshToken);
+            User user = userRepository.findByEmail(loginRequest.getEmail()).get();
+            return new LoginResponse(accessToken, refreshToken, user.getRole().toString(), user.getId());
         } catch (BadCredentialsException e) {
             logger.error("Invalid credentials for user: {}", loginRequest.getEmail());
             throw new BadCredentialsException("Invalid credentials", e);
@@ -49,7 +53,8 @@ public class AuthServiceImpl implements AuthService {
         if (isRefreshTokenValid) {
             String username = jwtUtil.extractUsername(refreshTokenRequest.getRefreshToken());
             String accessToken = jwtUtil.generateToken(userDetailsService.loadUserByUsername(username));
-            return new LoginResponse(accessToken, refreshTokenRequest.getRefreshToken());
+            User user = userRepository.findByEmail(username).get();
+            return new LoginResponse(accessToken, refreshTokenRequest.getRefreshToken(),user.getRole().toString(),user.getId());
         }
         throw new RuntimeException("Invalid refresh token");
     }

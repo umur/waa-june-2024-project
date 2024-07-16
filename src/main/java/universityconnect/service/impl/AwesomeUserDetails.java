@@ -16,11 +16,13 @@ public class AwesomeUserDetails implements UserDetails {
     private final String email;
     private final String password;
     private final Role role;
+    private final Long id;
 
     public AwesomeUserDetails(User user) {
         this.email = user.getEmail();
         this.password = user.getPassword();
         this.role = user.getRole();
+        this.id = user.getId();
     }
 
     @Override

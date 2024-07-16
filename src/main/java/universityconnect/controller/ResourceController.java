@@ -23,6 +23,7 @@ import java.io.IOException;
 import java.util.List;
 
 @RestController
+@CrossOrigin
 @RequestMapping("/resources")
 @RequiredArgsConstructor
 @Slf4j

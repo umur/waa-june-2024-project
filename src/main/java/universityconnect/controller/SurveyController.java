@@ -12,6 +12,7 @@ import universityconnect.service.*;
 import java.util.List;
 
 @RestController
+@CrossOrigin
 @RequestMapping("/surveys")
 public class SurveyController {
 

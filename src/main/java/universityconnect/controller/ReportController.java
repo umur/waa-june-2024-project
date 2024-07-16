@@ -10,6 +10,7 @@ import universityconnect.service.ReportService;
 import java.util.List;
 
 @RestController
+@CrossOrigin
 @RequestMapping("/reports")
 @RequiredArgsConstructor
 public class ReportController {

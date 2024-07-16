@@ -38,6 +38,7 @@ public class SecurityConfig {
                     auth
                             .requestMatchers("/users/login").permitAll()
                             .requestMatchers("/users/refreshToken").permitAll()
+                            .requestMatchers("/users/{userId}/blockeds").permitAll()
                             .requestMatchers("/users/**").hasRole("ADMIN")
                             .requestMatchers("/admins/**").hasRole("ADMIN")
                             .anyRequest().authenticated();

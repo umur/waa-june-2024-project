@@ -12,6 +12,7 @@ import universityconnect.service.DiscussionCategoryService;
 import java.util.List;
 
 @RestController
+@CrossOrigin
 @RequestMapping("/discussion-categories")
 @RequiredArgsConstructor
 public class DiscussionCategoryController {
