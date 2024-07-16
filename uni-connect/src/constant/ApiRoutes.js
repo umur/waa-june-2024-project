@@ -7,4 +7,7 @@ export default {
   signup: API_BASE_URL + "auth/sign-up",
   users: API_BASE_URL + "users",
   profile: (userId) => `${API_BASE_URL}users/${userId}/profile`,
+  resource: (resourceId) => `${API_BASE_URL}resources/${resourceId}`,
+  resources: API_BASE_URL + "resources",
+  resourceDownload: (resourceId) => `${API_BASE_URL}resources/${resourceId}/download`,
 };

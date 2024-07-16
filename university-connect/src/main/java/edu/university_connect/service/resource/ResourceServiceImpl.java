@@ -12,11 +12,14 @@ import edu.university_connect.repository.ResourceRepository;
 import edu.university_connect.service.storage.StorageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -106,7 +109,13 @@ public class ResourceServiceImpl implements ResourceService {
 
     @Override
     public Page<ResourceDto> getPage(Pageable pageable,String keyword) {
-        Page<Resource> resourcePage = repository.findAllByTitleContainingIgnoreCase(pageable,keyword);
+        Page<Resource> resourcePage;
+        if(Objects.isNull(keyword) || keyword.isEmpty()){
+            resourcePage = repository.findAllOrderByCreatedAtDesc(pageable, keyword);
+        }
+        else {
+            resourcePage = repository.findAllByTitleContainingIgnoreCaseOrderByCreatedAtDesc(pageable, keyword);
+        }
         return resourcePage.map(ResourceDtoMapper.MAPPER::entityToDto);
     }
 

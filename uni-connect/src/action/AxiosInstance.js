@@ -28,6 +28,7 @@ const AxiosInterceptor = ({ children }) => {
 
   axiosInstance.interceptors.response.use(
     function (response) {
+      console.log("aayo")
       return response;
     },
     async function (error) {

@@ -10,7 +10,8 @@ import Home from "../page/home";
 import Profile from "../page/profile/Profile";
 import ProtectedRoute from "./ProtectedRoute";
 import AnonymousRoute from "./AnonymousRoute";
-import Resource from "../page/resources/Resource";
+import Resources from "../page/resources/Resources";
+import ResourceDetail from "../page/resources/ResourceDetail";
 
 
 const Router = () => {
@@ -35,7 +36,11 @@ const Router = () => {
       },
       {
         path: "/resources",
-        element: <ProtectedRoute element={<Resource />} />,
+        element: <ProtectedRoute element={<Resources />} />,
+      },
+      {
+        path: "/resources/:id",
+        element: <ProtectedRoute element={<ResourceDetail />} />,
       },
       {
         path: "*",

@@ -1,6 +1,6 @@
 
 
-export const AsideRight = () => {
+export const AsideRight = (props) => {
 
 
     return (
@@ -9,7 +9,7 @@ export const AsideRight = () => {
             <div className="sticky mt-3 flex items-center pl-4 pr-10 w-full rounded-md">
                 <div className="flex-1">
                     <input
-
+                        onKeyDown={(event) => event.key === 'Enter' && props.onEnter(event)}
                         className="w-full bg-slate-200 text-center p-2 rounded-3xl placeholder:text-black cursor-pointer text-md"
                         type="search"
                         placeholder="Search"

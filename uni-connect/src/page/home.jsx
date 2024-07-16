@@ -20,7 +20,7 @@ function Home() {
     }, [sampleVar]);
 
     return (
-        <div>
+<div>
             <MobileNavBar />
 
             <div className="flex justify-center px-5 sm:px-32 md:mt-4">
@@ -29,9 +29,8 @@ function Home() {
                     <AsideLeft />
 
                     <main className="md:mx-4 w-full sm:basis-2/3">
-                        <header className="mb-4 text-center">
-                            <h1 className="text-3xl font-bold text-black">Home</h1>
-                        </header>
+                        <h1 className="text-3xl font-bold mb-6">Home</h1>
+                        
                     </main>
 
                     <AsideRight />
@@ -41,6 +40,7 @@ function Home() {
                 </div>
             </div>
         </div>
+
     );
 }
 
