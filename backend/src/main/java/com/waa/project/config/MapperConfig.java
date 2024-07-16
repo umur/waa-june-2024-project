@@ -29,10 +29,10 @@ public class MapperConfig {
             protected void configure() {
                 skip().setMajor(null);
                 skip().setId(null);
-                skip().setAchievements(null);
-                skip().setInterest(null);
+//                skip().setAchievements(null);
+//                skip().setInterest(null);
                 skip().setEventList(null);
-                skip().setExtraActivities(null);
+//                skip().setExtraActivities(null);
             }
         });
 

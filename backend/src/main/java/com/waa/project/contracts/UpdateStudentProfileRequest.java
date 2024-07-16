@@ -1,23 +1,28 @@
 package com.waa.project.contracts;
 
 import com.waa.project.enums.GenderType;
+import jakarta.persistence.CollectionTable;
+import jakarta.persistence.ElementCollection;
+import jakarta.persistence.JoinColumn;
 import jakarta.validation.constraints.*;
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 
 @Data
 public class UpdateStudentProfileRequest {
-    @NotNull(message = "Username cannot be null.")
-    @NotBlank(message = "Username cannot be blank.")
-    @Size(min = 5, max = 20, message = "Username must be between 5 and 20 characters long.")
-    private String username;
+//    @NotNull(message = "Username cannot be null.")
+//    @NotBlank(message = "Username cannot be blank.")
+//    @Size(min = 5, max = 20, message = "Username must be between 5 and 20 characters long.")
+//    private String username;
 
-    @NotNull(message = "Password cannot be null.")
-    @NotBlank(message = "Password cannot be blank.")
-    @Size(min = 8, max = 20)
-    private String password;
+//    @NotNull(message = "Password cannot be null.")
+//    @NotBlank(message = "Password cannot be blank.")
+//    @Size(min = 8, max = 20)
+//    private String password;
 
     @NotNull(message = "First name cannot be null.")
     @NotBlank(message = "First name cannot be blank.")
@@ -49,4 +54,11 @@ public class UpdateStudentProfileRequest {
     @NotNull(message = "Major Id cannot be null.")
     @Min(value = 1, message = "Major Id must be  positive.")
     private Long majorId;
+
+
+    private Set<String> achievements;
+
+    private Set<String> interest;
+
+    private Set<String> extraActivities;
 }

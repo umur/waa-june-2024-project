@@ -2,9 +2,9 @@ import React, {useState} from 'react';
 import {Button, ButtonGroup, Col, Container, Form, Row, Spinner} from 'react-bootstrap';
 import {useNavigate} from 'react-router';
 import {State} from '../../../core/constants';
-import axios from 'axios';
 import {setTokens} from '../../../core/setup/token';
 import ErrorDialog from '../../../core/component/dialogs/ErrorDialog';
+import apiClient from '../../../core/setup/axios';
 
 const Login = () => {
   const [username, setUsername] = useState('');
@@ -22,7 +22,7 @@ const Login = () => {
   const login = async () => {
     setLoginState({...loginState, status: State.LOADING});
 
-    axios
+    apiClient
       .post('/auth/login', {
         username: username,
         password: password
@@ -64,8 +64,6 @@ const Login = () => {
   const handleSubmit = e => {
     e.preventDefault();
     // Handle login logic here
-    console.log('Email:', username);
-    console.log('Password:', password);
 
     login();
   };
