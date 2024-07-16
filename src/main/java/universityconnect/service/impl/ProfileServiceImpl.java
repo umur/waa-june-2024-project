@@ -44,6 +44,12 @@ public class ProfileServiceImpl implements ProfileService {
     }
 
     @Override
+    public ProfileDTO getProfileByUserId(long userId) {
+        Profile profile = profileRepository.findByUserId(userId);
+        return profileMapper.profileToProfileDTO(profile);
+    }
+
+    @Override
     public void deleteProfile(long id) {
         Profile profile = profileRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Profile Not Found with ID: " + id));

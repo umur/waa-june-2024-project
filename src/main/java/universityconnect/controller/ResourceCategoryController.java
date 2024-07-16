@@ -10,6 +10,7 @@ import universityconnect.service.ResourceCategoryService;
 import java.util.List;
 
 @RestController
+@CrossOrigin
 @RequestMapping("/resource-categories")
 @RequiredArgsConstructor
 public class ResourceCategoryController {
