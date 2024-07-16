@@ -8,6 +8,10 @@ export default function StudentDashboard() {
         <li>
           <Link to="/students">Student</Link>
         </li>
+
+        <li>
+          <Link to="/myapp">MyAPp</Link>
+        </li>
       </ul>
     </>
   );
