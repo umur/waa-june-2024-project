@@ -15,7 +15,7 @@ export default function Dashboard() {
 
   return (
     <>
-      {profile && profile.role === Roles.ADMIN ? <StudentDashboard /> : <AdminDashboard />}
+      {profile && profile.role === Roles.ADMIN ? <AdminDashboard /> :  <StudentDashboard />}
       <p>{JSON.stringify(getCurrentProfile())}</p>
       <button
         onClick={() => {
