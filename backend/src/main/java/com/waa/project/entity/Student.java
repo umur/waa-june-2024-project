@@ -16,7 +16,7 @@ import java.util.Set;
 public class Student extends User {
 
     @Column(name = "student_code")
-    @Size(min = 6, max = 6, message = "Student code should be 6 digits")
+    @Size(min = 6, max = 12, message = "Student code should be 6 digits")
     private String studentCode;
 
     @Column(name = "academic_years")
@@ -29,7 +29,7 @@ public class Student extends User {
     private Set<String> achievements;
 
     @ElementCollection
-    @CollectionTable(name = "interests", joinColumns = @JoinColumn(name = "student_id"))
+    @CollectionTable(name = "interests", joinColumns = @JoinColumn(name = "student_id") )
     private Set<String> interest;
 
     @ElementCollection

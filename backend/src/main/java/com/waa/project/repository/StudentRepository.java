@@ -16,12 +16,14 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
     @Query("SELECT e FROM Student s JOIN s.eventList e WHERE s.id = :studentId")
     List<Event> findEventsByStudentId(@Param("studentId") Long studentId);
 
-    Optional<Student> findStudentByUsername(String username);
+    Optional<Student> findByUsername(String username);
     
     @Query(
             "SELECT s FROM Student s WHERE s.username LIKE %:text% OR s.firstName LIKE %:text% OR s.lastName LIKE " +
             "%:text% OR s.email LIKE %:text%"
     )
     Page<Student> searchByText(String text, Pageable pageable);
+
+    void deleteByUsername(String username);
 }
 

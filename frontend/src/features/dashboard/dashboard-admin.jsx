@@ -1,3 +1,10 @@
+import NavBar from '../../core/component/NavBar';
+
 export default function AdminDashboard() {
-  return <>Admin Dashboard</>;
+  return (
+    <>
+      <NavBar />
+      Admin Dashboard
+    </>
+  );
 }
