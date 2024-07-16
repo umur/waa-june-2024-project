@@ -1,7 +1,11 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {deleteApi} from '../../service/apiFeedbackService';
+import ConfirmationDialog from '../../core/component/dialogs/ConfirmationDialog';
 
 const FeedbackList = ({feedbacksList, setFeedbacksList, setFeedbackForm, setShow}) => {
+  const [showDialog, setShowDialog] = useState(false);
+  const [itemToDelete, setItemToDelete] = useState(null);
+
   const editHandler = id => {
     if (id) {
       setShow(true);
@@ -17,13 +21,27 @@ const FeedbackList = ({feedbacksList, setFeedbacksList, setFeedbackForm, setShow
     }
   };
 
-  const deleteHandler = async id => {
-    try {
-      const data = await deleteApi(id);
-      setFeedbacksList(data);
-    } catch (error) {
-      console.error('Error deleting feedbackcategory:', error);
+  const handleConfirmDelete = async () => {
+    if (itemToDelete) {
+      try {
+        const data = await deleteApi(itemToDelete);
+        setFeedbacksList(data);
+        setItemToDelete(null);
+      } catch (error) {
+        console.error('Error deleting feedbackcategory:', error);
+      }
+      setShowDialog(false);
     }
+  };
+
+  const handleCloseDialog = () => {
+    setShowDialog(false);
+    setItemToDelete(null);
+  };
+
+  const deleteHandler = id => {
+    setItemToDelete(id); // Set the item to delete
+    setShowDialog(true); // Show the confirmation dialog
   };
 
   return (
@@ -56,6 +74,14 @@ const FeedbackList = ({feedbacksList, setFeedbacksList, setFeedbackForm, setShow
           ))}
         </tbody>
       </table>
+
+      <ConfirmationDialog
+        show={showDialog}
+        handleClose={handleCloseDialog}
+        handleConfirm={handleConfirmDelete}
+        title="Confirm Delete"
+        body="Are you sure you want to delete this item?"
+      />
     </div>
   );
 };

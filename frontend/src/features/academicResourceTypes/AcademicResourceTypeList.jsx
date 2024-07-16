@@ -1,7 +1,11 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {deleteApi} from '../../service/apiAcademicResourceTypes';
+import ConfirmationDialog from '../../core/component/dialogs/ConfirmationDialog';
 
 const AcademicResourceTypeList = ({resourceTypesList, setResourceTypeForm, setResourceTypesList, setShow}) => {
+  const [showDialog, setShowDialog] = useState(false);
+  const [itemToDelete, setItemToDelete] = useState(null);
+
   const editHandler = id => {
     if (id) {
       setShow(true);
@@ -14,14 +18,27 @@ const AcademicResourceTypeList = ({resourceTypesList, setResourceTypeForm, setRe
       }
     }
   };
-
-  const deleteHandler = async id => {
-    try {
-      const data = await deleteApi(id);
-      setResourceTypesList(data);
-    } catch (error) {
-      console.error('Error deleting feedbackcategory:', error);
+  const handleConfirmDelete = async () => {
+    if (itemToDelete) {
+      try {
+        const data = await deleteApi(itemToDelete);
+        setResourceTypesList(data);
+        setItemToDelete(null);
+      } catch (error) {
+        console.error('Error deleting feedbackcategory:', error);
+      }
+      setShowDialog(false);
     }
+  };
+
+  const handleCloseDialog = () => {
+    setShowDialog(false);
+    setItemToDelete(null);
+  };
+
+  const deleteHandler = id => {
+    setItemToDelete(id); // Set the item to delete
+    setShowDialog(true); // Show the confirmation dialog
   };
 
   return (
@@ -51,6 +68,14 @@ const AcademicResourceTypeList = ({resourceTypesList, setResourceTypeForm, setRe
           ))}
         </tbody>
       </table>
+
+      <ConfirmationDialog
+        show={showDialog}
+        handleClose={handleCloseDialog}
+        handleConfirm={handleConfirmDelete}
+        title="Confirm Delete"
+        body="Are you sure you want to delete this item?"
+      />
     </div>
   );
 };

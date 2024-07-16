@@ -4,7 +4,7 @@ import ConfirmationDialog from '../../core/component/dialogs/ConfirmationDialog'
 
 const AcademicResourceList = ({academicResourceList, setAcademicResourceList, setAcademicResForm, setShow}) => {
   const [showDialog, setShowDialog] = useState(false);
-  const [itemToDelete, setItemToDelete] = useState(null); // State to keep track of the item to delete
+  const [itemToDelete, setItemToDelete] = useState(null);
 
   const editHandler = id => {
     if (id) {
@@ -27,11 +27,11 @@ const AcademicResourceList = ({academicResourceList, setAcademicResourceList, se
       try {
         const data = await deleteApi(itemToDelete);
         setAcademicResourceList(data);
-        setItemToDelete(null); // Reset the item to delete
+        setItemToDelete(null);
       } catch (error) {
         console.error('Error deleting feedbackcategory:', error);
       }
-      setShowDialog(false); // Close the dialog after deletion
+      setShowDialog(false);
     }
   };
 
