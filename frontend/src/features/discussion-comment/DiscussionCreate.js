@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Form, Button } from 'react-bootstrap';
+import {Modal, Form, Button } from 'react-bootstrap';
+import apiClient from '../../core/setup/axios';
 
 const DiscussionCreate = () => {
     const [discussion, setDiscussion] = useState({
@@ -9,15 +10,10 @@ const DiscussionCreate = () => {
         body: ''
     });
 
-    const token = 'eyJhbGciOiJIUzI1NiJ9.eyJyb2xlcyI6WyJTVFVERU5UIl0sInN1YiI6InN0dWRlbnQxIiwiaWF0IjoxNzIxMTQxNzg0LCJleHAiOjE3MjExNDUzODR9.UQu1j2THQfE9POyhOXfUjuf8ipY3dSyNNHX-KrZImIc';
-
-    const config = {
-        headers: { Authorization: `Bearer ${token}` }
-    };
-
     const [category, setCategory] = useState([]);
     const [error, setError] = useState(null);
     const [selectedId, setSelectedId] = useState('');
+    const [showModal, setShowModal] = useState(false);
 
     const onChangeData = (e) => {
         const { name, value } = e.target;
@@ -40,7 +36,8 @@ const DiscussionCreate = () => {
     useEffect(() => {
         const fetchCategory = async () => {
             try {
-                const response = await axios.get(`http://localhost:8080/api/v1/discussion-category`, config);
+                // const response = await axios.get(`http://localhost:8080/api/v1/discussion-category`, config);
+                const response = await apiClient.get(`/discussion-category`);
                 console.log(response.data);
                 if (response.data) {
                     setCategory(response.data);
@@ -60,7 +57,8 @@ const DiscussionCreate = () => {
         e.preventDefault();
 
         try {
-            const response = await axios.post('http://localhost:8080/api/v1/students/discussion', discussion, config);
+            // const response = await axios.post('http://localhost:8080/api/v1/students/discussion', discussion, config);
+            const response = await apiClient.post(`/students/discussion`, discussion);
 
             if (response.status === 200) {
                 console.log('Discussion created successfully');
@@ -70,22 +68,23 @@ const DiscussionCreate = () => {
                     category_id: '',
                     body: ''
                 });
+                setShowModal(false);
                 // Optionally, handle success state or redirect
-            } else {
-                console.error('Failed to create discussion');
-                // Handle error state
-            }
+            } 
         } catch (error) {
             console.error('Error creating discussion:', error);
             // Handle error state
         }
     };
+    const handleShowModal = () => setShowModal(true);
+    const handleCloseModal = () => setShowModal(false);
 
     return (
-        <Form onSubmit={handleSubmit}>
+        // <Form onSubmit={handleSubmit}>
+        <Form>
             <Form.Group className="mb-3" controlId="exampleForm.SelectCustom">
                 <Form.Label>Topic</Form.Label>
-                <Form.Select value={selectedId} onChange={handleSelectChange}>
+                <Form.Select value={discussion.category_id} onChange={handleSelectChange}>
                     <option value="">Select...</option>
                     {category.map((c) => (
                         <option key={c.id} value={c.id}>
@@ -113,10 +112,26 @@ const DiscussionCreate = () => {
                     onChange={onChangeData}
                 />
             </Form.Group>
-            <Button variant="success" type="submit">
+            <Button variant="success" onClick={handleShowModal}>
                 Create Discussion
             </Button>
+
+            <Modal show={showModal} onHide={handleCloseModal}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Confirm Save</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>Are you sure you want to save?</Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={handleCloseModal}>
+                        Cancel
+                    </Button>
+                    <Button variant="primary" onClick={handleSubmit}>
+                        Okay
+                    </Button>
+                </Modal.Footer>
+            </Modal>
         </Form>
+
     );
 };
 

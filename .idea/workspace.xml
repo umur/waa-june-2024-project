@@ -4,7 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="121e1cbd-c9c2-46a5-ad1c-c3a9a7d6b7bb" name="Changes" comment="fixing issue for the CRUD of SubComments" />
+    <list default="true" id="121e1cbd-c9c2-46a5-ad1c-c3a9a7d6b7bb" name="Changes" comment="fixing issue for the CRUD of SubComments">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -51,9 +53,9 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "Spring Boot.Application.executor": "Run",
     "code.cleanup.on.save": "true",
-    "git-widget-placeholder": "develop",
+    "git-widget-placeholder": "Feature/front-end-discussion",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "D:/MIU/6_WAA/waa-june-2024-project/src/main/resources",
+    "last_opened_file_path": "D:/MIU/6_WAA/waa-june-2024-project",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.stylelint": "true",
     "node.js.detected.package.tslint": "true",
@@ -96,8 +98,7 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-jdk-9f38398b9061-39b83d9b5494-intellij.indexing.shared.core-IU-241.17011.79" />
-        <option value="bundled-js-predefined-1d06a55b98c1-0b3e54e931b4-JavaScript-IU-241.17011.79" />
+        <option value="bundled-js-predefined-1d06a55b98c1-0b3e54e931b4-JavaScript-WS-241.18034.50" />
       </set>
     </attachedChunks>
   </component>
@@ -123,6 +124,7 @@
       <workItem from="1720925731690" duration="1281000" />
       <workItem from="1721004151211" duration="1127000" />
       <workItem from="1721066525444" duration="1845000" />
+      <workItem from="1721143904367" duration="2584000" />
     </task>
     <task id="LOCAL-00001" summary="fixing issue for the CRUD of SubComments">
       <option name="closed" value="true" />
