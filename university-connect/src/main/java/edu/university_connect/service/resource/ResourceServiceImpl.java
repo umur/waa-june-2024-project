@@ -75,8 +75,8 @@ public class ResourceServiceImpl implements ResourceService {
                 throw ServiceException.of(AppStatusCode.E40010, "resource");
             }
             Resource resource = resourceOpt.get();
-            resource.setTitle(updateRequest.getDescription());
-            resource.setDescription(updateRequest.getTitle());
+            resource.setTitle(updateRequest.getTitle());
+            resource.setDescription(updateRequest.getDescription());
 
             Resource savedResource = repository.save(resource);
             ResourceDto resourceDto=ResourceDtoMapper.MAPPER.entityToDto(resource);

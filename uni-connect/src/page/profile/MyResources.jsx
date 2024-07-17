@@ -16,7 +16,7 @@ function MyResources() {
     const fetchResources = async (currentPage = page) => {
         setPage((currentPage) => currentPage + 1);
         //TODO page logic
-        const response = await apiFetchMyResources(params.id);
+        const response = await apiFetchMyResources(params.userId,{ "size": 5, "page": currentPage+1});
         if (response.status) {
             setResources(prevItems => currentPage === 0 ? response.data.content : [...prevItems, ...response.data.content]);
             setHasMore(!response.data.last);
@@ -48,7 +48,7 @@ function MyResources() {
             >
                 {resources.map((resource) => (
                     <>
-                        <Resource key={resource.id} resource={resource} editable={true} removeResource={removeResource} />
+                        <Resource key={resource.id} resource={resource} editable={false} deleteable={true} removeResource={removeResource} />
                     </>
 
                 ))}

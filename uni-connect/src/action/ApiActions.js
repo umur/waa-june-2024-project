@@ -81,16 +81,32 @@ export async function apiDownloadResource(data, id) {
     try {
         const resourceUrl = ApiRoutes.resourceDownload(id);
         const response = await axiosInstance.post(resourceUrl, data, { responseType: 'blob' });
+        console.log("apiDownloadResource response", response);
         return response.data;
     } catch (e) {
         return exceptionResponse("apiDownloadResource", e);
     }
 }
 
-export async function apiFetchMyResources(userId) {
+export async function apiUploadResource(data, id) {
+    try {
+        const resourceUrl = ApiRoutes.resource(id);
+        const response = await axiosInstance.post(resourceUrl, data, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+        });
+        console.log("apiUploadResource response", response);
+        return response.data;
+    } catch (e) {
+        return exceptionResponse("apiUploadResource", e);
+    }
+}
+
+export async function apiFetchMyResources(userId,queryParams) {
     try {
         const myResourcesUrl = ApiRoutes.myResources(userId);
-        const response = await axiosInstance.get(myResourcesUrl);
+        const response = await axiosInstance.get(myResourcesUrl, { params: queryParams });
         console.log("apiFetchMyResources response", response);
         return response.data;
     } catch (e) {
@@ -106,6 +122,28 @@ export async function apiDeleteResource(id) {
         return response.data;
     } catch (e) {
         return exceptionResponse("apiDeleteResource", e);
+    }
+}
+
+export async function apiCreateResource(data) {
+    try {
+        const resourceUrl = ApiRoutes.resources;
+        const response = await axiosInstance.post(resourceUrl,data);
+        console.log("apiCreateResource response", response);
+        return response.data;
+    } catch (e) {
+        return exceptionResponse("apiCreateResource", e);
+    }
+}
+
+export async function apiUpdateResource(id,data) {
+    try {
+        const resourceUrl = ApiRoutes.resource(id);
+        const response = await axiosInstance.put(resourceUrl,data);
+        console.log("apiUpdateResource response", response);
+        return response.data;
+    } catch (e) {
+        return exceptionResponse("apiUpdateResource", e);
     }
 }
 

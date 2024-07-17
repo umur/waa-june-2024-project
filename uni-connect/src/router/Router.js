@@ -31,7 +31,7 @@ const Router = () => {
         element: <ProtectedRoute element={<Home />} />,
       },
       {
-        path: "/users/:id/profile",
+        path: "/users/:userId/profile",
         element: <ProtectedRoute element={<Profile />} />,
       },
       {
@@ -40,6 +40,10 @@ const Router = () => {
       },
       {
         path: "/resources/:id",
+        element: <ProtectedRoute element={<ResourceDetail />} />,
+      },
+      {
+        path: "/users/:userId/resources/:id",
         element: <ProtectedRoute element={<ResourceDetail />} />,
       },
       {

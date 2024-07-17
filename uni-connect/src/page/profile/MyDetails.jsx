@@ -44,7 +44,8 @@ function MyDetails() {
     }, [params.id]);
 
     async function fetchProfile() {
-        const response = await apiFetchProfile(params.id);
+        console.log(params)
+        const response = await apiFetchProfile(params.userId);
         if (response.status) {
             setProfile(response.data);
         } else {
@@ -53,7 +54,7 @@ function MyDetails() {
     }
 
     async function saveProfile(data) {
-        const response = await apiSaveProfile(params.id, data);
+        const response = await apiSaveProfile(params.userId, data);
         if (response.status) {
             setProfile(response.data);
             toast.success(response.message);

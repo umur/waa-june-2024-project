@@ -37,7 +37,7 @@ function ResourceDetail() {
 
                 <main className="md:mx-4 w-full sm:basis-2/3">
                     <h1 className="text-3xl font-bold mb-6">Resources</h1>
-                    <Resource key={resource.id} resource={resource} />
+                    <Resource key={resource.id} resource={resource} editable={true} />
                 </main>
 
                 <AsideRight />
