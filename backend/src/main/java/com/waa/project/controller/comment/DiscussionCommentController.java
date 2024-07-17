@@ -23,7 +23,19 @@ public class DiscussionCommentController {
             @AuthenticationPrincipal User user,
             @PathVariable("DiscussionId") long id
                                               ) {
-        return ResponseEntity.ok(commentsService.getCommentsByDiscussionId(id, pageable));
+
+        Page<DiscussionCommentsDto> response =commentsService.getCommentsByDiscussionId(id, pageable);
+        response.map( data -> {
+            if (data.getStudent().getUsername().equals(user.getUsername())) {
+                data.setOwn(true);
+            } else {
+                data.setOwn(false);
+            }return  data;
+        }
+
+        );
+
+        return ResponseEntity.ok(response);
     }
 
     @PostMapping("/students/{DiscussionId}/comments")

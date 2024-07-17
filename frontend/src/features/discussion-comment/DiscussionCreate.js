@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import {Modal, Form, Button } from 'react-bootstrap';
+import { Modal, Form, Button, Container } from 'react-bootstrap';
 import apiClient from '../../core/setup/axios';
 
 const DiscussionCreate = () => {
@@ -69,7 +69,7 @@ const DiscussionCreate = () => {
                 });
                 setShowModal(false);
                 // Optionally, handle success state or redirect
-            } 
+            }
         } catch (error) {
             console.error('Error creating discussion:', error);
             // Handle error state
@@ -80,57 +80,61 @@ const DiscussionCreate = () => {
 
     return (
         // <Form onSubmit={handleSubmit}>
-        <Form>
-            <Form.Group className="mb-3" controlId="exampleForm.SelectCustom">
-                <Form.Label>Topic</Form.Label>
-                <Form.Select value={discussion.category_id} onChange={handleSelectChange}>
-                    <option value="">Select...</option>
-                    {category.map((c) => (
-                        <option key={c.id} value={c.id}>
-                            {c.name}
-                        </option>
-                    ))}
-                </Form.Select>
-            </Form.Group>
-            <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-                <Form.Label>Title</Form.Label>
-                <Form.Control
-                    type="text"
-                    name="title"
-                    value={discussion.title}
-                    onChange={onChangeData}
-                />
-            </Form.Group>
-            <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
-                <Form.Label>Body</Form.Label>
-                <Form.Control
-                    as="textarea"
-                    rows={3}
-                    name="body"
-                    value={discussion.body}
-                    onChange={onChangeData}
-                />
-            </Form.Group>
-            <Button variant="success" onClick={handleShowModal}>
-                Create Discussion
-            </Button>
-
-            <Modal show={showModal} onHide={handleCloseModal}>
-                <Modal.Header closeButton>
-                    <Modal.Title>Confirm Save</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>Are you sure you want to save?</Modal.Body>
-                <Modal.Footer>
-                    <Button variant="secondary" onClick={handleCloseModal}>
-                        Cancel
+        <Container>
+            <div className="mt-3">
+                <h1>Create Discussion Post</h1>
+                <Form>
+                    <Form.Group className="mb-3" controlId="exampleForm.SelectCustom">
+                        <Form.Label>Topic</Form.Label>
+                        <Form.Select value={discussion.category_id} onChange={handleSelectChange}>
+                            <option value="">Select...</option>
+                            {category.map((c) => (
+                                <option key={c.id} value={c.id}>
+                                    {c.name}
+                                </option>
+                            ))}
+                        </Form.Select>
+                    </Form.Group>
+                    <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+                        <Form.Label>Title</Form.Label>
+                        <Form.Control
+                            type="text"
+                            name="title"
+                            value={discussion.title}
+                            onChange={onChangeData}
+                        />
+                    </Form.Group>
+                    <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
+                        <Form.Label>Body</Form.Label>
+                        <Form.Control
+                            as="textarea"
+                            rows={3}
+                            name="body"
+                            value={discussion.body}
+                            onChange={onChangeData}
+                        />
+                    </Form.Group>
+                    <Button variant="success" onClick={handleShowModal}>
+                        Create Discussion
                     </Button>
-                    <Button variant="primary" onClick={handleSubmit}>
-                        Okay
-                    </Button>
-                </Modal.Footer>
-            </Modal>
-        </Form>
 
+                    <Modal show={showModal} onHide={handleCloseModal}>
+                        <Modal.Header closeButton>
+                            <Modal.Title>Confirm Save</Modal.Title>
+                        </Modal.Header>
+                        <Modal.Body>Are you sure you want to save?</Modal.Body>
+                        <Modal.Footer>
+                            <Button variant="secondary" onClick={handleCloseModal}>
+                                Cancel
+                            </Button>
+                            <Button variant="primary" onClick={handleSubmit}>
+                                Okay
+                            </Button>
+                        </Modal.Footer>
+                    </Modal>
+                </Form>
+            </div>
+        </Container>
     );
 };
 

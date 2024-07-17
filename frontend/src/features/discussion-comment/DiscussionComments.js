@@ -27,6 +27,9 @@ const DiscussionComments = () => {
     const [newComment, setNewComment] = useState('');
     const [error, setError] = useState(null);
     const [showModal, setShowModal] = useState(false);
+    const [editingCommentId, setEditingCommentId] = useState(null);
+    const [editedComment, setEditedComment] = useState('');
+    const [selectedCommentId, setSelectedCommentId] = useState(null);
 
     const getDisucssion = async () => {
 
@@ -86,8 +89,6 @@ const DiscussionComments = () => {
         }
     };
 
-    const [selectedCommentId, setSelectedCommentId] = useState(null);
-
     const handleShowModal = (id) => {
         setSelectedCommentId(id);
         setShowModal(true);
@@ -98,10 +99,28 @@ const DiscussionComments = () => {
         setSelectedCommentId(null);
     };
 
+
+    const handleEditClick = (comment) => {
+        setEditingCommentId(comment.id);
+        setEditedComment(comment.comment);
+    };
+
+    const handleSaveClick = async (commentId, discussionId) => {
+        try {
+            const response = await apiClient.put(`/students/comments/${commentId}`, { comment: editedComment, discussionId: discussionId });
+            // Update comments state with the updated comment
+            setComments(comments.map(comment => comment.id === commentId ? response.data : comment));
+            setEditingCommentId(null);
+        } catch (error) {
+            console.error('Error updating comment:', error);
+        }
+    };
+
+
     return (
         <>
             <Container>
-                <Card>
+                <Card  className="mt-3">
                     <Card.Header as="h3" style={{ display: 'flex', justifyContent: 'space-between' }}>
                         <span style={{ display: 'flex', alignItems: 'center' }}>
                             {discussion.student && (
@@ -171,12 +190,66 @@ const DiscussionComments = () => {
                                                     }}
                                                 />
                                                 <div>
-                                                    <Card.Title className="mb-1" style={{ fontSize: '0.9rem' }}>{comment.student.firstName} {comment.student.lastName}</Card.Title>
-                                                    <Card.Text style={{ fontSize: '0.8rem' }}>{comment.comment}</Card.Text>
+                                                    {/* <Card.Title className="mb-1" style={{ fontSize: '0.9rem' }}>{comment.student.firstName} {comment.student.lastName}</Card.Title>
+                                                    <Card.Text style={{ fontSize: '0.8rem' }}>{comment.comment}</Card.Text> */}
 
-                                                    <div className="ms-auto d-flex"> {/* Align to the right */}
-                                                        <Card.Text className="text-primary me-2" style={{ fontSize: '0.8rem' }}>Edit</Card.Text>
-                                                        <Card.Text className="text-danger" style={{ fontSize: '0.8rem' }} onClick={() => handleShowModal(comment.id)}>Delete</Card.Text>
+                                                    <div style={{ flex: 1 }}>
+                                                        {editingCommentId === comment.id ? (
+                                                            <>
+                                                                <Form.Control
+                                                                    type="text"
+                                                                    value={editedComment}
+                                                                    onChange={(e) => setEditedComment(e.target.value)}
+                                                                    style={{ fontSize: '0.8rem', marginBottom: '10px' }}
+                                                                />
+
+                                                                <Button
+                                                                    variant="secondary"
+                                                                    size="sm"
+                                                                    onClick={() => setEditingCommentId(null)}
+                                                                    className="me-2"
+                                                                >
+                                                                    Cancel
+                                                                </Button>
+                                                                <Button
+                                                                    variant="primary"
+                                                                    size="sm"
+                                                                    onClick={() => handleSaveClick(comment.id, comment.discussionId)}
+                                                                    className="me-2"
+                                                                >
+                                                                    Save
+                                                                </Button>
+                                                            </>
+                                                        ) : (
+                                                            <>
+                                                                <Card.Title className="mb-1" style={{ fontSize: '0.9rem' }}>{comment.student.firstName} {comment.student.lastName}</Card.Title>
+                                                                <Card.Text style={{ fontSize: '0.8rem' }}>{comment.comment}</Card.Text>
+                                                            </>
+                                                        )}
+
+                                                        {comment.own && (
+                                                        <div className="ms-auto d-flex">
+                                                            {editingCommentId !== comment.id && (
+                                                                <>
+                                                                    <Card.Text
+                                                                        className="text-primary me-2"
+                                                                        style={{ fontSize: '0.8rem' }}
+                                                                        onClick={() => handleEditClick(comment)}
+                                                                    >
+                                                                        Edit
+                                                                    </Card.Text>
+                                                                    <Card.Text
+                                                                        className="text-danger"
+                                                                        style={{ fontSize: '0.8rem' }}
+                                                                        onClick={() => handleShowModal(comment.id)}
+                                                                    >
+                                                                        Delete
+                                                                    </Card.Text>
+
+                                                                </>
+                                                            )}
+                                                        </div>
+                                                        )}
                                                     </div>
                                                 </div>
                                             </Card.Body>

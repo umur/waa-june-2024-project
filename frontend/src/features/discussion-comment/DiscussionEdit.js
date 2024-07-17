@@ -100,7 +100,7 @@ const DiscussionEdit = (props) => {
 
     return (
         <Container>
-            <div>
+            <div className="mt-3">
                 <h1>Editing</h1>
 
 

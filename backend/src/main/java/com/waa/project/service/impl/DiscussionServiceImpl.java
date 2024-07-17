@@ -106,12 +106,9 @@ public class DiscussionServiceImpl implements DiscussionService {
     }
 
     @Override
-    public DiscussionDto searching(String text) {
+    public Page<DiscussionDto> searching(Pageable pageable, String text) {
         System.out.println("Text:" + text);
-        Discussion discussion = repository.findAllByTitleContainingIgnoreCaseOrBodyContainingIgnoreCase(text, text)
-                                          .orElseThrow(() -> new ResourceNotFoundException(
-                                                  "Data Not found"));
-        System.out.println("Output:" + discussion);
-        return mapper.map(discussion, DiscussionDto.class);
+        Page<Discussion> discussions = repository.findAllByTitleContainingIgnoreCaseOrBodyContainingIgnoreCase(text,text,pageable);
+        return discussions.map(data -> mapper.map(data, DiscussionDto.class));
     }
 }

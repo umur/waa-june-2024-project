@@ -53,7 +53,7 @@ public class DiscussionController {
     }
 
     @GetMapping("/students/discussion/search")
-    public ResponseEntity<?> searchDiscussion(@RequestParam String text) {
-        return ResponseEntity.ok(discussionService.searching(text));
+    public ResponseEntity<?> searchDiscussion(Pageable pageable,@RequestParam String text) {
+        return ResponseEntity.ok(discussionService.searching(pageable, text));
     }
 }

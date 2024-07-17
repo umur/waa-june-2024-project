@@ -10,4 +10,5 @@ public class DiscussionCommentsDto {
     private StudentInfo student;
     private Long   discussionId;
     private Long   parentCommentIdId;
+    private boolean own;
 }

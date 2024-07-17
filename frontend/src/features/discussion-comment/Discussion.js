@@ -30,6 +30,7 @@ const Discussion = () => {
     });
     const [error, setError] = useState(null);
     const [showModal, setShowModal] = useState(false);
+    const [searchTerm, setSearchTerm] = useState('');
 
     const getList = async () => {
 
@@ -78,6 +79,35 @@ const Discussion = () => {
         }
     };
 
+    const handleSearch = async () => {
+        try {
+            const response = await apiClient.get(`/students/discussion/search?text=${searchTerm}`);
+            console.log('Search API Response:', response); // Log search response
+            if (response && response.data && response.data.content) {
+                setDiscussions(response.data.content);
+            } else {
+                setDiscussions([]);
+                setError('No results found');
+            }
+        } catch (err) {
+            setError('Error searching discussions');
+            console.error('Error searching discussions:', err);
+        }
+    };
+
+    const handleKeyPress = (event) => {
+        if (event.key === 'Enter') {
+            handleSearch();
+        }
+    };
+
+    const handleClearSearch = () => {
+        setSearchTerm('');
+        setError(null); // Clear any previous errors
+        window.location.reload();
+    };
+
+
     return (
         <>
 
@@ -113,14 +143,26 @@ const Discussion = () => {
                 </Form>
             </Navbar>
             <Container>
-                <Col xs="auto">
-                    <Form.Control
-                        type="text"
-                        placeholder="Search"
-                        className=" mr-lg-1"
-                    />
+                <Col xs="auto" className="mt-3">
+                    <InputGroup>
+                        <Form.Control
+                            type="text"
+                            placeholder="Search"
+                            className="me-1" // Small margin to the right
+                            style={{ borderRadius: '10px' }} // Curly borders
+                            value={searchTerm}
+                            onChange={(e) => setSearchTerm(e.target.value)}
+                            onKeyPress={handleKeyPress}
+                        />
+                        {searchTerm && ( // Show clear icon only if there's something to clear
+                            <Button variant="link" onClick={handleClearSearch}>
+                                <p>clear</p>
+                            </Button>
+                        )}
+                    </InputGroup>
                 </Col>
-                <Card>
+
+                <Card className="mt-3">
                     {error ? (
                         <p>{error}</p>
                     ) : (
@@ -161,7 +203,7 @@ const Discussion = () => {
                                 </>
                             ))
                         ) : (
-                            <p>Loading discussions...</p>
+                            <p>No discussions...</p>
                         )
                     )}
                 </Card >
