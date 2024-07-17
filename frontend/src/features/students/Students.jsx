@@ -65,7 +65,7 @@ const Students = () => {
     }
 
     fetchStudents();
-  }, [profile]);
+  }, []);
 
   const handlePageChange = pageNumber => {
     fetchStudents(pageNumber, searchQuery);
