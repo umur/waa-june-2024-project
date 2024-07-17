@@ -34,9 +34,7 @@ function Resources() {
     };
 
     useEffect(() => {
-        console.log("there");
         if (!hasFetchedData.current) {
-            console.log("Triggered from here");
             fetchResources("");
             hasFetchedData.current = true;
         }
