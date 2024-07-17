@@ -10,4 +10,5 @@ export default {
   resource: (resourceId) => `${API_BASE_URL}resources/${resourceId}`,
   resources: API_BASE_URL + "resources",
   resourceDownload: (resourceId) => `${API_BASE_URL}resources/${resourceId}/download`,
+  myResources: (userId) => `${API_BASE_URL}users/${userId}/resources`,
 };

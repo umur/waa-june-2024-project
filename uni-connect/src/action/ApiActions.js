@@ -87,6 +87,17 @@ export async function apiDownloadResource(data, id) {
     }
 }
 
+export async function apiFetchMyResources(userId) {
+    try {
+        const myResourcesUrl = ApiRoutes.myResources(userId);
+        const response = await axiosInstance.get(myResourcesUrl);
+        console.log("apiFetchMyResources response", response);
+        return response.data;
+    } catch (e) {
+        return exceptionResponse("apiFetchMyResources", e);
+    }
+}
+
 export function exceptionResponse(apiName, e) {
     console.log(apiName + " exception", e?.response?.data ?? e.message);
     return e?.response?.data ?? getErrorResponseObject(e.message);

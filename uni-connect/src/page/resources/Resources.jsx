@@ -59,7 +59,7 @@ function Resources() {
                         >
                             {resources.map((resource) => (
                                 <>
-                                <Resource key={resource.id} resource={resource} />
+                                <Resource key={resource.id} resource={resource} editable={false} />
                                 </>
 
                             ))}

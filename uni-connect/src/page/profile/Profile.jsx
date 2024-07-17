@@ -1,10 +1,11 @@
-import {  useState } from "react";
+import { useState } from "react";
 import MobileNavBar from "../../component/MobileNavBar";
 import AsideLeft from "../../component/AsideLeft";
 import { AsideRight } from "../../component/AsideRight";
 import { AiOutlineArrowUp } from "react-icons/ai";
 import { EventsIcon, ProfileIcon, ResourcesIcon, SurveysIcon } from "../../component/Icons";
 import MyDetails from "./MyDetails";
+import MyResources from "./MyResources";
 
 function Profile() {
 
@@ -15,7 +16,7 @@ function Profile() {
     { name: 'Surveys', icon: SurveysIcon },
   ];
 
-  const [activeTab, setActiveTab] = useState('Profile');
+  const [activeTab, setActiveTab] = useState('My Details');
 
   return (
     <div>
@@ -53,8 +54,8 @@ function Profile() {
               </div>
               <div className="p-4">
                 {activeTab === 'My Details' && <MyDetails />}
-                {/* {activeTab === 'Resources' && <ResourcesContent />}
-        {activeTab === 'Events' && <EventsContent />}
+                {activeTab === 'Resources' && <MyResources />}
+                {/* {activeTab === 'Events' && <EventsContent />}
         {activeTab === 'Surveys' && <SurveysContent />}  */}
               </div>
             </div>
