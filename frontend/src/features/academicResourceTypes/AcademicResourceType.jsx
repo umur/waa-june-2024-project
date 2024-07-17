@@ -5,6 +5,8 @@ import ErrorDialog from '../../core/component/dialogs/ErrorDialog';
 import AcademicResourceTypeList from './AcademicResourceTypeList';
 import AcademicResourceTypeModal from './AcademicResourceTypeModal';
 import {State} from '../../core/constants';
+import {useNavigate} from 'react-router';
+import getCurrentProfile from '../../core/utils/current-profile';
 
 const AcademicResourceType = () => {
   const [resourceTypeForm, setResourceTypeForm] = useState(initialForm);
@@ -17,7 +19,13 @@ const AcademicResourceType = () => {
     errors: {}
   });
 
+  const profile = getCurrentProfile();
+  const navigate = useNavigate();
+
   useEffect(() => {
+    if (profile === null || profile === undefined) {
+      navigate('/login');
+    }
     fetchAcademicResourceTypes();
   }, [refresh]);
 

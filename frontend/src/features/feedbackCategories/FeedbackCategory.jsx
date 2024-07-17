@@ -6,6 +6,8 @@ import FeedbaclCategoryList from './FeedbackCategoryList';
 import FeedbackCategoryModal from './FeedbackCategoryModal';
 import {State} from '../../core/constants';
 import axios from 'axios';
+import {useNavigate} from 'react-router';
+import getCurrentProfile from '../../core/utils/current-profile';
 
 const FeedbackCategory = () => {
   const [feedbackCategoryForm, setFeedbackCategoryForm] = useState(initialForm);
@@ -17,7 +19,14 @@ const FeedbackCategory = () => {
     errors: {}
   });
 
+  const profile = getCurrentProfile();
+  const navigate = useNavigate();
+
   useEffect(() => {
+    if (profile === null || profile === undefined) {
+      navigate('/login');
+    }
+
     fetchFeedbackCategorys();
   }, [refresh]);
 

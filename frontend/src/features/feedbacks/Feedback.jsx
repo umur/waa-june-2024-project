@@ -5,7 +5,6 @@ import ErrorDialog from '../../core/component/dialogs/ErrorDialog';
 import FeedbackModal from './FeedbackModal';
 import FeedbackList from './FeedbackList';
 import {State} from '../../core/constants';
-import axios from 'axios';
 
 const Feedback = () => {
   const [feedbackForm, setFeedbackForm] = useState(initialForm);
