@@ -25,4 +25,8 @@ public interface SurveyService {
 
     List<SurveyStudentDTO> getSurveysByStudent(Long studentId);
 
+    void deleteQuestion(Long surveyId, Long questionId);
+
+    void updateQuestion(Long surveyId, Long questionId, QuestionDTO question);
+
 }
