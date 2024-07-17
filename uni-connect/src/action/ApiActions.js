@@ -87,6 +87,28 @@ export async function apiDownloadResource(data, id) {
     }
 }
 
+//Surveys
+export async function apiFetchSurveys(queryParams) {
+    try {
+        const response = await axiosInstance.get(ApiRoutes.surveys, { params: queryParams });
+        console.log("apiFetchSurveys response", response);
+        return response.data;
+    } catch (e) {
+        return exceptionResponse("apiFetchSurveys", e);
+    }
+}
+
+export async function apiFetchSurveyQuestions(id) {
+    try {
+        const resourceUrl = ApiRoutes.surveyQuestions(id);
+        const response = await axiosInstance.get(resourceUrl);
+        console.log("apiFetchSurvey Questions response", response);
+        return response.data;
+    } catch (e) {
+        return exceptionResponse("apiFetchSurveyQuestions", e);
+    }
+}
+
 export function exceptionResponse(apiName, e) {
     console.log(apiName + " exception", e?.response?.data ?? e.message);
     return e?.response?.data ?? getErrorResponseObject(e.message);
