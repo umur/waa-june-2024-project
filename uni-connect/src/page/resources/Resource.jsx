@@ -5,7 +5,7 @@ import { useEffect, useRef, useState } from "react";
 import { toast } from "react-toastify";
 import DeleteModal from "../../component/DeleteModal";
 import ResourceFileUpload from "./ResourceFileUpload";
-import EditResourceModal from "./EditResourceModal";
+import ResourceFormModal from "./ResourceFormModal";
 
 function Resource(props) {
     let params = useParams();
@@ -164,10 +164,10 @@ function Resource(props) {
                 <ResourceFileUpload resource={resource} onFileUpload={onFileUpload} /> : <></>
             }
             {editModalOpen ?
-                <EditResourceModal data={editData}
-                    closeEditModal={closeEditModal}
-                    handleChange={handleChange}
-                    handleSave={handleSave}
+                <ResourceFormModal data={editData}
+                                   closeModal={closeEditModal}
+                                   handleChange={handleChange}
+                                   handleSave={handleSave}
                 />
                 : <></>}
         </div>

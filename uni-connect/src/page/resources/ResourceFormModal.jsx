@@ -1,4 +1,4 @@
-function EditResourceModal({ data, closeEditModal, handleChange, handleSave }) {
+function ResourceFormModal({ data, closeModal, handleChange, handleSave }) {
     return (
         <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex justify-center items-center">
             <div className="bg-white p-6 rounded shadow-lg">
@@ -25,7 +25,7 @@ function EditResourceModal({ data, closeEditModal, handleChange, handleSave }) {
                 </>
 
                 <div className="flex justify-end">
-                    <button onClick={closeEditModal} className="mr-4 text-gray-700">Cancel</button>
+                    <button onClick={closeModal} className="mr-4 text-gray-700">Cancel</button>
                     <button onClick={handleSave} className="bg-blue-500 text-white px-4 py-2 rounded">Save</button>
                 </div>
             </div>
@@ -34,4 +34,4 @@ function EditResourceModal({ data, closeEditModal, handleChange, handleSave }) {
 
 }
 
-export default EditResourceModal;
+export default ResourceFormModal;
