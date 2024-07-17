@@ -17,6 +17,7 @@ import universityconnect.service.SurveyService;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -120,10 +121,37 @@ public class SurveyServiceImpl implements SurveyService {
     }
 
     @Override
+    public void deleteQuestion(Long surveyId, Long questionId) {
+        Question question = questionRepository.findById(questionId)
+                .orElseThrow(() -> new ResourceNotFoundException("Question with id " + questionId + " does not exist"));
+
+        Survey survey = surveyRepository.findById(surveyId)
+                .orElseThrow(() -> new ResourceNotFoundException("Survey with id " + surveyId + " does not exist"));
+
+        survey.getQuestions().remove(question);
+        questionRepository.delete(question);
+    }
+
+    @Override
+    public void updateQuestion(Long surveyId, Long questionId, QuestionDTO question) {
+        Question reqQ = questionMapper.questionDTOToQuestion(question);
+
+        Question questionToUpdate = questionRepository.findById(questionId)
+                .orElseThrow(() -> new ResourceNotFoundException("Question with id " + questionId + " does not exist"));
+
+        questionToUpdate.setTitle(reqQ.getTitle());
+        questionRepository.save(questionToUpdate);
+    }
+
+    @Override
     public void deleteSurvey(Long id) {
-        if (!surveyRepository.existsById(id)) {
-            throw new ResourceNotFoundException("Survey with id " + id + " does not exist");
-        }
+
+        Survey survey = surveyRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Survey with id " + id + " does not exist"));
+        survey.getQuestions().forEach(question -> {
+            answerRepository.deleteAll(question.getAnswers());
+            questionRepository.delete(question);
+            surveyStudentRepository.deleteAll(surveyStudentRepository.findBySurveyId(id));
+        });
 
         surveyRepository.deleteById(id);
     }

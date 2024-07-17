@@ -45,10 +45,23 @@ public class SurveyController {
         return ResponseEntity.ok(surveyService.createQuestion(surveyId, question));
     }
 
+    @DeleteMapping("{surveyId}/questions/{questionId}")
+    public ResponseEntity<?> deleteQuestion(@PathVariable Long surveyId,@PathVariable Long questionId) {
+        surveyService.deleteQuestion(surveyId, questionId);
+        return ResponseEntity.ok().build();
+    }
+
+    @PutMapping("{surveyId}/questions")
+    public ResponseEntity<?> updateQuestion(@PathVariable Long surveyId, @RequestBody QuestionDTO question) {
+        surveyService.updateQuestion(surveyId, question.getId(), question);
+        return ResponseEntity.ok().build();
+    }
+
     @GetMapping("{surveyId}/questions")
     public ResponseEntity<List<QuestionDTO>> getQuestionsBySurvey(@PathVariable Long surveyId) {
         return ResponseEntity.ok(surveyService.getQuestionsBySurvey(surveyId));
     }
+
 
     @PostMapping("{surveyId}/students/{studentId}/questions/{questionId}/answers")
     public ResponseEntity<?> createAnswer(@PathVariable Long surveyId, @PathVariable Long questionId,

@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +22,7 @@ import universityconnect.service.StorageService;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Objects;
 
 @RestController
 @CrossOrigin
@@ -32,6 +34,7 @@ public class ResourceController {
     private final ResourceService resourceService;
     private final StorageService storageService;
     private final ResourceCategoryService resourceCategoryService;
+
     @PostMapping
     public ResponseEntity<ResourceDTO> createResource(@RequestParam("file")MultipartFile file,@RequestParam("resourceCategoryId")Long categoryId){
         ResourceCategoryDTO resourceCategory = resourceCategoryService.getResourceCategoryById(categoryId);
@@ -40,13 +43,20 @@ public class ResourceController {
     }
 
     @GetMapping
-    public ResponseEntity<List<ResourceDTO>> getAllResources() throws IOException {
-        List<ResourceDTO> resources = resourceService.getAllResources();
-        return ResponseEntity.ok(resources);
+    public ResponseEntity<List<ResourceDTO>> getAllResources(@RequestParam(value= "categoryId",required = false) Long categoryId) throws IOException {
+        if(categoryId != null ){
+            List<ResourceDTO> resources = resourceService.getAllResources().stream()
+                    .filter(resource -> Objects.equals(resource.getResourceCategoryId(), categoryId))
+                    .toList();
+            return ResponseEntity.ok(resources);
+        }else{
+            List<ResourceDTO> resources = resourceService.getAllResources();
+            return ResponseEntity.ok(resources);
+        }
+
     }
 
     @GetMapping("/{id}/download")
-    @ResponseBody
     public ResponseEntity<Resource> getResourceFile(@PathVariable long id){
         ResourceDTO resource = resourceService.getResourceById(id);
         ResourceCategoryDTO category = resourceCategoryService.getResourceCategoryById(resource.getResourceCategoryId());
