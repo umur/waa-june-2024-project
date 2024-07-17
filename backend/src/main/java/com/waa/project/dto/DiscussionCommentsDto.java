@@ -11,4 +11,5 @@ public class DiscussionCommentsDto {
     private Long   discussionId;
     private Long   parentCommentIdId;
     private boolean own;
+    private Long   subComments;
 }

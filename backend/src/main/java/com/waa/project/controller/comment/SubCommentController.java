@@ -17,7 +17,7 @@ public class SubCommentController {
     @Autowired
     private SubCommentService subCommentsService;
 
-    @GetMapping("/students/sub-comments/{commentId}")
+    @GetMapping("/students/{commentId}/sub-comments")
     public ResponseEntity<Page<?>> getComments(
             Pageable pageable,
             @AuthenticationPrincipal User user,

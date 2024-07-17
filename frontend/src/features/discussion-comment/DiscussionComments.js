@@ -1,21 +1,14 @@
 import { Route, Routes, useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 // import Nav from 'react-bootstrap/Nav';
-import Nav from "react-bootstrap/Nav";
-import Navbar from "react-bootstrap/Navbar";
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
-import InputGroup from 'react-bootstrap/InputGroup';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
-import axios, { get } from "axios";
 import { Modal, Card } from 'react-bootstrap';
-import Dropdown from 'react-bootstrap/Dropdown';
-import DropdownButton from 'react-bootstrap/DropdownButton';
 import { Container } from 'react-bootstrap';
 import apiClient from '../../core/setup/axios';
 import { API } from '../../core/constants';
 import { useParams } from "react-router";
+import SubComment from './SubComment'; // Import the SubComment component
 // import { format } from 'date-fns';
 
 const DiscussionComments = () => {
@@ -30,6 +23,7 @@ const DiscussionComments = () => {
     const [editingCommentId, setEditingCommentId] = useState(null);
     const [editedComment, setEditedComment] = useState('');
     const [selectedCommentId, setSelectedCommentId] = useState(null);
+    const [subComments, setSubComments] = useState([]);
 
     const getDisucssion = async () => {
 
@@ -116,11 +110,29 @@ const DiscussionComments = () => {
         }
     };
 
+    const fetchComments = async () => {
+        try {
+            const response = await apiClient.get(`/students/discussion`);
+            setComments(response.data.content);
+        } catch (error) {
+            console.error('Error fetching comments:', error);
+        }
+    };
+    
+    const handleViewCommentsClick = async (commentId) => {
+        setSelectedCommentId(commentId);
+        try {
+            const response = await apiClient.get(`/students/${commentId}/sub-comments`);
+            setSubComments(response.data.content);
+        } catch (error) {
+            console.error('Error fetching subcomments:', error);
+        }
+    };
 
     return (
         <>
             <Container>
-                <Card  className="mt-3">
+                <Card className="mt-3">
                     <Card.Header as="h3" style={{ display: 'flex', justifyContent: 'space-between' }}>
                         <span style={{ display: 'flex', alignItems: 'center' }}>
                             {discussion.student && (
@@ -227,29 +239,47 @@ const DiscussionComments = () => {
                                                             </>
                                                         )}
 
-                                                        {comment.own && (
+                                                        <Card.Text
+                                                            className="text-primary me-2"
+                                                            style={{ fontSize: '0.8rem' , cursor: 'pointer' }}
+                                                            onClick={() => handleViewCommentsClick(comment.id)}
+                                                        >
+                                                            view all comments
+                                                        </Card.Text>
                                                         <div className="ms-auto d-flex">
-                                                            {editingCommentId !== comment.id && (
-                                                                <>
-                                                                    <Card.Text
-                                                                        className="text-primary me-2"
-                                                                        style={{ fontSize: '0.8rem' }}
-                                                                        onClick={() => handleEditClick(comment)}
-                                                                    >
-                                                                        Edit
-                                                                    </Card.Text>
-                                                                    <Card.Text
-                                                                        className="text-danger"
-                                                                        style={{ fontSize: '0.8rem' }}
-                                                                        onClick={() => handleShowModal(comment.id)}
-                                                                    >
-                                                                        Delete
-                                                                    </Card.Text>
 
-                                                                </>
+                                                            <Card.Text
+                                                                className="text-primary me-2"
+                                                                style={{ fontSize: '0.8rem', cursor: 'pointer' }}
+                                                            >
+                                                                Reply
+                                                            </Card.Text>
+                                                            {comment.own && (
+
+                                                                editingCommentId !== comment.id && (
+                                                                    <>
+                                                                        <Card.Text
+                                                                            className="text-primary me-2"
+                                                                            style={{ fontSize: '0.8rem' , cursor: 'pointer'}}
+                                                                            onClick={() => handleEditClick(comment)}
+                                                                        >
+                                                                            Edit
+                                                                        </Card.Text>
+                                                                        <Card.Text
+                                                                            className="text-danger"
+                                                                            style={{ fontSize: '0.8rem', cursor: 'pointer' }}
+                                                                            onClick={() => handleShowModal(comment.id)}
+                                                                        >
+                                                                            Delete
+                                                                        </Card.Text>
+
+                                                                    </>
+                                                                )
+
                                                             )}
                                                         </div>
-                                                        )}
+                                                        {selectedCommentId === comment.id && <SubComment subComments={subComments} />}
+
                                                     </div>
                                                 </div>
                                             </Card.Body>

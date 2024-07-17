@@ -27,7 +27,7 @@ insert into users(id, username, password, first_name, last_name, email, birth_da
                   role_type, user_type)
 values (2, "admin", "{noop}admin", "John", "Doe", "john.doe@miu.edu", "2008-01-28", "MALE", "ACTIVE", "ADMIN", "ADMIN");
 
-INSERT INTO `admins`(id)
+INSERT INTO admins(id)
 VALUES (1);
 
 -- temp
@@ -163,4 +163,14 @@ VALUES
 
 INSERT INTO discussions (category_id,id,student_id,body,title) VALUES (1,1,1,'Learning new technologies by doing TM is really effective.','MIU Life');
 INSERT INTO discussions (category_id,id,student_id,body,title) VALUES (2,2,1,'MIU provided all the various foods that are good for the healthy.','Health and dinning ');
+
+INSERT INTO discussion_comments (discussion_id,id,parent_comment_id,student_id,comments) VALUES (2,1,NULL,3,'good to hear that!');
+INSERT INTO discussion_comments (discussion_id,id,parent_comment_id,student_id,comments) VALUES (2,2,NULL,1,'Agree!');
+INSERT INTO discussion_comments (discussion_id,id,parent_comment_id,student_id,comments) VALUES (1,3,NULL,3,'Yes, it is');
+INSERT INTO discussion_comments (discussion_id,id,parent_comment_id,student_id,comments) VALUES (1,4,NULL,1,'Agree!');
+INSERT INTO discussion_comments (id, parent_comment_id,student_id, comments)
+VALUES ('5', '3',4, 'Explain a little bit more please.');
+INSERT INTO discussion_comments (id, parent_comment_id, student_id, comments)
+VALUES ('6', '3', '5', 'What is the benefit of doing like that?');
+
 
