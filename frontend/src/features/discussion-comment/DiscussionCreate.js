@@ -62,7 +62,6 @@ const DiscussionCreate = () => {
 
             if (response.status === 200) {
                 console.log('Discussion created successfully');
-                alert("Save Data Successfully!");
                 setDiscussion({
                     title: '',
                     category_id: '',

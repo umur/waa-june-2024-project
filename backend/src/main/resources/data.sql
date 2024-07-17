@@ -159,3 +159,8 @@ VALUES
     (20, 'Math Club'), (20, 'Science Club'), (20, 'Drama Club'),
     (21, 'Music Band'), (21, 'Volunteering'), (21, 'Community Service'),
     (22, 'Debate Team'), (22, 'Chess Club'), (22, 'Art Club');
+
+
+INSERT INTO discussions (category_id,id,student_id,body,title) VALUES (1,1,1,'Learning new technologies by doing TM is really effective.','MIU Life');
+INSERT INTO discussions (category_id,id,student_id,body,title) VALUES (2,2,1,'MIU provided all the various foods that are good for the healthy.','Health and dinning ');
+

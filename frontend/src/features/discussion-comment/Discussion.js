@@ -35,7 +35,6 @@ const Discussion = () => {
 
         try {
             const response = await apiClient.get(`/students/discussion?page=${discussions.page.number}`);
-            // const response = await axios.get("http://localhost:8080/api/v1/students/discussion", config)
             console.log('API Response:', response); // Log the entire response
             if (response && response.data && response.data.content) {
                 setDiscussions(response.data.content);
@@ -47,10 +46,6 @@ const Discussion = () => {
             setError('Error fetching the discussions');
             console.error('Error fetching the discussions:', err);
         }
-        // const result = axios.get("http://localhost:8080/api/v1/students/discussion", config)
-        //     .then(res => console.log(res.data))
-        //     .catch((error) => console.log("Error Handing ..........................." + error));
-        // setDiscussions(result.data);
     }
 
     useEffect(() => {
@@ -158,7 +153,7 @@ const Discussion = () => {
                                         <Card.Title>{discussion.title}</Card.Title>
                                         <Card.Subtitle className="mb-2 text-muted small">{discussion.category.name}</Card.Subtitle>
                                         <Card.Text>{discussion.body}</Card.Text>
-                                        <Card.Link href="#">Comments</Card.Link>
+                                        <Card.Link href={`/discussion-comments/${discussion.id}`}>Comments</Card.Link>
                                         {/* <Card.Link href="#">Another Link</Card.Link> */}
                                     </Card.Body>
 

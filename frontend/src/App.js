@@ -9,6 +9,7 @@ import UpdateStudentDetail from './features/students/update-student-detail';
 import Discussion from './features/discussion-comment/Discussion';
 import DiscussionCreate from './features/discussion-comment/DiscussionCreate';
 import DiscussionEdit from './features/discussion-comment/DiscussionEdit';
+import DiscussionComments from './features/discussion-comment/DiscussionComments';
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
       <Route path="/discussions" element={<Discussion />} />
       <Route path="/discussion-create" element={<DiscussionCreate />} />
       <Route path="/discussion-edit/:id" element={<DiscussionEdit />} />
+      <Route path="/discussion-comments/:id" element={<DiscussionComments />} />
     </Routes>
   );
 }

@@ -41,11 +41,13 @@ public class DiscussionCommentsServiceImpl implements DiscussionCommentsService 
     }
 
     @Override
-    public DiscussionCommentsDto createDiscussionComments(DiscussionCommentsDto commentsDto, User user) {
+    public DiscussionCommentsDto createDiscussionComments(DiscussionCommentsDto commentsDto, User user,
+                                                          Long discussionId
+                                                         ) {
         DiscussionComments requestData = mapper.map(commentsDto, DiscussionComments.class);
         requestData.setStudent(getUserId(user));
 
-        Discussion discussion = discusRepository.findById(commentsDto.getDiscussionId())
+        Discussion discussion = discusRepository.findById(discussionId)
                                                 .orElseThrow(() -> new ResourceNotFoundException(
                                                         "Cannot Searchable for that Discussion"));
         requestData.setDiscussion(discussion);
