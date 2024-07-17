@@ -4,12 +4,19 @@ import {getAllApi, getAllCategoriesApi, saveApi, updateApi} from '../../service/
 import ErrorDialog from '../../core/component/dialogs/ErrorDialog';
 import AcademicResourceModal from './AcademicResourceModal';
 import AcademicResourceList from './AcademicResourceList';
+import {State} from '../../core/constants';
 
 const AcademicResource = () => {
   const [academicResForm, setAcademicResForm] = useState(initialForm);
   const [academicResourceList, setAcademicResourceList] = useState([]);
   const [resCategory, setResCategory] = useState([]);
   const [refresh, setRefresh] = useState(false);
+
+  const [academicResState, setAcademicResState] = useState({
+    status: State.IDLE,
+    error: null,
+    errors: {}
+  });
 
   useEffect(() => {
     fetchAcademicResource();
@@ -48,16 +55,40 @@ const AcademicResource = () => {
 
   const handleShow = () => setShow(true);
 
-  const handleSave = async event => {
-    event.preventDefault();
+  const handleSave = async () => {
+    console.log(academicResForm);
     try {
-      academicResForm.id > 0 ? await updateApi(academicResForm) : await saveApi(academicResForm);
+      setAcademicResState({errors: {}, error: null, status: State.IDLE});
+
+      const res = academicResForm.id > 0 ? await updateApi(academicResForm) : await saveApi(academicResForm);
       setRefresh(!refresh);
-    } catch (error) {
-      <ErrorDialog show={'failed'} errorMessage={'Error'} handleClose={() => {}} />;
+      resetForm();
+      setShow(false);
+      // Handle the response
+      if (res.status === 201) {
+        setAcademicResState({...academicResState, status: State.SUCCEEDED});
+      } else if (res.status === 400) {
+        setAcademicResState({
+          status: State.FAILED,
+          error: res.data.message || 'Something went wrong. Please try again later.'
+        });
+      }
+    } catch (err) {
+      // Handle errors
+      if (err.response && err.response.status === 400) {
+        setAcademicResState({
+          status: State.FAILED,
+          error: null,
+          errors: err.response.data
+        });
+      } else {
+        setAcademicResState({
+          status: State.FAILED,
+          errors: {},
+          error: 'Something went wrong. Please try again later.'
+        });
+      }
     }
-    resetForm();
-    setShow(false);
   };
 
   const handleChange = event => {
@@ -90,6 +121,7 @@ const AcademicResource = () => {
         academicResForm={academicResForm}
         allCategories={resCategory}
         handleChange={handleChange}
+        academicResState={academicResState}
       />
 
       <AcademicResourceList

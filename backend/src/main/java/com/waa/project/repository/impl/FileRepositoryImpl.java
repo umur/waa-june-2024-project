@@ -15,7 +15,7 @@ import java.util.Optional;
 @Component
 public class FileRepositoryImpl implements FileRepository {
 
-    private static final String BASE_PATH   = "uploads";
+    private static final String BASE_PATH = "uploads";
     private static final String DATE_FORMAT = "yyyyMMddhhmmssSSS";
 
     @Override
@@ -28,7 +28,6 @@ public class FileRepositoryImpl implements FileRepository {
         try {
             Path uploadsDirPath = Paths.get(getUploadsDirectory().toString(), saveLocation);
 
-
             System.out.println(getUploadsDirectory().toAbsolutePath());
             System.out.println(uploadsDirPath);
 
@@ -37,8 +36,8 @@ public class FileRepositoryImpl implements FileRepository {
             }
 
             String sanitizedFilename = sanitizeFilename(file.getName());
-            String uniqueFilename    = generateUniqueFilename(sanitizedFilename);
-            Path   filePath          = uploadsDirPath.resolve(uniqueFilename).normalize();
+            String uniqueFilename = generateUniqueFilename(sanitizedFilename);
+            Path filePath = uploadsDirPath.resolve(uniqueFilename).normalize();
             Files.copy(file.toPath(), filePath);
 
             return filePath.toString().substring(System.getProperty("user.dir").length());
@@ -74,7 +73,7 @@ public class FileRepositoryImpl implements FileRepository {
         int extensionIndex = filename.lastIndexOf('.');
         if (extensionIndex > 0) {
             extension = filename.substring(extensionIndex);
-            filename  = filename.substring(0, extensionIndex);
+            filename = filename.substring(0, extensionIndex);
         }
 
         return filename + "_" + timestamp + extension;

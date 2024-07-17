@@ -105,6 +105,7 @@ const Register = () => {
               />
               <Form.Control.Feedback type="invalid">{registerState.errors.username}</Form.Control.Feedback>
             </Form.Group>
+
             <Form.Group controlId="formPassword">
               <Form.Label>Password</Form.Label>
               <Form.Control

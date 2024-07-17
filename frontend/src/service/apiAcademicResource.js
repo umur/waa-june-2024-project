@@ -1,17 +1,17 @@
-import axios from "axios";
+import axios from 'axios';
 
-axios.defaults.baseURL = "http://localhost:8080/api/v1";
-const token = localStorage.getItem("token");
+axios.defaults.baseURL = 'http://localhost:8080/api/v1';
+const token = localStorage.getItem('token');
 
-axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
 
 export const getAllApi = async () => {
-  const response = await axios.get("/academic");
+  const response = await axios.get('/academic');
   return response.data;
 };
 
 export const getAllCategoriesApi = async () => {
-  const response = await axios.get("/academicresources");
+  const response = await axios.get('/academicresources');
   return response.data;
 };
 
@@ -19,7 +19,7 @@ export const saveApi = async dataForm => {
   const formData = new FormData();
 
   formData.append(
-    "formdata",
+    'formdata',
     new Blob(
       [
         JSON.stringify({
@@ -28,18 +28,18 @@ export const saveApi = async dataForm => {
           resourceId: dataForm.resourceCategory
         })
       ],
-      {type: "application/json"}
+      {type: 'application/json'}
     )
   );
 
   if (dataForm.file) {
-    formData.append("file", dataForm.file);
+    formData.append('file', dataForm.file);
   }
 
   // Ensure no conflicting headers are set
-  const response = await axios.post("/academic", formData, {
+  const response = await axios.post('/academic', formData, {
     headers: {
-      "Content-Type": "multipart/form-data"
+      'Content-Type': 'multipart/form-data'
     }
   });
 
@@ -47,9 +47,11 @@ export const saveApi = async dataForm => {
 };
 
 export const updateApi = async dataForm => {
+  console.log(dataForm);
+
   const formData = new FormData();
   formData.append(
-    "formdata",
+    'formdata',
     new Blob(
       [
         JSON.stringify({
@@ -59,17 +61,17 @@ export const updateApi = async dataForm => {
           resourceId: dataForm.resourceCategory
         })
       ],
-      {type: "application/json"}
+      {type: 'application/json'}
     )
   );
 
   if (dataForm.file) {
-    formData.append("file", dataForm.file);
+    formData.append('file', dataForm.file);
   }
 
-  const response = await axios.put("/academic/" + dataForm.id, formData, {
+  const response = await axios.put('/academic/' + dataForm.id, formData, {
     headers: {
-      "Content-Type": "multipart/form-data"
+      'Content-Type': 'multipart/form-data'
     }
   });
 
@@ -77,6 +79,6 @@ export const updateApi = async dataForm => {
 };
 
 export const deleteApi = async id => {
-  const response = await axios.delete("/academic/" + id);
+  const response = await axios.delete('/academic/' + id);
   return response.data;
 };

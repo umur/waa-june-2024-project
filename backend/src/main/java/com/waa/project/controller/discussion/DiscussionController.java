@@ -51,9 +51,4 @@ public class DiscussionController {
 
         return ResponseEntity.ok(discussionService.deleteDiscussion(id, user));
     }
-
-    @GetMapping("/students/discussion/search")
-    public ResponseEntity<?> searchDiscussion(@RequestParam String text) {
-        return ResponseEntity.ok(discussionService.searching(text));
-    }
 }

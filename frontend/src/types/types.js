@@ -1,23 +1,23 @@
 export const initialFeedbackCategoryForm = {
   id: 0,
-  name: "",
-  description: ""
+  name: '',
+  description: ''
 };
 
 export const initialFeedbackForm = {
-  title: "",
-  body: "",
-  feedbackCategory: ""
+  title: '',
+  body: '',
+  feedbackCategory: ''
 };
 
 export const initialAcademicResourceTypeForm = {
-  name: ""
+  name: ''
 };
 
 export const initialAcademicForm = {
   id: 0,
-  name: "",
-  body: "",
+  name: '',
+  body: '',
   file: null,
-  resourceCategory: ""
+  resourceCategory: ''
 };

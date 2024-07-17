@@ -3,11 +3,11 @@ spring:
     name: project
     jwt:
       secret: secretsecretsecretsecretsecretsss
-      expiration: 3600
-      refreshExpiration: 36000
+      expiration: 360000
+      refreshExpiration: 3600000
 
   datasource:
-    url: jdbc:mysql://localhost:3306/waa-demo
+    url: jdbc:mysql://localhost:3306/waa_student_connect
     username: root
     password: Root@123
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -16,7 +16,7 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQLDialect
-        format_sql: true
+    #        format_sql: true
     hibernate:
       ddl-auto: create-drop
     show-sql: true
@@ -35,3 +35,7 @@ spring:
   web:
     resources:
       static-locations: file:${user.dir}
+
+  spring:
+    mvc:
+      static-path-pattern: /swagger-ui/**

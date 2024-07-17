@@ -6,9 +6,10 @@ import lombok.Data;
 
 @Data
 public class FeedbackDto {
-    private Long             id;
-    private String           title;
-    private String           body;
+    private Long id;
+    private String title;
+    private String body;
     private FeedbackCategory feedbackCategory;
-    private Student          student;
+    private Student student;
+    private Long category;
 }

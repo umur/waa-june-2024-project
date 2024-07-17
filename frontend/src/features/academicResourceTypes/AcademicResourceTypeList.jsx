@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import {deleteApi} from '../../service/apiAcademicResourceTypes';
 import ConfirmationDialog from '../../core/component/dialogs/ConfirmationDialog';
+import TableComponent from '../../core/component/dialogs/table/TableComponent';
 
 const AcademicResourceTypeList = ({resourceTypesList, setResourceTypeForm, setResourceTypesList, setShow}) => {
   const [showDialog, setShowDialog] = useState(false);
@@ -41,41 +42,32 @@ const AcademicResourceTypeList = ({resourceTypesList, setResourceTypeForm, setRe
     setShowDialog(true); // Show the confirmation dialog
   };
 
+  const headers = ['SlNo', 'Name'];
+
+  const formattedData = resourceTypesList.map((item, index) => ({
+    SlNo: index + 1,
+    Name: item.name,
+    id: item.id
+  }));
+
   return (
     <div className="container">
-      <table className="table">
-        <thead>
-          <tr>
-            <th scope="col">#</th>
-            <th scope="col">Name</th>
-            <th scope="col">Description</th>
-            <th scope="col"></th>
-            <th scope="col"></th>
-          </tr>
-        </thead>
-        <tbody>
-          {resourceTypesList.map((data, index) => (
-            <tr key={data.id}>
-              <td>{index + 1}</td>
-              <td>{data.name}</td>
-              <td className="btn btn-sm btn-success m-1" onClick={() => editHandler(data.id)}>
-                Edit
-              </td>
-              <td className="btn btn-sm btn-danger m-1" onClick={() => deleteHandler(data.id)}>
-                Delete
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      <div>
+        <TableComponent
+          headers={headers}
+          data={formattedData}
+          editHandler={editHandler}
+          deleteHandler={deleteHandler}
+        />
 
-      <ConfirmationDialog
-        show={showDialog}
-        handleClose={handleCloseDialog}
-        handleConfirm={handleConfirmDelete}
-        title="Confirm Delete"
-        body="Are you sure you want to delete this item?"
-      />
+        <ConfirmationDialog
+          show={showDialog}
+          handleClose={handleCloseDialog}
+          handleConfirm={handleConfirmDelete}
+          title="Confirm Delete"
+          body="Are you sure you want to delete this item?"
+        />
+      </div>
     </div>
   );
 };

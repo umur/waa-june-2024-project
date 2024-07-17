@@ -4,11 +4,18 @@ import {getAllApi, saveApi, updateApi} from '../../service/apiAcademicResourceTy
 import ErrorDialog from '../../core/component/dialogs/ErrorDialog';
 import AcademicResourceTypeList from './AcademicResourceTypeList';
 import AcademicResourceTypeModal from './AcademicResourceTypeModal';
+import {State} from '../../core/constants';
 
 const AcademicResourceType = () => {
   const [resourceTypeForm, setResourceTypeForm] = useState(initialForm);
   const [resourceTypesList, setResourceTypesList] = useState([]);
   const [refresh, setRefresh] = useState(false);
+
+  const [resourceTypeState, setResourceTypeState] = useState({
+    status: State.IDLE,
+    error: null,
+    errors: {}
+  });
 
   useEffect(() => {
     fetchAcademicResourceTypes();
@@ -35,17 +42,52 @@ const AcademicResourceType = () => {
   };
   const handleShow = () => setShow(true);
 
-  const handleSave = async event => {
-    event.preventDefault();
+  const handleSave = async () => {
     try {
-      resourceTypeForm.id > 0 ? await updateApi(resourceTypeForm) : await saveApi(resourceTypeForm);
+      setResourceTypeState({errors: {}, error: null, status: State.IDLE});
+
+      const res = resourceTypeForm.id > 0 ? await updateApi(resourceTypeForm) : await saveApi(resourceTypeForm);
       setRefresh(!refresh);
-    } catch (error) {
-      <ErrorDialog show={'failed'} errorMessage={'Error'} handleClose={() => {}} />;
+      resetForm();
+      setShow(false);
+      // Handle the response
+      if (res.status === 201) {
+        setResourceTypeState({...resourceTypeState, status: State.SUCCEEDED});
+      } else if (res.status === 400) {
+        setResourceTypeState({
+          status: State.FAILED,
+          error: res.data.message || 'Something went wrong. Please try again later.'
+        });
+      }
+    } catch (err) {
+      // Handle errors
+      if (err.response && err.response.status === 400) {
+        setResourceTypeState({
+          status: State.FAILED,
+          error: null,
+          errors: err.response.data
+        });
+      } else {
+        setResourceTypeState({
+          status: State.FAILED,
+          errors: {},
+          error: 'Something went wrong. Please try again later.'
+        });
+      }
     }
-    resetForm();
-    setShow(false);
   };
+
+  // const handleSave = async event => {
+  //   event.preventDefault();
+  //   try {
+  //     resourceTypeForm.id > 0 ? await updateApi(resourceTypeForm) : await saveApi(resourceTypeForm);
+  //     setRefresh(!refresh);
+  //   } catch (error) {
+  //     <ErrorDialog show={'failed'} errorMessage={'Error'} handleClose={() => {}} />;
+  //   }
+  //   resetForm();
+  //   setShow(false);
+  // };
 
   const handleChange = event => {
     const {name, value} = event.target;
@@ -69,6 +111,7 @@ const AcademicResourceType = () => {
         title="Academic Resource Category"
         resourceTypeForm={resourceTypeForm}
         handleChange={handleChange}
+        resourceTypeState={resourceTypeState}
       />
 
       <AcademicResourceTypeList

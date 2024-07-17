@@ -1,21 +1,21 @@
 package com.waa.project.service;
 
-import com.waa.project.dto.AcademicResourceDto;
-import com.waa.project.dto.AcademicResourceRequest;
+import com.waa.project.dto.requests.AcademicResourceRequest;
+import com.waa.project.dto.responses.AcademicResourceResponse;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
 public interface AcademicResService {
-    List<AcademicResourceDto> getAllAcademicRes();
+    List<AcademicResourceResponse> getAllAcademicRes();
 
-    AcademicResourceDto getAcademicResource(Long feedId);
+    AcademicResourceResponse getAcademicResource(Long feedId);
 
-    String save(AcademicResourceRequest dto, MultipartFile file);
+    AcademicResourceResponse save(AcademicResourceRequest request, MultipartFile file);
 
-    String update(AcademicResourceDto dto, Long fid);
+    AcademicResourceResponse update(AcademicResourceRequest request, Long fid, MultipartFile file);
 
-    String delete(Long fid);
+    List<AcademicResourceResponse> delete(Long fid);
 
-    List<AcademicResourceDto> searchByResourceName(String resname);
+    List<AcademicResourceResponse> searchByResourceName(String resname);
 }

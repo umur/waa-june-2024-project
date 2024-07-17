@@ -1,9 +1,18 @@
 import React from 'react';
 import {Modal, Button} from 'react-bootstrap';
+import InputField from '../../core/component/dialogs/input/Input';
 
-const AcademicResourceTypeModal = ({show, handleClose, handleSave, title, handleChange, resourceTypeForm}) => {
+const AcademicResourceTypeModal = ({
+  show,
+  handleClose,
+  handleSave,
+  title,
+  handleChange,
+  resourceTypeForm,
+  resourceTypeState
+}) => {
   return (
-    <Modal show={show} onHide={handleClose}>
+    <Modal show={show} onHide={handleClose} backdrop="static">
       <Modal.Header className="bg-info">
         <Modal.Title>
           {resourceTypeForm.id > 0 ? 'Edit ' : 'Add '}
@@ -11,20 +20,17 @@ const AcademicResourceTypeModal = ({show, handleClose, handleSave, title, handle
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <div className="mb-3 text-start fw-bold">
-          <label htmlFor="name" className="form-label">
-            Category Name
-          </label>
-          <input
-            type="text"
-            className="form-control"
-            name="name"
-            value={resourceTypeForm.name}
-            onChange={handleChange}
-            placeholder="Enter Category"
-            required
-          />
-        </div>
+        <InputField
+          type="text"
+          label="Category Name"
+          placeholder="Enter Category"
+          name="name"
+          value={resourceTypeForm.name}
+          onChange={handleChange}
+          isInvalid={!!resourceTypeState.errors.name}
+          errors={resourceTypeState.errors.name}
+          classStyle="mb-2"
+        />
       </Modal.Body>
 
       <Modal.Footer className="bg-light">

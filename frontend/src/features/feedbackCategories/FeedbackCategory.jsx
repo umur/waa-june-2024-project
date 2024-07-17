@@ -4,12 +4,18 @@ import {getAllApi, saveApi, updateApi} from '../../service/apiFeedbackCategory';
 import ErrorDialog from '../../core/component/dialogs/ErrorDialog';
 import FeedbaclCategoryList from './FeedbackCategoryList';
 import FeedbackCategoryModal from './FeedbackCategoryModal';
+import {State} from '../../core/constants';
+import axios from 'axios';
 
 const FeedbackCategory = () => {
   const [feedbackCategoryForm, setFeedbackCategoryForm] = useState(initialForm);
   const [feedbackCategorysList, setFeedbackCategorysList] = useState([]);
-
   const [refresh, setRefresh] = useState(false);
+  const [feedbackCategoryState, setFeedbackCategoryState] = useState({
+    status: State.IDLE,
+    error: null,
+    errors: {}
+  });
 
   useEffect(() => {
     fetchFeedbackCategorys();
@@ -26,6 +32,7 @@ const FeedbackCategory = () => {
 
   const resetForm = () => {
     setFeedbackCategoryForm(initialForm);
+    setFeedbackCategoryState({errors: {}, error: null, status: State.IDLE});
   };
 
   const [show, setShow] = useState(false);
@@ -36,17 +43,40 @@ const FeedbackCategory = () => {
   };
   const handleShow = () => setShow(true);
 
-  const handleSave = async event => {
-    console.log(feedbackCategoryForm);
-    event.preventDefault();
+  const handleSave = async () => {
     try {
-      feedbackCategoryForm.id > 0 ? await updateApi(feedbackCategoryForm) : await saveApi(feedbackCategoryForm);
-      setRefresh(!refresh);
-    } catch (error) {
-      <ErrorDialog show={'failed'} errorMessage={'Error'} handleClose={() => {}} />;
+      setFeedbackCategoryState({errors: {}, error: null, status: State.IDLE});
+
+      const res = await axios.post('/admins/feedbackcategories', feedbackCategoryForm);
+
+      // Handle the response
+      if (res.status === 201) {
+        setFeedbackCategoryState({...feedbackCategoryState, status: State.SUCCEEDED});
+        setRefresh(!refresh);
+        resetForm();
+        setShow(false);
+      } else if (res.status === 400) {
+        setFeedbackCategoryState({
+          status: State.FAILED,
+          error: res.data.message || 'Something went wrong. Please try again later.'
+        });
+      }
+    } catch (err) {
+      // Handle errors
+      if (err.response && err.response.status === 400) {
+        setFeedbackCategoryState({
+          status: State.FAILED,
+          error: null,
+          errors: err.response.data
+        });
+      } else {
+        setFeedbackCategoryState({
+          status: State.FAILED,
+          errors: {},
+          error: 'Something went wrong. Please try again later.'
+        });
+      }
     }
-    resetForm();
-    setShow(false);
   };
 
   const handleChange = event => {
@@ -70,6 +100,7 @@ const FeedbackCategory = () => {
         handleSave={handleSave}
         title="Feedback Category"
         feedbackCategoryForm={feedbackCategoryForm}
+        feedbackCategoryState={feedbackCategoryState}
         handleChange={handleChange}
       />
 

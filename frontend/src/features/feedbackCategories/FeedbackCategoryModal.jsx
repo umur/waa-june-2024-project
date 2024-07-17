@@ -1,9 +1,18 @@
 import React from 'react';
-import {Modal, Button} from 'react-bootstrap';
+import {Modal, Button, Form} from 'react-bootstrap';
+import InputField from '../../core/component/dialogs/input/Input';
 
-const FeedbackCategoryModal = ({show, handleClose, handleSave, title, handleChange, feedbackCategoryForm}) => {
+const FeedbackCategoryModal = ({
+  show,
+  handleClose,
+  handleSave,
+  title,
+  handleChange,
+  feedbackCategoryForm,
+  feedbackCategoryState
+}) => {
   return (
-    <Modal show={show} onHide={handleClose}>
+    <Modal show={show} onHide={handleClose} backdrop="static">
       <Modal.Header className="bg-info">
         <Modal.Title>
           {feedbackCategoryForm.id > 0 ? 'Edit ' : 'Add '}
@@ -11,35 +20,29 @@ const FeedbackCategoryModal = ({show, handleClose, handleSave, title, handleChan
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <div className="mb-3 text-start fw-bold">
-          <label htmlFor="name" className="form-label">
-            Category Name
-          </label>
-          <input
-            type="text"
-            className="form-control"
-            name="name"
-            value={feedbackCategoryForm.name}
-            onChange={handleChange}
-            placeholder="Enter Category"
-            required
-          />
-        </div>
+        <InputField
+          type="text"
+          label="Category Name"
+          placeholder="Enter Category"
+          name="name"
+          value={feedbackCategoryForm.name}
+          onChange={handleChange}
+          isInvalid={!!feedbackCategoryState.errors.name}
+          errors={feedbackCategoryState.errors.name}
+          classStyle="mb-2"
+        />
 
-        <div className="mb-5 text-start fw-bold">
-          <label htmlFor="description" className="col-form-label">
-            Description
-          </label>
-          <textarea
-            type="text"
-            className="form-control"
-            name="description"
-            value={feedbackCategoryForm.description}
-            onChange={handleChange}
-            placeholder="Enter description"
-            required
-          />
-        </div>
+        <InputField
+          type="text"
+          label="Description"
+          placeholder="Enter Description"
+          name="description"
+          value={feedbackCategoryForm.description}
+          onChange={handleChange}
+          isInvalid={!!feedbackCategoryState.errors.description}
+          errors={feedbackCategoryState.errors.description}
+          classStyle="mb-2"
+        />
       </Modal.Body>
 
       <Modal.Footer className="bg-light">

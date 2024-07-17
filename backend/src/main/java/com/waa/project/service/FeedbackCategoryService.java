@@ -1,6 +1,9 @@
 package com.waa.project.service;
 
 import com.waa.project.dto.FeedbackCategoryDto;
+import com.waa.project.dto.requests.FeedbackCategoryRequest;
+import com.waa.project.dto.responses.FeedbackCategoryResponse;
+import com.waa.project.entity.FeedbackCategory;
 
 import java.util.List;
 
@@ -9,9 +12,9 @@ public interface FeedbackCategoryService {
 
     FeedbackCategoryDto getCategory(Long feedId);
 
-    String save(FeedbackCategoryDto category);
+    FeedbackCategoryResponse save(FeedbackCategoryRequest category);
 
     String update(FeedbackCategoryDto category, Long fid);
 
-    String delete(Long fid);
+    List<FeedbackCategory> delete(Long fid);
 }

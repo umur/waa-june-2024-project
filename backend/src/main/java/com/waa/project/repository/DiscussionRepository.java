@@ -16,6 +16,4 @@ public interface DiscussionRepository extends JpaRepository<Discussion, Long> {
     Optional<Discussion> findByIdAndStudentId(long id, long studentId);
 
     void deleteByIdAndStudentId(long id, long studentId);
-
-    Optional<Discussion> findAllByTitleContainingIgnoreCaseOrBodyContainingIgnoreCase(String title, String body);
 }

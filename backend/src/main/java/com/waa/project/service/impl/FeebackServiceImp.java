@@ -1,9 +1,10 @@
 package com.waa.project.service.impl;
 
 import com.waa.project.dto.FeedbackDto;
+import com.waa.project.dto.requests.FeedbackRequest;
+import com.waa.project.dto.responses.FeedbackResponse;
 import com.waa.project.entity.Feedback;
 import com.waa.project.entity.FeedbackCategory;
-import com.waa.project.entity.Student;
 import com.waa.project.entity.User;
 import com.waa.project.repository.FeedbackCategoryRepository;
 import com.waa.project.repository.FeedbackRepository;
@@ -36,10 +37,8 @@ public class FeebackServiceImp implements FeedbackService {
     private UserRepository userRepository;
 
     @Override
-    public List<FeedbackDto> getAllFeedbacks() {
-        List<FeedbackDto> list = new ArrayList<>();
-        feedbackRepository.findAll().forEach(feed -> list.add(modelMapper.map(feed, FeedbackDto.class)));
-        return list;
+    public List<Feedback> getAllFeedbacks() {
+        return feedbackRepository.findAll();
     }
 
     @Override
@@ -49,67 +48,56 @@ public class FeebackServiceImp implements FeedbackService {
     }
 
     @Override
-    public String save(FeedbackDto dto, Long userId) {
-        Feedback feedbackToSave = modelMapper.map(dto, Feedback.class);
-
+    public FeedbackResponse save(FeedbackRequest feedbackRequest, Long userId) {
+        Feedback feedbackToSave = modelMapper.map(feedbackRequest, Feedback.class);
         FeedbackCategory feedbackCategory =
-                feedbackCategoryRepository.findById(dto.getFeedbackCategory().getId()).get();
+                feedbackCategoryRepository.findById(feedbackRequest.getFeedbackCategory()).get();
         feedbackToSave.setCategory(feedbackCategory);
 
         if (userId != null) {
             User user = userRepository.findById(userId).get();
-            if (!user.getRoleType().equals("ADMIN")) {
-                Student student = studentRepository.findById(userId).get();
-                feedbackToSave.setStudent(student);
-            }
+//            if (!user.getRoleType().equals("ADMIN")) {
+//                Student student = studentRepository.findById(userId).get();
+//                feedbackToSave.setStudent(student);
+//            }
         }
-
         feedbackRepository.save(feedbackToSave);
-        return "Feedback saved successfully.";
+
+        return modelMapper.map(feedbackToSave, FeedbackResponse.class);
     }
 
     @Override
-    public String update(FeedbackDto feedback, Long fid, Long userId) {
+    public FeedbackResponse update(FeedbackRequest feedbackRequest, Long fid, Long userId) {
         Feedback feedToUpdate = feedbackRepository.findById(fid).orElse(null);
-        if (feedToUpdate == null) {
-            return "Feedback not found.";
-        }
 
-        if (userId != null) {
-            User user = userRepository.findById(userId).orElse(null);
-            if (user == null) {
-                return "Anonymous Feedback cannot be updated.";
-            }
+        modelMapper.map(feedbackRequest, feedToUpdate);
+        System.out.println("feedToUpdate=" + feedToUpdate);
+//        if (userId != null) {
+//            User user = userRepository.findById(userId).orElse(null);
+//            var result = feedToUpdate.getStudent();
+//            if (result != null) {
+//                Long studentId = result.getId();
+//                if (userId.equals(studentId)) {
+//                    Student student = studentRepository.findById(userId).orElse(null);
+//                    feedToUpdate.setStudent(student);
+//                }
+//            }
+//        }
+        FeedbackCategory feedbackCategory = feedbackCategoryRepository.findById(feedbackRequest.getFeedbackCategory()).get();
+        System.out.println(feedbackCategory);
 
-            var result = feedToUpdate.getStudent();
-            if (result != null) {
-                System.out.println("role ===" + user.getRoleType());
-                System.out.println("stud Id ===" + result.getId() + " ===" + userId);
-                Long studentId = result.getId();
+        feedToUpdate.setCategory(feedbackCategory);
+        feedToUpdate.setTitle(feedbackRequest.getTitle());
+        feedToUpdate.setBody(feedbackRequest.getBody());
+        feedbackRepository.save(feedToUpdate);
 
-                if (userId.equals(studentId)) {
-                    Student student = studentRepository.findById(userId).orElse(null);
-                    if (student == null) {
-                        return "Student not found.";
-                    }
-
-                    feedToUpdate.setStudent(student);
-                    feedToUpdate.setTitle(feedback.getTitle());
-                    feedToUpdate.setBody(feedback.getBody());
-                    feedbackRepository.save(feedToUpdate);
-                    return "Feedback is updated.";
-                }
-            } else {
-                return "Anonymous Feedback cannot be updated.";
-            }
-        }
-        return "You cannot update other's Feedback.";
+        return modelMapper.map(feedToUpdate, FeedbackResponse.class);
     }
 
     @Override
-    public String delete(Long fid) {
+    public List<Feedback> delete(Long fid) {
         feedbackRepository.deleteById(fid);
-        return "Feedback is deleted.";
+        return feedbackRepository.findAll();
     }
 
     @Override

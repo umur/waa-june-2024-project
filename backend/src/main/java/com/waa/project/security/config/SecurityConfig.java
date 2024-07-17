@@ -31,25 +31,24 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http, JwtTokenFilter jwtTokenFilter) throws Exception {
         return http.csrf(AbstractHttpConfigurer::disable)
-//                   .cors(AbstractHttpConfigurer::disable)
-                   .cors(cors -> cors.configurationSource(corsConfigurationSource))
-                   .sessionManagement(
-                           sessionMgr -> sessionMgr.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                   .authorizeHttpRequests(
-                           authorizeRequests -> authorizeRequests.requestMatchers("/api/v1/admins/**")
-                                                                 .hasRole(RoleType.ADMIN.name())
-                                                                 .requestMatchers("/api/v1/students/**")
-                                                                 .hasRole(RoleType.STUDENT.name())
-                                                                 .anyRequest()
-                                                                 .permitAll()
-                                         )
-                   .exceptionHandling(
-                           exceptionHandler -> exceptionHandler.authenticationEntryPoint(
-                                   (request, response, authException) -> response.sendError(
-                                           HttpServletResponse.SC_UNAUTHORIZED, AuthErrorMessages.invalidToken()))
-                                     )
-                   .addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class)
-                   .build();
+                .cors(cors -> cors.configurationSource(corsConfigurationSource))
+                .sessionManagement(
+                        sessionMgr -> sessionMgr.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .authorizeHttpRequests(
+                        authorizeRequests -> authorizeRequests.requestMatchers("/api/v1/admins/**")
+                                .hasRole(RoleType.ADMIN.name())
+                                .requestMatchers("/api/v1/students/**")
+                                .hasRole(RoleType.STUDENT.name())
+                                .anyRequest()
+                                .permitAll()
+                )
+                .exceptionHandling(
+                        exceptionHandler -> exceptionHandler.authenticationEntryPoint(
+                                (request, response, authException) -> response.sendError(
+                                        HttpServletResponse.SC_UNAUTHORIZED, AuthErrorMessages.invalidToken()))
+                )
+                .addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class)
+                .build();
     }
 
     @Bean

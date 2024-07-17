@@ -4,12 +4,19 @@ import {getAllApi, getAllCategoriesApi, saveApi, updateApi} from '../../service/
 import ErrorDialog from '../../core/component/dialogs/ErrorDialog';
 import FeedbackModal from './FeedbackModal';
 import FeedbackList from './FeedbackList';
+import {State} from '../../core/constants';
+import axios from 'axios';
 
 const Feedback = () => {
   const [feedbackForm, setFeedbackForm] = useState(initialForm);
   const [feedbacksList, setFeedbacksList] = useState([]);
   const [feedbackCategory, setFeedbackCategory] = useState([]);
   const [refresh, setRefresh] = useState(false);
+  const [feedbackState, setFeedbackState] = useState({
+    status: State.IDLE,
+    error: null,
+    errors: {}
+  });
 
   useEffect(() => {
     fetchFeedbacks();
@@ -38,6 +45,7 @@ const Feedback = () => {
 
   const resetForm = () => {
     setFeedbackForm(initialForm);
+    setShow(false);
   };
 
   const [show, setShow] = useState(false);
@@ -49,18 +57,54 @@ const Feedback = () => {
 
   const handleShow = () => setShow(true);
 
-  const handleSave = async event => {
-    event.preventDefault();
+  const handleSave = async () => {
     try {
-      console.log(feedbackForm.id);
-      feedbackForm.id > 0 ? await updateApi(feedbackForm) : await saveApi(feedbackForm);
+      setFeedbackState({errors: {}, error: null, status: State.IDLE});
+
+      // const res = await axios.post('/feedbacks', feedbackForm);
+      const res = feedbackForm.id > 0 ? await updateApi(feedbackForm) : await saveApi(feedbackForm);
       setRefresh(!refresh);
-    } catch (error) {
-      <ErrorDialog show={'failed'} errorMessage={'Error'} handleClose={() => {}} />;
+      resetForm();
+      // Handle the response
+      if (res.status === 201) {
+        setFeedbackState({...feedbackState, status: State.SUCCEEDED});
+        setShow(false);
+      } else if (res.status === 400) {
+        setFeedbackState({
+          status: State.FAILED,
+          error: res.data.message || 'Something went wrong. Please try again later.'
+        });
+      }
+    } catch (err) {
+      // Handle errors
+      if (err.response && err.response.status === 400) {
+        setFeedbackState({
+          status: State.FAILED,
+          error: null,
+          errors: err.response.data
+        });
+      } else {
+        setFeedbackState({
+          status: State.FAILED,
+          errors: {},
+          error: 'Something went wrong. Please try again later.'
+        });
+      }
     }
-    resetForm();
-    setShow(false);
   };
+
+  // const handleSave = async event => {
+  //   event.preventDefault();
+  //   try {
+  //     console.log(feedbackForm.id);
+  //     feedbackForm.id > 0 ? await updateApi(feedbackForm) : await saveApi(feedbackForm);
+  //     setRefresh(!refresh);
+  //   } catch (error) {
+  //     <ErrorDialog show={'failed'} errorMessage={'Error'} handleClose={() => {}} />;
+  //   }
+  //   resetForm();
+  //   setShow(false);
+  // };
 
   const handleChange = event => {
     const {name, value} = event.target;
@@ -85,6 +129,7 @@ const Feedback = () => {
         feedbackForm={feedbackForm}
         allCategories={feedbackCategory}
         handleChange={handleChange}
+        feedbackState={feedbackState}
       />
 
       <FeedbackList

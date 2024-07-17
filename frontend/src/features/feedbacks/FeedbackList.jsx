@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import {deleteApi} from '../../service/apiFeedbackService';
 import ConfirmationDialog from '../../core/component/dialogs/ConfirmationDialog';
+import TableComponent from '../../core/component/dialogs/table/TableComponent';
 
 const FeedbackList = ({feedbacksList, setFeedbacksList, setFeedbackForm, setShow}) => {
   const [showDialog, setShowDialog] = useState(false);
@@ -44,44 +45,34 @@ const FeedbackList = ({feedbacksList, setFeedbacksList, setFeedbackForm, setShow
     setShowDialog(true); // Show the confirmation dialog
   };
 
+  const headers = ['SlNo', 'Title', 'Description', 'Category'];
+
+  const formattedData = feedbacksList.map((item, index) => ({
+    SlNo: index + 1,
+    Title: item.title,
+    Description: item.body,
+    Category: item.category.name,
+    id: item.id
+  }));
+
   return (
     <div className="container">
-      <table className="table">
-        <thead>
-          <tr>
-            <th scope="col">#</th>
-            <th scope="col">Title</th>
-            <th scope="col">Description</th>
-            <th scope="col">Category</th>
-            <th scope="col"></th>
-            <th scope="col"></th>
-          </tr>
-        </thead>
-        <tbody>
-          {feedbacksList.map((data, index) => (
-            <tr key={data.id}>
-              <td>{index + 1}</td>
-              <td>{data.title}</td>
-              <td>{data.body}</td>
-              <td>{data.category.name}</td>
-              <td className="btn btn-sm btn-success m-1" onClick={() => editHandler(data.id)}>
-                Edit
-              </td>
-              <td className="btn btn-sm btn-danger m-1" onClick={() => deleteHandler(data.id)}>
-                Delete
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      <div>
+        <TableComponent
+          headers={headers}
+          data={formattedData}
+          editHandler={editHandler}
+          deleteHandler={deleteHandler}
+        />
 
-      <ConfirmationDialog
-        show={showDialog}
-        handleClose={handleCloseDialog}
-        handleConfirm={handleConfirmDelete}
-        title="Confirm Delete"
-        body="Are you sure you want to delete this item?"
-      />
+        <ConfirmationDialog
+          show={showDialog}
+          handleClose={handleCloseDialog}
+          handleConfirm={handleConfirmDelete}
+          title="Confirm Delete"
+          body="Are you sure you want to delete this item?"
+        />
+      </div>
     </div>
   );
 };
