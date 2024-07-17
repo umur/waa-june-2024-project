@@ -98,6 +98,17 @@ export async function apiFetchMyResources(userId) {
     }
 }
 
+export async function apiDeleteResource(id) {
+    try {
+        const resourceUrl = ApiRoutes.resource(id);
+        const response = await axiosInstance.delete(resourceUrl);
+        console.log("apiDeleteResource response", response);
+        return response.data;
+    } catch (e) {
+        return exceptionResponse("apiDeleteResource", e);
+    }
+}
+
 export function exceptionResponse(apiName, e) {
     console.log(apiName + " exception", e?.response?.data ?? e.message);
     return e?.response?.data ?? getErrorResponseObject(e.message);

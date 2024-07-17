@@ -1,20 +1,21 @@
 import { useEffect, useRef, useState } from "react";
-import { apiFetchMyResources, apiFetchResources } from "../../action/ApiActions";
+import { apiDeleteResource, apiFetchMyResources, apiFetchResources } from "../../action/ApiActions";
 import { toast } from "react-toastify";
 import InfiniteScroll from "react-infinite-scroll-component";
 import Resource from "../resources/Resource";
 import { useParams } from "react-router";
+import DeleteModal from "../../component/DeleteModal";
 
 function MyResources() {
     const hasFetchedData = useRef(false);
     const params = useParams();
     const [resources, setResources] = useState([]);
     const [page, setPage] = useState(0);
-    const [keyword, setKeyword] = useState("");
     const [hasMore, setHasMore] = useState(false);
 
-    const fetchResources = async (key = keyword, currentPage = page) => {
+    const fetchResources = async (currentPage = page) => {
         setPage((currentPage) => currentPage + 1);
+        //TODO page logic
         const response = await apiFetchMyResources(params.id);
         if (response.status) {
             setResources(prevItems => currentPage === 0 ? response.data.content : [...prevItems, ...response.data.content]);
@@ -24,9 +25,14 @@ function MyResources() {
         }
     };
 
+    const removeResource=(id)=>{
+        setResources(prevItems=>prevItems.filter(x=>x.id!=id));
+    }
+
+
     useEffect(() => {
         if (!hasFetchedData.current) {
-            fetchResources("");
+            fetchResources();
             hasFetchedData.current = true;
         }
     }, [page]);
@@ -42,7 +48,7 @@ function MyResources() {
             >
                 {resources.map((resource) => (
                     <>
-                        <Resource key={resource.id} resource={resource} />
+                        <Resource key={resource.id} resource={resource} editable={true} removeResource={removeResource} />
                     </>
 
                 ))}

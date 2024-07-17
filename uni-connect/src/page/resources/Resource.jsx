@@ -1,10 +1,14 @@
 import { Link } from "react-router-dom";
 import ResourceFile from "./ResourceFile";
-import { apiDownloadResource } from "../../action/ApiActions";
+import { apiDeleteResource, apiDownloadResource } from "../../action/ApiActions";
 import { useEffect, useRef, useState } from "react";
+import { toast } from "react-toastify";
+import DeleteModal from "../../component/DeleteModal";
 
 function Resource(props) {
     const [downloadUrl, setDownloadUrl] = useState(null);
+    const [showDeleteModal, setShowDeleteModal] = useState(false);
+    const [deletableId, setDeletableId] = useState(null);
     const [filename, setFilename] = useState("");
     const downloadLinkRef = useRef(null);
     function downloadFile(file) {
@@ -24,11 +28,41 @@ function Resource(props) {
         }
     }, [downloadUrl]);
 
+    const toggleDeleteModal = (id) => {
+        setDeletableId(!showDeleteModal ? id : null);
+        setShowDeleteModal(!showDeleteModal);
+    }
+
+
+    const deleteResource = async () => {
+        setShowDeleteModal(false);
+        const response = await apiDeleteResource(deletableId);
+        if (response.status) {
+            toast.success(response.message);
+            props.removeResource(deletableId);
+        } else {
+            toast.error(response.message);
+        }
+    }
+
+
 
     return (
         <div className="bg-white p-4 rounded-lg shadow-md mb-4">
-            <h3 className="text-lg font-semibold mb-2">{props.resource.title}</h3>
-            <p className="text-gray-600 mb-4">{props.resource.description}</p>
+            <div className="flex justify-between items-center">
+                <div>
+                    <h3 className="text-lg font-semibold mb-2">{props.resource.title}</h3>
+                    <p className="text-gray-600 mb-4">{props.resource.description}</p>
+                </div>
+                {props.editable ?
+                    <button
+                        className="ml-4 px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
+                        onClick={() => toggleDeleteModal(props.resource.id)}
+                    >
+                        Delete
+                    </button> : <></>
+                }
+            </div>
 
             {
                 !props.resource.files ? (
@@ -46,7 +80,7 @@ function Resource(props) {
                             props.resource.files.map((file) => {
                                 return (
                                     <div key={file}>
-                                        <ResourceFile downloadFile={downloadFile}  file={file} url={props.resource.url} />
+                                        <ResourceFile downloadFile={downloadFile} file={file} url={props.resource.url} />
                                     </div>
                                 )
                             })
@@ -58,8 +92,10 @@ function Resource(props) {
                 )
             }
 
-
+            {showDeleteModal ?
+                <DeleteModal item="resource" toggleModal={toggleDeleteModal} onConfirm={deleteResource} /> : <></>}
         </div>
+
     );
 }
 
