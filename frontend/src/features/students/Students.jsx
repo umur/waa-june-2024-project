@@ -29,10 +29,6 @@ const Students = () => {
   const navigate = useNavigate();
   const profile = getCurrentProfile();
 
-  if (profile === null || profile === undefined) {
-    navigate('/login');
-  }
-
   // Debounced fetchStudents function
   const fetchStudentsDebounced = debounce(fetchStudents, 700);
 
@@ -64,8 +60,12 @@ const Students = () => {
   }
 
   useEffect(() => {
+    if (profile === null || profile === undefined) {
+      navigate('/login');
+    }
+
     fetchStudents();
-  }, []);
+  }, [profile]);
 
   const handlePageChange = pageNumber => {
     fetchStudents(pageNumber, searchQuery);
