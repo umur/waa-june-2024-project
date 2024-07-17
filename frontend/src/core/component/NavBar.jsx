@@ -3,7 +3,7 @@ import getCurrentProfile from '../utils/current-profile';
 import {Roles} from '../constants';
 
 export default function NavBar() {
-  const {role} = getCurrentProfile();
+  const profile = getCurrentProfile();
 
   return (
     <Navbar expand="lg" className="bg-primary">
@@ -29,7 +29,9 @@ export default function NavBar() {
           </Nav>
           <Nav>
             <NavDropdown title="Profile" id="profile-dropdown" align="end" className="text-white">
-              {role !== Roles.ADMIN && <NavDropdown.Item href="/profile">View Profile</NavDropdown.Item>}
+              {profile && profile.role !== Roles.ADMIN && (
+                <NavDropdown.Item href="/profile">View Profile</NavDropdown.Item>
+              )}
               <NavDropdown.Item href="/login">Logout</NavDropdown.Item>
             </NavDropdown>
           </Nav>
