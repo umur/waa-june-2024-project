@@ -1,31 +1,19 @@
 import {useNavigate} from 'react-router';
-import {setTokens} from '../../core/setup/token';
 import getCurrentProfile from '../../core/utils/current-profile';
 import {Roles} from '../../core/constants';
 import StudentDashboard from './dashboard-student';
 import AdminDashboard from './dashboard-admin';
+import {useEffect} from 'react';
 
 export default function Dashboard() {
   const navigate = useNavigate();
   const profile = getCurrentProfile();
 
-  if (profile === null || profile === undefined) {
-    navigate('/login');
-  }
+  useEffect(() => {
+    if (profile === null || profile === undefined) {
+      navigate('/login');
+    }
+  }, [profile, navigate]);
 
-  return (
-    <>
-      {profile && profile.role === Roles.ADMIN ? <AdminDashboard /> :  <StudentDashboard />}
-      <p>{JSON.stringify(getCurrentProfile())}</p>
-      <button
-        onClick={() => {
-          setTokens();
-
-          navigate('/login');
-        }}
-      >
-        Logout
-      </button>
-    </>
-  );
+  return <>{profile && profile.role === Roles.ADMIN ? <AdminDashboard /> : <StudentDashboard />}</>;
 }
