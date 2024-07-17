@@ -109,6 +109,17 @@ export async function apiFetchSurveyQuestions(id) {
     }
 }
 
+export async function submitSurveyAnswers(data) {
+  try {
+    const response = await axiosInstance.post(ApiRoutes.surveyAnswers, data);
+    console.log("submitSurveyAnswers response", response);
+    return response.data;
+  } catch (e) {
+    return exceptionResponse("submitSurveyAnswers", e);
+  }
+}
+
+
 export function exceptionResponse(apiName, e) {
     console.log(apiName + " exception", e?.response?.data ?? e.message);
     return e?.response?.data ?? getErrorResponseObject(e.message);
