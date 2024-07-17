@@ -40,7 +40,7 @@ const Surveys = () => {
   }, []); // Run once on initial mount
 
   const goToSurveyDetail = (surveyId) => {
-    navigate(`/surveys/${surveyId}`); // Use navigate for navigation
+    navigate(`/survey/${surveyId}/questions`); // Use navigate for navigation
   };
 
   return (

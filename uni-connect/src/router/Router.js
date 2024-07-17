@@ -13,7 +13,7 @@ import AnonymousRoute from "./AnonymousRoute";
 import Resources from "../page/resources/Resources";
 import ResourceDetail from "../page/resources/ResourceDetail";
 import Surveys from "../page/survey/Surveys";
-import SurveyDetail from "../page/survey/SurveyDetail";
+import SurveyQuestions from "../page/survey/SurveyQuestions";
 
 
 const Router = () => {
@@ -49,8 +49,8 @@ const Router = () => {
         element: <ProtectedRoute element={<Surveys />} />,
       },
       {
-        path: "/surveys/:id",
-        element: <ProtectedRoute element={<SurveyDetail />} />,
+        path: "/survey/:id/questions",
+        element: <ProtectedRoute element={<SurveyQuestions />} />,
       },
       {
         path: "*",

@@ -4,7 +4,7 @@ import { useParams } from 'react-router-dom';
 import { apiFetchSurveyQuestions } from '../../action/ApiActions'; // Adjust this import based on your API action setup
 import { toast } from 'react-toastify';
 
-const SurveyDetail = () => {
+const SurveyQuestions = () => {
   const { id } = useParams();
   const [questions, setQuestions] = useState([]);
 
@@ -28,7 +28,7 @@ const SurveyDetail = () => {
 
   return (
     <div className="container mx-auto p-4">
-      <h1 className="text-3xl font-bold mb-6">Survey Detail</h1>
+      <h1 className="text-3xl font-bold mb-6">Survey</h1>
       <div className="grid gap-4">
         {questions.map((question) => (
           <div key={question.id} className="mb-4">
@@ -44,4 +44,4 @@ const SurveyDetail = () => {
   );
 };
 
-export default SurveyDetail;
+export default SurveyQuestions;
