@@ -6,4 +6,6 @@ import universityconnect.domain.Profile;
 public interface ProfileRepository extends JpaRepository<Profile, Long> {
 
     Profile findByUserId(long userId);
+
+
 }

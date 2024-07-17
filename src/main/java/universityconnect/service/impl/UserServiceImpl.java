@@ -176,6 +176,8 @@ public class UserServiceImpl implements UserService {
     public void deleteUser(Long id) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("User Not Found with ID: " + id));
+        Profile profile = profileRepository.findByUserId(id);
+        profileRepository.delete(profile);
         userRepository.delete(user);
     }
 
