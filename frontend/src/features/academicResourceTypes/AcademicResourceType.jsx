@@ -7,7 +7,6 @@ import AcademicResourceTypeModal from './AcademicResourceTypeModal';
 import {Roles, State} from '../../core/constants';
 import {useNavigate} from 'react-router';
 import getCurrentProfile from '../../core/utils/current-profile';
-import NavBar from '../../core/component/NavBar';
 
 const AcademicResourceType = () => {
   const [resourceTypeForm, setResourceTypeForm] = useState(initialForm);
@@ -97,7 +96,6 @@ const AcademicResourceType = () => {
 
   return (
     <div className="App">
-      <NavBar />
       {profile && profile.role === Roles.ADMIN && (
         <button className="btn btn-primary mt-3 mx-5" onClick={handleShow}>
           Add Academic Resource Type

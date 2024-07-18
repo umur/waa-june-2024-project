@@ -5,7 +5,6 @@ import ErrorDialog from '../../core/component/dialogs/ErrorDialog';
 import FeedbackModal from './FeedbackModal';
 import FeedbackList from './FeedbackList';
 import {State} from '../../core/constants';
-import NavBar from '../../core/component/NavBar';
 
 const Feedback = () => {
   const [feedbackForm, setFeedbackForm] = useState(initialForm);
@@ -103,7 +102,6 @@ const Feedback = () => {
 
   return (
     <div className="App">
-      <NavBar />
       <button className="btn btn-primary mt-3 mx-5" onClick={handleShow}>
         Add Feedback
       </button>

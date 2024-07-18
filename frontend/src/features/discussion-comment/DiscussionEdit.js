@@ -6,7 +6,6 @@ import { getTokens } from '../../core/setup/token';
 import { Modal, Button } from 'react-bootstrap';
 import { Container } from 'react-bootstrap';
 import apiClient from '../../core/setup/axios';
-import NavBar from '../../core/component/NavBar';
 import { useNavigate } from 'react-router';
 
 const DiscussionEdit = (props) => {
@@ -105,7 +104,6 @@ const DiscussionEdit = (props) => {
 
     return (
         <>
-            <NavBar />
             <Container>
                 <div className="mt-3">
                     <h1>Editing</h1>

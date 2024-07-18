@@ -1,8 +1,5 @@
 import { Route, Routes, useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
-// import Nav from 'react-bootstrap/Nav';
-import Nav from "react-bootstrap/Nav";
-import Navbar from "react-bootstrap/Navbar";
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import InputGroup from 'react-bootstrap/InputGroup';
@@ -15,7 +12,6 @@ import DropdownButton from 'react-bootstrap/DropdownButton';
 import { Container } from 'react-bootstrap';
 import apiClient from '../../core/setup/axios';
 import { API } from '../../core/constants';
-import NavBar from '../../core/component/NavBar';
 // import { format } from 'date-fns';
 
 const Discussion = () => {
@@ -111,8 +107,6 @@ const Discussion = () => {
 
     return (
         <>
-
-            <NavBar />
             <Container>
                 <Col xs="auto" className="mt-3">
                     <InputGroup>

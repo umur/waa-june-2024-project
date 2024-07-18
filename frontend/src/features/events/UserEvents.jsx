@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import StudentEvent from './StudentEvent';
-import getCurrentProfile from '../../utils/current-profile';
-import { getStudentEventsApi } from '../../../service/eventsAPI';
-import { Roles } from '../../constants';
+import { getStudentEventsApi } from '../../service/eventsAPI';
+import getCurrentProfile from '../../core/utils/current-profile';
+import { Roles } from '../../core/constants';
 import { Row, Container } from 'react-bootstrap';
-import NavBar from '../NavBar';
 
 function UserEvents() {
     const profile = getCurrentProfile();
@@ -23,7 +22,6 @@ function UserEvents() {
 
     return (
         <>
-         <NavBar />
          <Container className='mx-auto my-5'>
          <h3 className='d-flex justify-content-center p-5'> My Events</h3>
        { profile.role === Roles.STUDENT && (

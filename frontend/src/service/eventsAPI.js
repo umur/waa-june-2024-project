@@ -1,7 +1,6 @@
 import apiClient from "../core/setup/axios";
 
 export const getAllEventsApi = async (keyword) => {
-  // const response = await apiClient.get("/events");
   const response = await apiClient.get(`/events/search?name=${keyword}`);
   return response.data;
 };

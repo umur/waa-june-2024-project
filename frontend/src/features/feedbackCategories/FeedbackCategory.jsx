@@ -8,7 +8,6 @@ import {Roles, State} from '../../core/constants';
 import axios from 'axios';
 import {useNavigate} from 'react-router';
 import getCurrentProfile from '../../core/utils/current-profile';
-import NavBar from '../../core/component/NavBar';
 
 const FeedbackCategory = () => {
   const [feedbackCategoryForm, setFeedbackCategoryForm] = useState(initialForm);
@@ -101,7 +100,6 @@ const FeedbackCategory = () => {
 
   return (
     <div className="App">
-      <NavBar />
       {profile && profile.role === Roles.ADMIN && (
         <button className="btn btn-primary mt-3 mx-5" onClick={handleShow}>
           Add Feedback Category

@@ -1,10 +1,10 @@
 import React from 'react';
 import { useNavigate } from 'react-router';
 import CreateEvent from './CreateEvent';
-import { Roles } from '../../constants';
+import { Roles } from '../../core/constants';
 import StudentEvent from './StudentEvent';
 import EventCard from './EventCard';
-import getCurrentProfile from '../../utils/current-profile';
+import getCurrentProfile from '../../core/utils/current-profile';
 import { Row } from 'react-bootstrap';
 
 function EventList({

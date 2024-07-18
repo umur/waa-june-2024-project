@@ -1,13 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import {Container, Button, Form} from 'react-bootstrap';
-import EventList from '../../core/component/events/EventList';
-import { deleteEventApi, getAllEventsApi, makeEventReservationApi, removeEventReservationApi, updateEventApi } from '../../service/eventsAPI';
-import CreateEvent from '../../core/component/events/CreateEvent';
-import { createEventApi } from '../../service/eventsAPI';
+import EventList from './EventList';
+import { deleteEventApi, getAllEventsApi, makeEventReservationApi, createEventApi, removeEventReservationApi, updateEventApi } from '../../service/eventsAPI';
+import CreateEvent from './CreateEvent';
 import getCurrentProfile from '../../core/utils/current-profile';
 import { Roles } from '../../core/constants';
 import { Link } from 'react-router-dom';
-import NavBar from '../../core/component/NavBar';
 import debounce from 'lodash/debounce';
 
 function Events() {
@@ -115,7 +113,6 @@ function Events() {
     }
     return (
         <>
-          <NavBar />
         <Container className='mx-auto my-5'>
             {profile.role === Roles.ADMIN && 
              <Button variant="primary" onClick={(e)=>handleShowModal(e, 'Create')}>

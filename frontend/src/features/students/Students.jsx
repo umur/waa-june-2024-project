@@ -4,7 +4,6 @@ import {useNavigate} from 'react-router';
 import {Roles, State} from '../../core/constants';
 import ErrorDialog from '../../core/component/dialogs/ErrorDialog';
 import apiClient from '../../core/setup/axios';
-import NavBar from '../../core/component/NavBar';
 import StudentCard from './student-card/student-card';
 import getCurrentProfile from '../../core/utils/current-profile';
 import debounce from 'lodash/debounce';
@@ -80,7 +79,6 @@ const Students = () => {
 
   return (
     <>
-      <NavBar />
       <Container>
         <Row className="justify-content-center min-vh-100 m-4">
           <Col md="8">

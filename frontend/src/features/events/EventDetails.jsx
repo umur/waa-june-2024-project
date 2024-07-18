@@ -3,7 +3,7 @@ import { useParams, useNavigate } from "react-router";
 import {Card, Stack} from 'react-bootstrap';
 import { MdEventAvailable } from "react-icons/md";
 import { IoArrowBackSharp } from "react-icons/io5";
-import { getEventApi } from '../../../service/eventsAPI';
+import { getEventApi } from '../../service/eventsAPI';
 
 function EventDetails() {
     const params = useParams();

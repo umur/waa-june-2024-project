@@ -1,8 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import { useParams } from "react-router";
-import { getEventsAttendeesApi } from '../../../service/eventsAPI';
+import { getEventsAttendeesApi } from '../../service/eventsAPI';
 import {Table, Row, Container } from 'react-bootstrap';
-import NavBar from '../NavBar';
 
 function EventAttendees() {
     const params = useParams();
@@ -20,7 +19,6 @@ function EventAttendees() {
     if(attendees && attendees.length === 0) return <Row className='d-flex justify-content-center p-5'>No Attendees Available</Row>
     return (
         <>
-        <NavBar />
         <Container className='mx-auto my-5'>
         <Row className="mx-auto my-0">
         <h3 className='d-flex justify-content-center p-5'> Attendees for Events</h3>

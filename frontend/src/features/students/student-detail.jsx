@@ -1,5 +1,4 @@
 import React, {useEffect, useState} from 'react';
-import NavBar from '../../core/component/NavBar';
 import {useLocation, useNavigate, useParams} from 'react-router-dom';
 import {Button, Col, Container, Image, ListGroup, Row, Spinner} from 'react-bootstrap';
 import {API, Roles, State} from '../../core/constants';
@@ -152,7 +151,6 @@ export default function StudentDetail() {
 
   return (
     <>
-      <NavBar />
       <Container className="my-4">
         <h2>
           {firstName} {lastName}

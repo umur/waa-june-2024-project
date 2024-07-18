@@ -1,6 +1,5 @@
 import { Route, Routes, useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
-// import Nav from 'react-bootstrap/Nav';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import { Modal, Card } from 'react-bootstrap';
@@ -9,7 +8,6 @@ import apiClient from '../../core/setup/axios';
 import { API } from '../../core/constants';
 import { useParams } from "react-router";
 import SubComment from './SubComment';
-import NavBar from '../../core/component/NavBar';
 // import { format } from 'date-fns';
 
 const DiscussionComments = () => {
@@ -133,7 +131,6 @@ const DiscussionComments = () => {
 
     return (
         <>
-            <NavBar />
             <Container>
                 <Card className="mt-3">
                     <Card.Header as="h3" style={{ display: 'flex', justifyContent: 'space-between' }}>
