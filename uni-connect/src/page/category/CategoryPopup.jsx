@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-const SurveyPopup = ({ show, onClose, onSave, initialTitle = '' }) => {
+const CategoryPopup = ({ show, onClose, onSave, initialTitle = '' }) => {
   const [title, setTitle] = useState(initialTitle);
 
   useEffect(() => {
@@ -17,11 +17,11 @@ const SurveyPopup = ({ show, onClose, onSave, initialTitle = '' }) => {
   return (
     <div className="fixed inset-0 bg-gray-900 bg-opacity-50 flex justify-center items-center z-50">
       <div className="bg-white rounded-lg shadow-lg p-6 w-96">
-        <h2 className="text-lg font-bold mb-4">{initialTitle ? 'Edit Survey' : 'Create Survey'}</h2>
+        <h2 className="text-lg font-bold mb-4">{initialTitle ? 'Edit Category' : 'Create Category'}</h2>
         <input
           type="text"
           className="w-full border border-gray-300 p-2 rounded mb-4"
-          placeholder="Survey Title"
+          placeholder="Category Title"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
         />
@@ -44,4 +44,4 @@ const SurveyPopup = ({ show, onClose, onSave, initialTitle = '' }) => {
   );
 };
 
-export default SurveyPopup;
+export default CategoryPopup;
