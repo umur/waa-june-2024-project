@@ -12,6 +12,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/discussions/threads")
 @RequiredArgsConstructor
+@CrossOrigin
 public class DiscussionThreadController {
     private final DiscussionThreadService threadService;
     @PostMapping

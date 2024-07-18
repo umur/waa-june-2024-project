@@ -11,6 +11,7 @@ import universityconnect.service.DiscussionService;
 import universityconnect.service.DiscussionThreadService;
 import universityconnect.service.UserService;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 @Service
@@ -32,6 +33,7 @@ public class DiscussionThreadServiceImpl implements DiscussionThreadService {
             });
         }
         thread.setNestedThreads(nested);
+        thread.setCreatedOn(LocalDateTime.now());
         DiscussionThread savedThread = discussionThreadRepository.save(thread);
         return discussionThreadMapper.discussionThreadToDiscussionThreadDTO(savedThread);
     }

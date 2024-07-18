@@ -18,11 +18,14 @@ public interface DiscussionMapper {
     @Mapping(target = "categoryId", source = "category.id")
     @Mapping(target = "discussionThreadIds", source = "discussionThreads")
     @Mapping(target = "userId", source = "user.id")
+    @Mapping(target = "username",source = "user.username")
     DiscussionDTO discussionToDiscussionDTO(Discussion discussion);
 
     @Mapping(target = "category", ignore = true)
     @Mapping(target = "discussionThreads", ignore = true)
     @Mapping(target = "user", ignore = true)
+    @Mapping(target = "createdOn",ignore = true)
+    @Mapping(target = "updatedOn",ignore = true)
     Discussion discussionDTOToDiscussion(DiscussionDTO discussionDTO);
 
     default List<Long> mapDiscussionThreadIds(List<DiscussionThread> discussionThreads) {

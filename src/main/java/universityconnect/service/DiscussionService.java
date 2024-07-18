@@ -17,4 +17,6 @@ public interface DiscussionService {
     void deleteDiscussion(Long id);
     Discussion findById(Long id);
     public DiscussionSearchResponseDTO searchDiscussions(DiscussionSearchCriteria criteria, Pageable page);
+
+    public DiscussionSearchResponseDTO getDiscussionByCategory(int categoryId,Pageable pageable);
 }

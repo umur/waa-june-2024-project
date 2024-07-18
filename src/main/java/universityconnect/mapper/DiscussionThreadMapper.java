@@ -14,6 +14,7 @@ public interface DiscussionThreadMapper {
     DiscussionThreadMapper INSTANCE = Mappers.getMapper(DiscussionThreadMapper.class);
 
     @Mapping(target = "userId", source = "user.id")
+    @Mapping(target = "username",source = "user.username")
     @Mapping(target = "discussionId", source = "discussion.id")
     @Mapping(target = "nestedThreadIds", expression = "java(mapNestedThreadIds(discussionThread.getNestedThreads()))")
     DiscussionThreadDTO discussionThreadToDiscussionThreadDTO(DiscussionThread discussionThread);
@@ -21,6 +22,7 @@ public interface DiscussionThreadMapper {
     @Mapping(target = "user", ignore = true)
     @Mapping(target = "discussion", ignore = true)
     @Mapping(target = "nestedThreads", ignore = true)
+    @Mapping(target = "createdOn",ignore = true)
     DiscussionThread discussionThreadDTOToDiscussionThread(DiscussionThreadDTO discussionThreadDTO);
 
     default List<Long> mapNestedThreadIds(List<DiscussionThread> nestedThreads) {
