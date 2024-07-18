@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import universityconnect.dto.ProfileDTO;
 import universityconnect.dto.StudentDTO;
+import universityconnect.dto.StudentResponse;
 import universityconnect.service.StudentService;
 
 import java.util.List;
@@ -18,16 +19,16 @@ public class StudentController {
     private StudentService studentService;
 
     @GetMapping
-    public ResponseEntity<List<StudentDTO>> getAllStudents(@RequestParam(name = "year", required = false) Integer year,
+    public ResponseEntity<List<StudentResponse>> getAllStudents(@RequestParam(name = "year", required = false) Integer year,
                                                            @RequestParam(name = "major", required = false) String major) {
         if (year != null && major != null) {
-            List<StudentDTO> students = studentService.getStudentsByYearAndMajor(year, major);
+            List<StudentResponse> students = studentService.getStudentsByYearAndMajor(year, major);
             return ResponseEntity.ok(students);
         } else if (year != null) {
-            List<StudentDTO> students = studentService.getStudentsByYear(year);
+            List<StudentResponse> students = studentService.getStudentsByYear(year);
             return ResponseEntity.ok(students);
         } else if (major != null) {
-            List<StudentDTO> students = studentService.getStudentsByMajor(major);
+            List<StudentResponse> students = studentService.getStudentsByMajor(major);
             return ResponseEntity.ok(students);
         }
         return ResponseEntity.ok(studentService.getAllStudents());
@@ -35,9 +36,9 @@ public class StudentController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<StudentDTO> getStudentById(@PathVariable long id) {
-        StudentDTO studentDTO = studentService.getStudentById(id);
-        return ResponseEntity.ok(studentDTO);
+    public ResponseEntity<StudentResponse> getStudentById(@PathVariable long id) {
+        StudentResponse studentResponse = studentService.getStudentById(id);
+        return ResponseEntity.ok(studentResponse);
     }
 
 //    @PutMapping("/{id}")
@@ -56,6 +57,5 @@ public class StudentController {
         ProfileDTO profileDTO = studentService.getProfileByStudentId(id);
         return ResponseEntity.ok(profileDTO);
     }
-
 
 }

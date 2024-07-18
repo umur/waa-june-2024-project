@@ -2,24 +2,25 @@ package universityconnect.service;
 
 import universityconnect.dto.ProfileDTO;
 import universityconnect.dto.StudentDTO;
+import universityconnect.dto.StudentResponse;
 
 import java.util.List;
 
 public interface StudentService {
 
-    List<StudentDTO> getAllStudents();
+    List<StudentResponse> getAllStudents();
 
     StudentDTO updateStudent(long id,StudentDTO studentDTO);
 
-    StudentDTO getStudentById(Long id);
+    StudentResponse getStudentById(Long id);
 
     void deleteStudent(long id);
 
-    List<StudentDTO> getStudentsByYear(int year);
+    List<StudentResponse> getStudentsByYear(int year);
 
     ProfileDTO getProfileByStudentId(long studentId);
 
-    List<StudentDTO> getStudentsByMajor(String major);
+    List<StudentResponse> getStudentsByMajor(String major);
 
-    List<StudentDTO> getStudentsByYearAndMajor(int year, String major);
+    List<StudentResponse> getStudentsByYearAndMajor(int year, String major);
 }

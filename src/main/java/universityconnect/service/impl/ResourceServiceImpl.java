@@ -2,6 +2,7 @@ package universityconnect.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import universityconnect.domain.Resource;
 import universityconnect.domain.ResourceCategory;
 import universityconnect.dto.ResourceDTO;
@@ -15,6 +16,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class ResourceServiceImpl implements ResourceService {
 

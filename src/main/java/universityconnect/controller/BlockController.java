@@ -32,11 +32,11 @@ public class BlockController {
         return ResponseEntity.ok(block);
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<BlockDTO> updateBlock(@PathVariable long id, @RequestBody BlockDTO blockDTO){
-        BlockDTO block = blockService.updateBlock(id, blockDTO);
-        return ResponseEntity.ok(block);
-    }
+//    @PutMapping("/{id}")
+//    public ResponseEntity<BlockDTO> updateBlock(@PathVariable long id, @RequestBody BlockDTO blockDTO){
+//        BlockDTO block = blockService.updateBlock(id, blockDTO);
+//        return ResponseEntity.ok(block);
+//    }
 
     @DeleteMapping("/{id}")
     public void deleteBlock(@PathVariable long id){

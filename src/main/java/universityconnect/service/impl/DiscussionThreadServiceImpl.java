@@ -2,6 +2,7 @@ package universityconnect.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import universityconnect.domain.DiscussionThread;
 import universityconnect.dto.DiscussionThreadDTO;
 import universityconnect.exception.ResourceNotFoundException;
@@ -15,6 +16,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class DiscussionThreadServiceImpl implements DiscussionThreadService {
     private final DiscussionThreadRepository discussionThreadRepository;

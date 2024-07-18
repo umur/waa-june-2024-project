@@ -2,11 +2,14 @@ package universityconnect.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import universityconnect.domain.*;
 import universityconnect.dto.UserDTO;
+import universityconnect.dto.UserResponse;
 import universityconnect.exception.EmailAlreadyExistsException;
 import universityconnect.exception.ResourceNotFoundException;
 import universityconnect.mapper.UserMapper;
+import universityconnect.mapper.UserResponseMapper;
 import universityconnect.repository.*;
 import universityconnect.service.UserService;
 import universityconnect.util.PasswordEncoderUtil;
@@ -16,6 +19,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@Transactional
 public class UserServiceImpl implements UserService {
 
     @Autowired
@@ -23,6 +27,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserMapper userMapper;
+
+    @Autowired
+    private UserResponseMapper userResponseMapper;
 
     @Autowired
     private ReportRepository reportRepository;
@@ -108,17 +115,17 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDTO getUserById(Long id) {
+    public UserResponse getUserById(Long id) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("User Not Found with ID: " + id));
-        return userMapper.userToUserDTO(user);
+        return userResponseMapper.userToUserResponse(user);
     }
 
     @Override
-    public List<UserDTO> getAllUsers() {
+    public List<UserResponse> getAllUsers() {
         List<User> users = userRepository.findAll();
         return users.stream()
-                .map(userMapper::userToUserDTO)
+                .map(userResponseMapper::userToUserResponse)
                 .collect(Collectors.toList());
     }
 
@@ -130,44 +137,39 @@ public class UserServiceImpl implements UserService {
         existingUser.setUsername(userDTO.getUsername());
         existingUser.setEmail(userDTO.getEmail());
         existingUser.setAddress(userDTO.getAddress());
-        existingUser.setPassword(userDTO.getPassword());
+        existingUser.setPassword(passwordEncoderUtil.encodePassword(userDTO.getPassword()));
         existingUser.setRole(userDTO.getRole());
 
-        User user = switch (existingUser.getRole().name()) {
-            case "STUDENT" -> updateStudent(userDTO);
-            case "ADMIN" -> updateAdmin(userDTO);
+        // Use ID from path variable in the switch case
+        switch (existingUser.getRole().name()) {
+            case "STUDENT" -> updateStudent(id, userDTO);
+            case "ADMIN" -> updateAdmin(id, userDTO);
             default -> throw new IllegalArgumentException("Unsupported role: " + userDTO.getRole());
-        };
+        }
 
-        User updatedUser = userRepository.save(user);
+        User updatedUser = userRepository.save(existingUser);
         return userMapper.userToUserDTO(updatedUser);
     }
 
-    private User updateStudent(UserDTO userDTO){
-        Student existingStudent = studentRepository.findById(userDTO.getId())
-                .orElseThrow(() -> new ResourceNotFoundException("Student Not Found with ID: " + userDTO.getId()));
+    private void updateStudent(Long id, UserDTO userDTO) {
+        Student existingStudent = studentRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Student Not Found with ID: " + id));
 
         existingStudent.setMajor(userDTO.getMajor());
         existingStudent.setYear(userDTO.getYear());
-
-
         existingStudent.setAuditData(updateDefaultAuditData(existingStudent.getAuditData()));
 
         studentRepository.save(existingStudent);
-
-        return existingStudent;
     }
 
-    private User updateAdmin(UserDTO userDTO){
-        Admin existingAdmin = adminRepository.findById(userDTO.getId())
-                .orElseThrow(() -> new ResourceNotFoundException("Admin Not Found with ID: " + userDTO.getId()));
+    private void updateAdmin(Long id, UserDTO userDTO) {
+        Admin existingAdmin = adminRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Admin Not Found with ID: " + id));
 
         existingAdmin.setDepartment(userDTO.getDepartment());
         existingAdmin.setAuditData(updateDefaultAuditData(existingAdmin.getAuditData()));
 
         adminRepository.save(existingAdmin);
-
-        return existingAdmin;
     }
 
     @Override
@@ -183,34 +185,34 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserDTO> getAllReportedUsersByReporterUserId(Long id) {
+    public List<UserResponse> getAllReportedUsersByReporterUserId(Long id) {
         List<User> reportedUsers = reportRepository.findByReportedUserByReporterUserId(id);
         return reportedUsers.stream()
-                .map(userMapper::userToUserDTO)
+                .map(userResponseMapper::userToUserResponse)
                 .collect(Collectors.toList());
     }
 
     @Override
-    public List<UserDTO> getAllReporterUsersByReportedUserId(Long id) {
+    public List<UserResponse> getAllReporterUsersByReportedUserId(Long id) {
         List<User> reporterUsers = reportRepository.findByReporterUserByReportedUserId(id);
         return reporterUsers.stream()
-                .map(userMapper::userToUserDTO)
+                .map(userResponseMapper::userToUserResponse)
                 .collect(Collectors.toList());
     }
 
     @Override
-    public List<UserDTO> getAllBlockedUsersByBlockerUserId(Long id) {
+    public List<UserResponse> getAllBlockedUsersByBlockerUserId(Long id) {
         List<User> blockedUsers = blockRepository.findBlockedUsersByBlockerUserId(id);
         return blockedUsers.stream()
-                .map(userMapper::userToUserDTO)
+                .map(userResponseMapper::userToUserResponse)
                 .collect(Collectors.toList());
     }
 
     @Override
-    public List<UserDTO> getAllBlockerUsersByBlockedUserId(Long id) {
+    public List<UserResponse> getAllBlockerUsersByBlockedUserId(Long id) {
         List<User> blockingUsers = blockRepository.findBlockerUsersByBlockedUserId(id);
         return blockingUsers.stream()
-                .map(userMapper::userToUserDTO)
+                .map(userResponseMapper::userToUserResponse)
                 .collect(Collectors.toList());
     }
 

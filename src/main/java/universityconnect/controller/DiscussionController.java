@@ -1,15 +1,13 @@
 package universityconnect.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import universityconnect.domain.Discussion;
 import universityconnect.domain.DiscussionSearchCriteria;
 import universityconnect.dto.DiscussionDTO;
-import universityconnect.dto.DiscussionSearchResponseDTO;
+import universityconnect.dto.DiscussionSearchResponse;
 import universityconnect.service.DiscussionService;
 
 import java.util.List;
@@ -51,7 +49,7 @@ public class DiscussionController {
     }
 
     @GetMapping("/search")
-    public DiscussionSearchResponseDTO searchDiscussions(
+    public DiscussionSearchResponse searchDiscussions(
             @RequestParam(required = false) String keyword,
             @RequestParam(required = false) String categoryName,
             Pageable pageable) {
@@ -62,7 +60,7 @@ public class DiscussionController {
     }
 
     @GetMapping("/category/{id}")
-    public DiscussionSearchResponseDTO getDiscussionByCategory(@PathVariable int id, Pageable pageable){
+    public DiscussionSearchResponse getDiscussionByCategory(@PathVariable int id, Pageable pageable){
         return discussionService.getDiscussionByCategory(id,pageable);
     }
 }
