@@ -12,5 +12,7 @@ export default {
   resourceDownload: (resourceId) => `${API_BASE_URL}resources/${resourceId}/download`,
   surveys: API_BASE_URL+ "surveys",
   surveyQuestions:(surveyId) => `${API_BASE_URL}surveyQuestions/survey/${surveyId}`,
- surveyAnswers: API_BASE_URL+ "survey-answers"
+ surveyAnswers: API_BASE_URL+ "survey-answers",
+  myResources: (userId) => `${API_BASE_URL}users/${userId}/resources`,
+
 };
