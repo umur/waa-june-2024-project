@@ -136,7 +136,6 @@ const Surveys = () => {
         </div>
       </div>
 
-      <SurveyQuestions></SurveyQuestions>
 
       <SurveyPopup
         show={showPopup}

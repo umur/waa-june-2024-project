@@ -296,8 +296,13 @@ export async function apiDeleteCategory(id) {
 //Survey Question
 export async function apiCreateSurveyQuestion(data) {
     try {
-        console.log(data);
-        const response = await axiosInstance.post(ApiRoutes.surveyQuestionCRUD,data);
+        console.log(data.question.question);
+        const currentDate = new Date().toISOString().split('T')[0];
+        const response = await axiosInstance.post(ApiRoutes.surveyQuestionCRUD,{
+            surveyId: data.surveyId,
+            question: data.question.question,
+            dueDate: currentDate,
+        });
         return response.data;
     } catch (e) {
         return exceptionResponse("apiSaveSurveyQuestions", e);

@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { apiCreateSurveyQuestion, apiFetchSurveyQuestions, submitSurveyAnswers } from '../../action/ApiActions';
+import { apiCreateSurveyQuestion, apiDeleteSurveyQueston, apiFetchSurveyQuestions, submitSurveyAnswers } from '../../action/ApiActions';
 import { toast } from 'react-toastify';
 import MobileNavBar from '../../component/MobileNavBar';
 import AsideLeft from '../../component/AsideLeft';
 import { AiOutlineArrowUp, AiOutlineEdit, AiOutlineDelete, AiOutlinePlus } from 'react-icons/ai';
 import QuestionPopup from './SurveyQuestionPopup';
+import ConfirmDelete from '../common/ConfirmDelete';
 
 const SurveyQuestions = () => {
   let { id } = useParams();
@@ -13,6 +14,8 @@ const SurveyQuestions = () => {
   const [answers, setAnswers] = useState({});
   const [showQuestionPopup, setShowQuestionPopup] = useState(false);
   const [currentQuestion, setCurrentQuestion] = useState(null);
+  const [showConfirmDelete, setShowConfirmDelete] = useState(false);
+  const [deleteSurveyId, setDeleteSurveyId] = useState(null);
    id=4;
   useEffect(() => {
     const fetchQuestions = async () => {
@@ -71,25 +74,36 @@ const SurveyQuestions = () => {
 
   const handleSaveQuestion = async (question,dueDate) => {
     try {
-      // const response = editSurvey 
-      //   ? await apiUpdateSurvey(editSurvey.id, { title })
-      //   : await apiCreateSurvey({surveyId:id, question,dueDate });
-
-        const response =await apiCreateSurveyQuestion({id, question,dueDate });
+        const response =await apiCreateSurveyQuestion({surveyId: id, question,dueDate:'2022-01-01' });
 
       if (response.status) {
-      //  toast.success(`Survey Question ${editSurvey ? 'updated' : 'created'} successfully`);
         toast.success(`Survey Question created successfully`);
-        //fetchQuestions();
       } else {
         toast.error(response.message);
       }
     } catch (error) {
       toast.error('An error occurred. Please try again.');
     }
-   // setShowPopup(false);
   };
 
+  
+  const handleDelete = async () => {
+    try {
+      //find surveyQuestionId
+      alert(deleteSurveyId);
+      const response = await apiDeleteSurveyQueston(deleteSurveyId);
+
+      if (response.status) {
+        toast.success('Survey Question deleted successfully');
+       // fetchSurveys(keyword, 0);
+      } else {
+        toast.error(response.message);
+      }
+    } catch (error) {
+      toast.error('An error occurred. Please try again.');
+    }
+  //  setShowConfirmDelete(false);
+  };
   return (
     <div className="container mx-auto p-4">
       <MobileNavBar />
@@ -120,9 +134,12 @@ const SurveyQuestions = () => {
                       >
                         <AiOutlineEdit />
                       </button>
-                      <button className="text-red-500 hover:underline">
-                        <AiOutlineDelete />
-                      </button>
+                   
+
+                      <AiOutlineDelete
+                      onClick={() => { setShowConfirmDelete(true); setDeleteSurveyId(question.id); }}
+                      className="text-gray-600 hover:text-red-600 cursor-pointer"
+                    />
                     </div>
                     <textarea
                       className="border border-gray-300 p-2 mt-2 w-full rounded"
@@ -153,6 +170,11 @@ const SurveyQuestions = () => {
         onClose={() => setShowQuestionPopup(false)}
         onSave={handleSaveQuestion}
         initialQuestion={currentQuestion}
+      />
+        <ConfirmDelete
+        show={showConfirmDelete}
+        onClose={() => setShowConfirmDelete(false)}
+        onConfirm={handleDelete}
       />
     </div>
   );
