@@ -4,6 +4,10 @@
  
 **University Connect** is a dedicated social media platform designed exclusively for university students. The platform aims to foster a sense of community, enhance academic collaboration, and provide a space for students to connect, share, and grow together within their academic environment. University Connect will serve as a comprehensive digital hub, integrating features tailored to the unique needs of university students.
 
+## Frontend
+**https://github.com/phonethantzaw/UniversityConnect**
+
+
 ####  Key Features
 --- 
 * Profile Creation
