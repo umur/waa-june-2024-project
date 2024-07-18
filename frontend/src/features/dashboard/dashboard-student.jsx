@@ -1,16 +1,24 @@
-import {Link} from 'react-router-dom';
 import NavBar from '../../core/component/NavBar';
+import {faCalendarAlt, faUserGraduate} from '@fortawesome/free-solid-svg-icons';
+import {Container, Row} from 'react-bootstrap';
+import DashboardCard from '../dashboard-card/dashboard-card';
 
 export default function StudentDashboard() {
+  const options = [
+    {icon: faUserGraduate, title: 'Students', link: '/students'},
+    {icon: faCalendarAlt, title: 'Events', link: '/events'}
+  ];
+
   return (
     <>
       <NavBar />
-      <h3>Student Dashboard</h3>
-      <ul>
-        <li>
-          <Link to="/students">Student</Link>
-        </li>
-      </ul>
+      <Container className="mt-5">
+        <Row>
+          {options.map(opt => (
+            <DashboardCard icon={opt.icon} link={opt.link} title={opt.title} />
+          ))}
+        </Row>
+      </Container>
     </>
   );
 }
