@@ -54,11 +54,11 @@ const Router = () => {
       },
       {
         path: "/test/:id/questions",
-        element: <ProtectedRoute element={<SurveyQuestions />} />,
-
+        element: <ProtectedRoute element={<SurveyQuestions/>}/>,
+      },
+      {
         path: "/users/:userId/resources/:id",
         element: <ProtectedRoute element={<ResourceDetail />} />,
-
       },
       {
         path:"/events",
@@ -72,10 +72,10 @@ const Router = () => {
         path: "/categories",
         element: <ProtectedRoute element={<Categories />} />,
       },
-      // {
-      //   path: "*",
-      //   element: <Navigate to="/home" replace />,
-      // },
+      {
+        path: "*",
+        element: <Navigate to="/home" replace />,
+      },
     ]);
   
     return <RouterProvider router={routes} />;
