@@ -9,7 +9,7 @@ spring:
   datasource:
     url: jdbc:mysql://localhost:3306/waa_student_connect
     username: root
-    password: Root@123
+    password: root
     driver-class-name: com.mysql.cj.jdbc.Driver
 
   jpa:
