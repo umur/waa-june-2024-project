@@ -10,6 +10,9 @@ import Home from "../page/home";
 import Profile from "../page/profile/Profile";
 import ProtectedRoute from "./ProtectedRoute";
 import AnonymousRoute from "./AnonymousRoute";
+import Resource from "../page/resources/Resource";
+import Event from "../page/event/Event";
+import EventDetail from "../page/event/EventDetail";
 import Resources from "../page/resources/Resources";
 import ResourceDetail from "../page/resources/ResourceDetail";
 import Surveys from "../page/survey/Surveys";
@@ -55,6 +58,14 @@ const Router = () => {
         path: "/users/:userId/resources/:id",
         element: <ProtectedRoute element={<ResourceDetail />} />,
 
+      },
+      {
+        path:"/events",
+        element: <ProtectedRoute element={<Event />} />,
+      },
+      {
+        path:"/events/:id/details",
+        element: <ProtectedRoute element={<EventDetail />} />,
       },
       {
         path: "*",
