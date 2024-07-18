@@ -7,9 +7,9 @@ public class DiscussionCommentsDto {
 
     private Long   id;
     private String comment;
-    private String studentUsername;
-    private String studentFirstName;
-    private String studentLastName;
+    private StudentInfo student;
     private Long   discussionId;
     private Long   parentCommentIdId;
+    private boolean own;
+    private Long   subComments;
 }

@@ -1,5 +1,6 @@
 package com.waa.project.controller.discussion;
 
+import com.waa.project.dto.DiscussionCommentsDto;
 import com.waa.project.dto.DiscussionDto;
 import com.waa.project.service.DiscussionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +20,16 @@ public class DiscussionController {
 
     @GetMapping("/students/discussion")
     public ResponseEntity<Page<?>> getDiscussion(Pageable pageable, @AuthenticationPrincipal User user) {
-        return ResponseEntity.ok(discussionService.getDiscussions(pageable, user));
+
+        Page<DiscussionDto> response =discussionService.getDiscussions(pageable, user);
+        response.map( data -> {
+            if (data.getStudent().getUsername().equals(user.getUsername())) {
+                data.setOwn(true);
+            } else {
+                data.setOwn(false);
+            }return  data;
+        });
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping("/students/discussion/{id}")
@@ -53,7 +63,7 @@ public class DiscussionController {
     }
 
     @GetMapping("/students/discussion/search")
-    public ResponseEntity<?> searchDiscussion(@RequestParam String text) {
-        return ResponseEntity.ok(discussionService.searching(text));
+    public ResponseEntity<?> searchDiscussion(Pageable pageable,@RequestParam String text) {
+        return ResponseEntity.ok(discussionService.searching(pageable, text));
     }
 }

@@ -12,7 +12,7 @@ public interface DiscussionCommentsService {
 
 //    DiscussionCommentsDto getDiscussionCommentsById(long id, User user);
 
-    DiscussionCommentsDto createDiscussionComments(DiscussionCommentsDto commentsDto, User user);
+    DiscussionCommentsDto createDiscussionComments(DiscussionCommentsDto commentsDto, User user,Long discussionId);
 
     DiscussionCommentsDto updateDiscussionComments(long id, DiscussionCommentsDto commentsDto, User user);
 

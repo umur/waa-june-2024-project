@@ -40,14 +40,21 @@ public class DiscussionServiceImpl implements DiscussionService {
     @Override
     public Page<DiscussionDto> getDiscussions(Pageable pageable, User user) {
         AuthUserResponse userData = userService.findByUsername(user.getUsername());
-        return repository.findAllByStudentId(userData.getId(), pageable)
+//        return repository.findAllByStudentId(userData.getId(), pageable)
+//                         .map(data -> mapper.map(data, DiscussionDto.class));
+
+        return repository.findAll(pageable)
                          .map(data -> mapper.map(data, DiscussionDto.class));
     }
 
     @Override
     public DiscussionDto getDiscussionById(long id, User user) {
         AuthUserResponse userData = userService.findByUsername(user.getUsername());
-        Discussion discussion = repository.findByIdAndStudentId(id, userData.getId())
+//        Discussion discussion = repository.findByIdAndStudentId(id, userData.getId())
+//                                          .orElseThrow(() -> new ResourceNotFoundException(
+//                                                  "Discussion not found"));
+
+        Discussion discussion = repository.findById(id)
                                           .orElseThrow(() -> new ResourceNotFoundException(
                                                   "Discussion not found"));
 
@@ -106,12 +113,9 @@ public class DiscussionServiceImpl implements DiscussionService {
     }
 
     @Override
-    public DiscussionDto searching(String text) {
+    public Page<DiscussionDto> searching(Pageable pageable, String text) {
         System.out.println("Text:" + text);
-        Discussion discussion = repository.findAllByTitleContainingIgnoreCaseOrBodyContainingIgnoreCase(text, text)
-                                          .orElseThrow(() -> new ResourceNotFoundException(
-                                                  "Data Not found"));
-        System.out.println("Output:" + discussion);
-        return mapper.map(discussion, DiscussionDto.class);
+        Page<Discussion> discussions = repository.findAllByTitleContainingIgnoreCaseOrBodyContainingIgnoreCase(text,text,pageable);
+        return discussions.map(data -> mapper.map(data, DiscussionDto.class));
     }
 }

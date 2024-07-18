@@ -6,6 +6,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -17,5 +18,6 @@ public interface DiscussionRepository extends JpaRepository<Discussion, Long> {
 
     void deleteByIdAndStudentId(long id, long studentId);
 
-    Optional<Discussion> findAllByTitleContainingIgnoreCaseOrBodyContainingIgnoreCase(String title, String body);
+    Page<Discussion> findAllByTitleContainingIgnoreCaseOrBodyContainingIgnoreCase(String title, String body,
+                                                                                  Pageable pageable);
 }

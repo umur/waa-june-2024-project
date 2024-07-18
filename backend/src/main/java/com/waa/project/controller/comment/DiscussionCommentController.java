@@ -17,22 +17,35 @@ public class DiscussionCommentController {
     @Autowired
     private DiscussionCommentsService commentsService;
 
-    @GetMapping("/students/comments/{DiscussionId}")
+    @GetMapping("/students/{DiscussionId}/comments")
     public ResponseEntity<Page<?>> getComments(
             Pageable pageable,
             @AuthenticationPrincipal User user,
             @PathVariable("DiscussionId") long id
                                               ) {
-        return ResponseEntity.ok(commentsService.getCommentsByDiscussionId(id, pageable));
+
+        Page<DiscussionCommentsDto> response =commentsService.getCommentsByDiscussionId(id, pageable);
+        response.map( data -> {
+            if (data.getStudent().getUsername().equals(user.getUsername())) {
+                data.setOwn(true);
+            } else {
+                data.setOwn(false);
+            }return  data;
+        }
+
+        );
+
+        return ResponseEntity.ok(response);
     }
 
-    @PostMapping("/students/comments")
+    @PostMapping("/students/{DiscussionId}/comments")
     public ResponseEntity<?> saveComment(
             @RequestBody DiscussionCommentsDto commentsDto,
+            @PathVariable("DiscussionId") long discussionId,
             @AuthenticationPrincipal User user
                                         ) {
 
-        return ResponseEntity.ok(commentsService.createDiscussionComments(commentsDto, user));
+        return ResponseEntity.ok(commentsService.createDiscussionComments(commentsDto, user,discussionId));
     }
 
     @PutMapping("/students/comments/{id}")

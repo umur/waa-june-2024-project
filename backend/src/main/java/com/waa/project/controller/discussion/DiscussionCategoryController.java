@@ -14,7 +14,7 @@ public class DiscussionCategoryController {
     @Autowired
     private DiscussionCategoryService discussionCategoryService;
 
-    @GetMapping("/DiscussionCategory")
+    @GetMapping("/discussion-category")
     public ResponseEntity<?> getAll() {
 
         return ResponseEntity.ok(discussionCategoryService.getDiscussionCategories());

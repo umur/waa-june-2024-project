@@ -17,5 +17,5 @@ public interface DiscussionService {
 
     DiscussionDto deleteDiscussion(long id, User user);
 
-    DiscussionDto searching(String text);
+    Page<DiscussionDto> searching(Pageable pageable, String text);
 }
