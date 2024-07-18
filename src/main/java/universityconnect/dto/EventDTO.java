@@ -13,10 +13,11 @@ public class EventDTO {
     private LocalDateTime endDateTime;
     private List<Long> eventAttendanceIds;
     private Long organizerId;
+    private String organizerName;
 
     public EventDTO() {}
 
-    public EventDTO(Long id, String title, String location, LocalDateTime startDateTime, LocalDateTime endDateTime, List<Long> eventAttendanceIds, Long organizerId) {
+    public EventDTO(Long id, String title, String location, LocalDateTime startDateTime, LocalDateTime endDateTime, List<Long> eventAttendanceIds, Long organizerId,String organizerName) {
         this.id = id;
         this.title = title;
         this.location = location;
@@ -24,6 +25,7 @@ public class EventDTO {
         this.endDateTime = endDateTime;
         this.eventAttendanceIds = eventAttendanceIds;
         this.organizerId = organizerId;
+        this.organizerName = organizerName;
     }
 }
 

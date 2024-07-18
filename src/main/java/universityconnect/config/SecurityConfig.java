@@ -39,6 +39,7 @@ public class SecurityConfig {
                             .requestMatchers("/users/login").permitAll()
                             .requestMatchers("/users/logout").permitAll()
                             .requestMatchers("/users/refreshToken").permitAll()
+
                             .requestMatchers("/users/{userId}/blockeds").permitAll()
                             .requestMatchers("/users/{userId}/reporteds").permitAll()
                             .requestMatchers("/users").permitAll()

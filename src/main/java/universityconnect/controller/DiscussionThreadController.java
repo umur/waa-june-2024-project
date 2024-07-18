@@ -13,6 +13,7 @@ import java.util.List;
 @CrossOrigin
 @RequestMapping("/discussions/threads")
 @RequiredArgsConstructor
+@CrossOrigin
 public class DiscussionThreadController {
     private final DiscussionThreadService threadService;
     @PostMapping

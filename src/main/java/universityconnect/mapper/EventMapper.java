@@ -17,6 +17,7 @@ public interface EventMapper {
 
     @Mapping(target = "eventAttendanceIds", source = "eventAttendances")
     @Mapping(target = "organizerId", source = "organizer.id")
+    @Mapping(target = "organizerName",source = "organizer.username")
     EventDTO eventToEventDTO(Event event);
 
     @Mapping(target = "eventAttendances", ignore = true)

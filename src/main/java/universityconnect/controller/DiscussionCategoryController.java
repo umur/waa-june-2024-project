@@ -15,6 +15,7 @@ import java.util.List;
 @CrossOrigin
 @RequestMapping("/discussion-categories")
 @RequiredArgsConstructor
+@CrossOrigin
 public class DiscussionCategoryController {
     private final DiscussionCategoryService discussionCategoryService;
 

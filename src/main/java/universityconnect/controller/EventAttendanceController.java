@@ -12,6 +12,7 @@ import java.util.List;
 @CrossOrigin
 @RequestMapping("/events/attendances")
 @RequiredArgsConstructor
+@CrossOrigin
 public class EventAttendanceController {
     private final EventAttendanceService attendanceService;
 

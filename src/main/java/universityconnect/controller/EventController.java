@@ -13,6 +13,7 @@ import java.util.List;
 @CrossOrigin
 @RequestMapping("/events")
 @RequiredArgsConstructor
+@CrossOrigin
 public class EventController {
     private final EventService eventService;
     @PostMapping
