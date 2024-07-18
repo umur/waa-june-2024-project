@@ -164,8 +164,7 @@ export async function apiCreateSurvey(data) {
 
 export async function apiUpdateSurvey(id,data) {
     try {
-        const resourceUrl = ApiRoutes.surveys(id);
-        const response = await axiosInstance.put(resourceUrl,data);
+        const response = await axiosInstance.put(ApiRoutes.surveyParam(id),data);
         console.log("apiUpdateSurvey response", response);
         return response.data;
     } catch (e) {
@@ -175,8 +174,7 @@ export async function apiUpdateSurvey(id,data) {
 
 export async function apiDeleteSurvey(id) {
     try {
-      //  const resourceUrl = ApiRoutes.deleteSurvey(id);
-        const response = await axiosInstance.delete(ApiRoutes.deleteSurvey(id));
+        const response = await axiosInstance.delete(ApiRoutes.surveyParam(id));
         console.log("apiDeleteSource response", response);
         return response.data;
     } catch (e) {
