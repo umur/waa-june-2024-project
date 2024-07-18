@@ -1,0 +1,47 @@
+server:
+  port: ${SERVER_PORT}
+  servlet:
+    context-path: /api/v1
+spring:
+  application:
+    name: UNIVERSITY-CONNECT
+  datasource:
+    url: ${DB_HOST_URL}:${DB_HOST_PORT}/${DB_NAME}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    openInView: false
+    show_sql: false
+    generate-ddl: true
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQLDialect
+  servlet:
+    multipart:
+      max-file-size: 5MB
+      max-request-size: 50MB
+  web:
+    resources:
+      static-locations: file:${FILE_STORAGE_PATH}
+
+jwt_configs:
+  secret: ${APP_JWT_SECRET}
+  access_token_validity_s: ${APP_JWT_ACCESS_VALIDITY_S}
+  refresh_token_validity_s: ${APP_JWT_REFRESH_VALIDITY_S}
+
+logging:
+  level:
+    root: info
+    org:
+      springframework:
+        security: info
+file:
+  upload:
+    path: ${FILE_STORAGE_PATH}
+
+app:
+  allowed-file-types: image/png,image/jpeg,application/pdf,application/zip,application/x-rar-compressed
+
