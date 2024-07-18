@@ -243,6 +243,44 @@ export async function apiUpdateResource(id,data) {
     }
 }
 
+//Region->Category
+export async function apiFetchCategories(queryParams) {
+    try {
+        const response = await axiosInstance.get(ApiRoutes.categories, { params: queryParams });
+        return response.data;
+    } catch (e) {
+        return exceptionResponse("apiFetchCategories", e);
+    }
+}
+
+export async function apiCreateCateogry(data) {
+    try {
+        const response = await axiosInstance.post(ApiRoutes.categories,data);
+        return response.data;
+    } catch (e) {
+        return exceptionResponse("apiSaveCategory", e);
+    }
+}
+
+export async function apiUpdateCategory(id,data) {
+    try {
+        const response = await axiosInstance.put(ApiRoutes.cateogryParam(id),data);
+        return response.data;
+    } catch (e) {
+        return exceptionResponse("apiUpdateCategory", e);
+    }
+}
+
+export async function apiDeleteCategory(id) {
+    try {
+        const response = await axiosInstance.delete(ApiRoutes.cateogryParam(id));
+        return response.data;
+    } catch (e) {
+        return exceptionResponse("apiDeleteCategory", e);
+    }
+}
+//End of Survey
+
 export function exceptionResponse(apiName, e) {
     console.log(apiName + " exception", e?.response?.data ?? e.message);
     return e?.response?.data ?? getErrorResponseObject(e.message);

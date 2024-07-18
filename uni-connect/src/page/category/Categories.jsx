@@ -1,38 +1,39 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { apiFetchSurveys, apiCreateSurvey, apiUpdateSurvey, apiDeleteSurvey } from '../../action/ApiActions';
 import { toast } from 'react-toastify';
-import AsideLeft from '../../component/AsideLeft';
 import InfiniteScroll from 'react-infinite-scroll-component';
+import { AiOutlineArrowUp, AiOutlineEdit, AiOutlineDelete } from 'react-icons/ai';
+
+import { apiFetchCategories, apiCreateCateogry, apiUpdateCategory, apiDeleteCategory } from '../../action/ApiActions';
+import AsideLeft from '../../component/AsideLeft';
 import MobileNavBar from '../../component/MobileNavBar';
 import { AsideRight } from '../../component/AsideRight';
-import { AiOutlineArrowUp, AiOutlineEdit, AiOutlineDelete } from 'react-icons/ai';
-import SurveyPopup from './SurveyPopup';
-import ConfirmDelete from './ConfirmDelete';
+import ConfirmDelete from '../common/ConfirmDelete';
+import CategoryPopup from './CategoryPopup';
 
-const Surveys = () => {
-  const [surveys, setSurveys] = useState([]);
+const Categories = () => {
+  const [categories, setCategories] = useState([]);
   const [page, setPage] = useState(0);
   const [keyword, setKeyword] = useState("");
   const [hasMore, setHasMore] = useState(false);
   const [showPopup, setShowPopup] = useState(false);
   const [showConfirmDelete, setShowConfirmDelete] = useState(false);
-  const [editSurvey, setEditSurvey] = useState(null);
-  const [deleteSurveyId, setDeleteSurveyId] = useState(null);
+  const [editCategory, setEditCategory] = useState(null);
+  const [deleteCategoryId, setDeleteCategoryId] = useState(null);
   const navigate = useNavigate();
 
   const onEnter = (e) => {
     setKeyword(e.target.value);
-    setSurveys([]);
+    setCategories([]);
     setPage(0);
-    fetchSurveys(e.target.value, 0);
+    fetchCategories(e.target.value, 0);
   };
 
-  const fetchSurveys = async (key = keyword, currentPage = page) => {
+  const fetchCategories = async (key = keyword, currentPage = page) => {
     setPage(currentPage + 1);
-    const response = await apiFetchSurveys({ keyword: key, size: 7, page: currentPage + 1 });
+    const response = await apiFetchCategories({ keyword: key, size: 7, page: currentPage + 1 });
     if (response.status) {
-      setSurveys(prevItems => currentPage === 0 ? response.data.content : [...prevItems, ...response.data.content]);
+      setCategories(prevItems => currentPage === 0 ? response.data.content : [...prevItems, ...response.data.content]);
       setHasMore(!response.data.last);
     } else {
       toast.error(response.message);
@@ -40,20 +41,20 @@ const Surveys = () => {
   };
 
   useEffect(() => {
-    if (surveys.length === 0) {
-      fetchSurveys();
+    if (categories.length === 0) {
+      fetchCategories();
     }
   }, []);
 
   const handleSave = async (title) => {
     try {
-      const response = editSurvey 
-        ? await apiUpdateSurvey(editSurvey.id, { title })
-        : await apiCreateSurvey({ title });
+      const response = editCategory 
+        ? await apiUpdateCategory(editCategory.id, { title })
+        : await apiCreateCateogry({ title });
 
       if (response.status) {
-        toast.success(`Survey ${editSurvey ? 'updated' : 'created'} successfully`);
-        fetchSurveys(keyword, 0);
+        toast.success(`Category ${editCategory ? 'updated' : 'created'} successfully`);
+        fetchCategories(keyword, 0);
       } else {
         toast.error(response.message);
       }
@@ -65,11 +66,11 @@ const Surveys = () => {
 
   const handleDelete = async () => {
     try {
-      const response = await apiDeleteSurvey(deleteSurveyId);
+      const response = await apiDeleteCategory(deleteCategoryId);
 
       if (response.status) {
-        toast.success('Survey deleted successfully');
-        fetchSurveys(keyword, 0);
+        toast.success('Category deleted successfully');
+        fetchCategories(keyword, 0);
       } else {
         toast.error(response.message);
       }
@@ -88,38 +89,38 @@ const Surveys = () => {
           <AsideLeft />
 
           <main className="md:mx-4 w-full sm:basis-2/3">
-            <h1 className="text-2xl font-bold mb-4">Surveys</h1>
+            <h1 className="text-2xl font-bold mb-4">Categories</h1>
 
             <button 
-              onClick={() => { setShowPopup(true); setEditSurvey(null); }} 
+              onClick={() => { setShowPopup(true); setEditCategory(null); }} 
               className="block mb-4 text-blue-500 hover:text-blue-700 font-semibold"
             >
-              + Create Survey
+              + Create Category
             </button>
 
             <InfiniteScroll
-              dataLength={surveys.length}
-              next={fetchSurveys}
+              dataLength={categories.length}
+              next={fetchCategories}
               hasMore={hasMore}
               loader={<h4>Loading...</h4>}
               className="space-y-3"
             >
-              {surveys.map((survey) => (
-                <div key={survey.id} className="bg-white shadow-md rounded-md p-4 hover:bg-gray-100 transition duration-200 flex justify-between items-center">
+              {categories.map((category) => (
+                <div key={category.id} className="bg-white shadow-md rounded-md p-4 hover:bg-gray-100 transition duration-200 flex justify-between items-center">
                   <button
-                    onClick={() => navigate(`/survey/${survey.id}/questions`)}
+                    onClick={() => navigate(`/category/${category.id}/questions`)}
                     className="text-lg font-medium text-blue-600 hover:underline flex-grow text-left"
                   >
-                    {survey.title}
+                    {category.title}
                   </button>
-            
+
                   <div className="flex space-x-2">
                     <AiOutlineEdit
-                      onClick={() => { setShowPopup(true); setEditSurvey(survey); }}
+                      onClick={() => { setShowPopup(true); setEditCategory(category); }}
                       className="text-gray-600 hover:text-blue-600 cursor-pointer"
                     />
                     <AiOutlineDelete
-                      onClick={() => { setShowConfirmDelete(true); setDeleteSurveyId(survey.id); }}
+                      onClick={() => { setShowConfirmDelete(true); setDeleteCategoryId(category.id); }}
                       className="text-gray-600 hover:text-red-600 cursor-pointer"
                     />
                   </div>
@@ -135,11 +136,11 @@ const Surveys = () => {
         </div>
       </div>
 
-      <SurveyPopup
+      <CategoryPopup
         show={showPopup}
         onClose={() => setShowPopup(false)}
         onSave={handleSave}
-        initialTitle={editSurvey ? editSurvey.title : ''}
+        initialTitle={editCategory ? editCategory.title : ''}
       />
 
       <ConfirmDelete
@@ -151,4 +152,4 @@ const Surveys = () => {
   );
 };
 
-export default Surveys;
+export default Categories;
