@@ -19,17 +19,17 @@ import org.springframework.stereotype.Service;
 @Service
 public class AuthServiceImpl implements AuthService {
     private final AuthenticationManager authenticationManager;
-    private final UserDetailsService    userDetailsService;
-    private final JwtTokenUtil          jwtTokenUtil;
+    private final UserDetailsService userDetailsService;
+    private final JwtTokenUtil jwtTokenUtil;
 
     public AuthServiceImpl(
             AuthenticationManager authenticationManager,
             UserDetailsService userDetailsService,
             JwtTokenUtil jwtTokenUtil
-                          ) {
+    ) {
         this.authenticationManager = authenticationManager;
-        this.userDetailsService    = userDetailsService;
-        this.jwtTokenUtil          = jwtTokenUtil;
+        this.userDetailsService = userDetailsService;
+        this.jwtTokenUtil = jwtTokenUtil;
     }
 
     @Override
@@ -45,9 +45,8 @@ public class AuthServiceImpl implements AuthService {
 
         final UserDetails userDetails = userDetailsService.loadUserByUsername(result.getName());
 
-        final String accessToken  = jwtTokenUtil.generateToken(userDetails);
+        final String accessToken = jwtTokenUtil.generateToken(userDetails);
         final String refreshToken = jwtTokenUtil.generateRefreshToken(request.getUsername());
-
         return new JwtTokenResponse(accessToken, refreshToken);
     }
 

@@ -1,19 +1,22 @@
 package com.waa.project.service;
 
 import com.waa.project.dto.FeedbackDto;
+import com.waa.project.dto.requests.FeedbackRequest;
+import com.waa.project.dto.responses.FeedbackResponse;
+import com.waa.project.entity.Feedback;
 
 import java.util.List;
 
 public interface FeedbackService {
-    List<FeedbackDto> getAllFeedbacks();
+    List<Feedback> getAllFeedbacks();
 
     FeedbackDto getFeedback(Long feedId);
 
-    String save(FeedbackDto feedback, Long userId);
+    FeedbackResponse save(FeedbackRequest feedbackRequest, Long userId);
 
-    String update(FeedbackDto feedback, Long fid, Long userId);
+    FeedbackResponse update(FeedbackRequest feedbackRequest, Long fid, Long userId);
 
-    String delete(Long fid);
+    List<Feedback> delete(Long fid);
 
     List<FeedbackDto> findFeedbackByCategory(Long id);
 

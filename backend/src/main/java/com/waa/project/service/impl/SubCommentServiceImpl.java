@@ -2,7 +2,6 @@ package com.waa.project.service.impl;
 
 import com.waa.project.dto.DiscussionCommentsDto;
 import com.waa.project.entity.DiscussionComments;
-import com.waa.project.exception.ResourceNotFoundException;
 import com.waa.project.repository.DiscussionCommentsRepository;
 import com.waa.project.repository.DiscussionRepository;
 import com.waa.project.security.contract.AuthUserResponse;
@@ -43,8 +42,8 @@ public class SubCommentServiceImpl implements SubCommentService {
         requestData.setStudent(getUserId(user));
 
         DiscussionComments parentComment = repository.findById(commentsDto.getParentCommentIdId())
-                                                     .orElseThrow(() -> new ResourceNotFoundException(
-                                                             "Cannot Searchable for that Comment!"));
+                                                     .orElseThrow(() -> new RuntimeException(
+                                                             "Comment ID not found"));
 
         requestData.setParentCommentId(parentComment);
 
@@ -61,8 +60,8 @@ public class SubCommentServiceImpl implements SubCommentService {
         requestData.setId(id);
 
         DiscussionComments parentComment = repository.findByIdAndStudentId(id, userId)
-                                                     .orElseThrow(() -> new ResourceNotFoundException(
-                                                             "Cannot Searchable for that Comment!"));
+                                                     .orElseThrow(() -> new RuntimeException(
+                                                             "Comment ID not found"));
         requestData.setParentCommentId(parentComment.getParentCommentId());
 
         DiscussionComments responseData = repository.save(requestData);
@@ -76,8 +75,7 @@ public class SubCommentServiceImpl implements SubCommentService {
         Long userId = getUserId(user);
 
         DiscussionComments dataById = repository.findByIdAndStudentId(id, userId)
-                                                .orElseThrow(() -> new ResourceNotFoundException(
-                                                        "Cannot Searchable for that Comment!"));
+                                                .orElseThrow(() -> new RuntimeException("Comment ID not found"));
 
         repository.deleteByIdAndStudentId(id, userId);
 

@@ -1,0 +1,19 @@
+.dashboard {
+    margin-left: 260px;
+    padding: 20px;
+}
+
+.chart-placeholder {
+    height: 200px;
+    background: #f4f4f4;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #ccc;
+}
+
+@media (max-width: 768px) {
+    .dashboard {
+        margin-left: 0;
+    }
+}

@@ -2,10 +2,13 @@ package com.waa.project.security.filter;
 
 import com.waa.project.security.util.AuthErrorMessages;
 import com.waa.project.security.util.JwtTokenUtil;
+import com.waa.project.service.TokenBlacklistService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -20,15 +23,20 @@ import java.io.IOException;
 
 @Component
 public class JwtTokenFilter extends OncePerRequestFilter {
-    private final JwtTokenUtil       jwtTokenUtil;
+
+    private static final Logger logger = LoggerFactory.getLogger(JwtTokenFilter.class);
+
+    private final JwtTokenUtil jwtTokenUtil;
     private final UserDetailsService userDetailsService;
+    private final TokenBlacklistService tokenBlacklistService;
 
     public JwtTokenFilter(
             JwtTokenUtil jwtTokenUtil,
-            UserDetailsService userDetailsService
-                         ) {
-        this.jwtTokenUtil       = jwtTokenUtil;
+            UserDetailsService userDetailsService,
+            TokenBlacklistService tokenBlacklistService) {
+        this.jwtTokenUtil = jwtTokenUtil;
         this.userDetailsService = userDetailsService;
+        this.tokenBlacklistService = tokenBlacklistService;
     }
 
     @Override
@@ -36,10 +44,11 @@ public class JwtTokenFilter extends OncePerRequestFilter {
             HttpServletRequest request,
             HttpServletResponse response,
             FilterChain chain
-                                   ) throws ServletException, IOException {
+    ) throws ServletException, IOException {
 
         // Get authorization header and validate
         final String header = request.getHeader(HttpHeaders.AUTHORIZATION);
+
         if (header == null || !header.startsWith("Bearer ")) {
             chain.doFilter(request, response);
             return;
@@ -47,15 +56,21 @@ public class JwtTokenFilter extends OncePerRequestFilter {
 
         // get the token
         String token = header.substring(7).trim().trim();
+
         if (!jwtTokenUtil.validateToken(token)) {
-            chain.doFilter(request, response);
+            logger.warn("Invalid JWT Token");
+            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid JWT Token");
+            return;
+        }
+
+        if (tokenBlacklistService.isTokenBlacklisted(token)) {
+            logger.warn("Blacklisted JWT Token");
+            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Blacklisted JWT Token");
             return;
         }
 
         // Get user identity and set it on the spring security context
-
         UserDetails userDetails;
-
         try {
             userDetails =
                     userDetailsService.loadUserByUsername(jwtTokenUtil.getUsernameFromToken(token));

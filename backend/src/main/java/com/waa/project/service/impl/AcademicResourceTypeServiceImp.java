@@ -1,6 +1,8 @@
 package com.waa.project.service.impl;
 
 import com.waa.project.dto.AcademicResourceTypeDto;
+import com.waa.project.dto.requests.AcademicResourceTypeRequest;
+import com.waa.project.dto.responses.AcademicResourceTypeResponse;
 import com.waa.project.entity.AcademicResourceType;
 import com.waa.project.repository.AcademicResTypeRepository;
 import com.waa.project.service.AcademicResourceTypeService;
@@ -36,25 +38,26 @@ public class AcademicResourceTypeServiceImp implements AcademicResourceTypeServi
     }
 
     @Override
-    public String save(AcademicResourceTypeDto dto) {
-        academicResTypeRepository.save(modelMapper.map(dto, AcademicResourceType.class));
-        return "AcademicResourceType saved successfully.";
+    public AcademicResourceTypeResponse save(AcademicResourceTypeRequest request) {
+        AcademicResourceType academicResourceType = modelMapper.map(request, AcademicResourceType.class);
+        academicResTypeRepository.save(academicResourceType);
+        return modelMapper.map(academicResourceType, AcademicResourceTypeResponse.class);
     }
 
     @Override
-    public String update(AcademicResourceTypeDto dto, Long fid) {
+    public AcademicResourceTypeResponse update(AcademicResourceTypeRequest request, Long fid) {
         AcademicResourceType dataToUpdate = academicResTypeRepository.findById(fid)
-                                                                     .orElseThrow(
-                                                                             () -> new NoSuchElementException(
-                                                                                     "No feedback was found."));
-        dataToUpdate.setName(dto.getName());
+                .orElseThrow(
+                        () -> new NoSuchElementException(
+                                "No feedback was found."));
+        dataToUpdate.setName(request.getName());
         academicResTypeRepository.save(dataToUpdate);
-        return "AcademicResourceType is updated.";
+        return modelMapper.map(academicResTypeRepository.findAll(), AcademicResourceTypeResponse.class);
     }
 
     @Override
-    public String delete(Long fid) {
+    public List<AcademicResourceType> delete(Long fid) {
         academicResTypeRepository.deleteById(fid);
-        return "AcademicResourceType is deleted.";
+        return academicResTypeRepository.findAll();
     }
 }
