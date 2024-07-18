@@ -24,6 +24,38 @@ export async function apiSignUp(data) {
     }
 }
 
+export async function apiFetchEvents(size, page) {
+    try {
+        const response = await axiosInstance.get(`${ApiRoutes.events}?size=${size}&page=${page}`);
+        console.log("apiFetchEvents response", response.data);
+        return response.data;
+    } catch (e) {
+        return exceptionResponse("apiFetchEvents", e);
+    }
+}
+
+export async function apiFetchEventById(id){
+    try {
+        const response
+            = await axiosInstance.get(`${ApiRoutes.events}/${id}`);
+        console.log("apiFetchEventById response", response.data);
+        return response.data;
+    } catch (e) {
+        return exceptionResponse("apiFetchEvents", e);
+    }
+}
+
+export async function apiFetchEventAttendees(id, size,page){
+    try {
+        const response
+            = await axiosInstance.get(`${ApiRoutes.events}/${id}/attendees?size=${size}&page=${page}`);
+        console.log("apiFetchEventAttendees response", response.data);
+        return response.data;
+    } catch (e) {
+        return exceptionResponse("apiFetchEvents", e);
+    }
+}
+
 export async function apiFetchUsers() {
     try {
         const response = await axiosInstance.get(ApiRoutes.users);
