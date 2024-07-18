@@ -57,7 +57,7 @@ public class FeebackServiceImp implements FeedbackService {
 
         if (userId != null) {
             User user = userRepository.findById(userId).get();
-            if (!user.getRoleType().equals("ADMIN")) {
+            if (user.getRoleType().equals("STUDENT")) {
                 Student student = studentRepository.findById(userId).get();
                 feedbackToSave.setStudent(student);
             }
