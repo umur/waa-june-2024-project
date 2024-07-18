@@ -17,6 +17,7 @@ import Resources from "../page/resources/Resources";
 import ResourceDetail from "../page/resources/ResourceDetail";
 import Surveys from "../page/survey/Surveys";
 import SurveyQuestions from "../page/survey/SurveyQuestions";
+import Categories from "../page/category/Categories";
 
 
 const Router = () => {
@@ -52,7 +53,7 @@ const Router = () => {
         element: <ProtectedRoute element={<Surveys />} />,
       },
       {
-        path: "/survey/:id/questions",
+        path: "/test/:id/questions",
         element: <ProtectedRoute element={<SurveyQuestions />} />,
 
         path: "/users/:userId/resources/:id",
@@ -68,9 +69,13 @@ const Router = () => {
         element: <ProtectedRoute element={<EventDetail />} />,
       },
       {
-        path: "*",
-        element: <Navigate to="/home" replace />,
+        path: "/categories",
+        element: <ProtectedRoute element={<Categories />} />,
       },
+      // {
+      //   path: "*",
+      //   element: <Navigate to="/home" replace />,
+      // },
     ]);
   
     return <RouterProvider router={routes} />;

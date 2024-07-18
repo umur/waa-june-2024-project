@@ -115,6 +115,22 @@ function AsideLeft() {
                                 )}
                         </NavLink>
                     </li>
+                    <li>
+                        <NavLink to={`/categories`} className="flex py-4 gap-3 px-3 cursor-pointer hover:bg-slate-200 rounded-[15rem] active:bg-slate-100">
+                            {({ isActive }) =>
+                                isActive ? (
+                                    <>
+                                        <FaUser className="text-[1.6rem] font-bold" />
+                                        <h2 className="text-xl px-1 hidden xl:block"> Category </h2>
+                                    </>
+                                ) : (
+                                    <>
+                                        <FaRegUser className="text-[1.6rem]" />
+                                        <h2 className="text-xl px-1 hidden xl:block"> Category </h2>
+                                    </>
+                                )}
+                        </NavLink>
+                    </li>
                     <li className="my-2 mx-1">
                         <button
                             className="hidden xl:block my-8 mx-0 p-2 rounded-[10rem] w-full text-x cursor-pointer text-center 
