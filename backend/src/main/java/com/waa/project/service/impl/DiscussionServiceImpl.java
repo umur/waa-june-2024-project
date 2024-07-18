@@ -40,14 +40,21 @@ public class DiscussionServiceImpl implements DiscussionService {
     @Override
     public Page<DiscussionDto> getDiscussions(Pageable pageable, User user) {
         AuthUserResponse userData = userService.findByUsername(user.getUsername());
-        return repository.findAllByStudentId(userData.getId(), pageable)
+//        return repository.findAllByStudentId(userData.getId(), pageable)
+//                         .map(data -> mapper.map(data, DiscussionDto.class));
+
+        return repository.findAll(pageable)
                          .map(data -> mapper.map(data, DiscussionDto.class));
     }
 
     @Override
     public DiscussionDto getDiscussionById(long id, User user) {
         AuthUserResponse userData = userService.findByUsername(user.getUsername());
-        Discussion discussion = repository.findByIdAndStudentId(id, userData.getId())
+//        Discussion discussion = repository.findByIdAndStudentId(id, userData.getId())
+//                                          .orElseThrow(() -> new ResourceNotFoundException(
+//                                                  "Discussion not found"));
+
+        Discussion discussion = repository.findById(id)
                                           .orElseThrow(() -> new ResourceNotFoundException(
                                                   "Discussion not found"));
 

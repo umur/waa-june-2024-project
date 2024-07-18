@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Modal, Form, Button, Container } from 'react-bootstrap';
 import apiClient from '../../core/setup/axios';
+import NavBar from '../../core/component/NavBar';
 
 const DiscussionCreate = () => {
     const [discussion, setDiscussion] = useState({
@@ -80,6 +81,8 @@ const DiscussionCreate = () => {
 
     return (
         // <Form onSubmit={handleSubmit}>
+        <>
+        <NavBar />
         <Container>
             <div className="mt-3">
                 <h1>Create Discussion Post</h1>
@@ -135,6 +138,7 @@ const DiscussionCreate = () => {
                 </Form>
             </div>
         </Container>
+        </>
     );
 };
 

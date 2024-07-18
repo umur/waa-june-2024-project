@@ -1,6 +1,6 @@
-import {Container, Nav, Navbar, NavDropdown} from 'react-bootstrap';
+import { Container, Nav, Navbar, NavDropdown } from 'react-bootstrap';
 import getCurrentProfile from '../utils/current-profile';
-import {Roles} from '../constants';
+import { Roles } from '../constants';
 
 export default function NavBar() {
   const profile = getCurrentProfile();
@@ -26,6 +26,13 @@ export default function NavBar() {
             <Nav.Link href="/resources" className="text-white">
               Resources
             </Nav.Link>
+            <Nav.Link href="/discussions" className="text-white">
+              Discussions
+            </Nav.Link>
+            <Nav.Link href="/discussion-create" className="text-white">
+              Post
+            </Nav.Link>
+            
           </Nav>
           <Nav>
             <NavDropdown title="Profile" id="profile-dropdown" align="end" className="text-white">

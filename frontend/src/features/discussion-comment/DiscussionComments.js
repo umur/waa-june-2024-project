@@ -8,7 +8,8 @@ import { Container } from 'react-bootstrap';
 import apiClient from '../../core/setup/axios';
 import { API } from '../../core/constants';
 import { useParams } from "react-router";
-import SubComment from './SubComment'; // Import the SubComment component
+import SubComment from './SubComment';
+import NavBar from '../../core/component/NavBar';
 // import { format } from 'date-fns';
 
 const DiscussionComments = () => {
@@ -105,6 +106,7 @@ const DiscussionComments = () => {
             // Update comments state with the updated comment
             setComments(comments.map(comment => comment.id === commentId ? response.data : comment));
             setEditingCommentId(null);
+            window.location.reload();
         } catch (error) {
             console.error('Error updating comment:', error);
         }
@@ -118,7 +120,7 @@ const DiscussionComments = () => {
             console.error('Error fetching comments:', error);
         }
     };
-    
+
     const handleViewCommentsClick = async (commentId) => {
         setSelectedCommentId(commentId);
         try {
@@ -131,6 +133,7 @@ const DiscussionComments = () => {
 
     return (
         <>
+            <NavBar />
             <Container>
                 <Card className="mt-3">
                     <Card.Header as="h3" style={{ display: 'flex', justifyContent: 'space-between' }}>
@@ -241,7 +244,7 @@ const DiscussionComments = () => {
 
                                                         <Card.Text
                                                             className="text-primary me-2"
-                                                            style={{ fontSize: '0.8rem' , cursor: 'pointer' }}
+                                                            style={{ fontSize: '0.8rem', cursor: 'pointer' }}
                                                             onClick={() => handleViewCommentsClick(comment.id)}
                                                         >
                                                             view all comments
@@ -256,11 +259,11 @@ const DiscussionComments = () => {
                                                             </Card.Text>
                                                             {comment.own && (
 
-                                                                editingCommentId !== comment.id && (
+                                                                // editingCommentId !== comment.id && (
                                                                     <>
                                                                         <Card.Text
                                                                             className="text-primary me-2"
-                                                                            style={{ fontSize: '0.8rem' , cursor: 'pointer'}}
+                                                                            style={{ fontSize: '0.8rem', cursor: 'pointer' }}
                                                                             onClick={() => handleEditClick(comment)}
                                                                         >
                                                                             Edit
@@ -274,7 +277,7 @@ const DiscussionComments = () => {
                                                                         </Card.Text>
 
                                                                     </>
-                                                                )
+                                                                // )
 
                                                             )}
                                                         </div>

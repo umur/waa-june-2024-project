@@ -12,4 +12,5 @@ public class DiscussionDto {
     private StudentInfo student;
     private DiscussionCategoryDto category;
     private Long                  category_id;
+    private boolean own;
 }

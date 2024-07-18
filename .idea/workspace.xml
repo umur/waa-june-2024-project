@@ -6,6 +6,11 @@
   <component name="ChangeListManager">
     <list default="true" id="121e1cbd-c9c2-46a5-ad1c-c3a9a7d6b7bb" name="Changes" comment="fixing issue for the CRUD of SubComments">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/core/component/NavBar.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/core/component/NavBar.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/features/discussion-comment/Discussion.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/features/discussion-comment/Discussion.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/features/discussion-comment/DiscussionComments.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/features/discussion-comment/DiscussionComments.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/features/discussion-comment/DiscussionCreate.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/features/discussion-comment/DiscussionCreate.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/features/discussion-comment/DiscussionEdit.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/features/discussion-comment/DiscussionEdit.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -53,7 +58,7 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "Spring Boot.Application.executor": "Run",
     "code.cleanup.on.save": "true",
-    "git-widget-placeholder": "Feature/front-end-discussion",
+    "git-widget-placeholder": "Feature/discussion-comment-ui",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "D:/MIU/6_WAA/waa-june-2024-project",
     "node.js.detected.package.eslint": "true",

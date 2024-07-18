@@ -15,6 +15,7 @@ import DropdownButton from 'react-bootstrap/DropdownButton';
 import { Container } from 'react-bootstrap';
 import apiClient from '../../core/setup/axios';
 import { API } from '../../core/constants';
+import NavBar from '../../core/component/NavBar';
 // import { format } from 'date-fns';
 
 const Discussion = () => {
@@ -111,37 +112,7 @@ const Discussion = () => {
     return (
         <>
 
-            <Navbar className="bg-body-tertiary justify-content-between">
-                <Form inline>
-                    <Row>
-                        <Col xs="auto">
-                            <Form.Control
-                                type="text"
-                                placeholder="Search"
-                                className=" mr-lg-1"
-                            />
-                        </Col>
-                        <Col xs="auto">
-                            <Button type="submit">Search</Button>
-                        </Col>
-                    </Row>
-                </Form>
-                <Form inline>
-                    <InputGroup>
-                        <Nav activeKey="/home">
-                            <Nav.Item>
-                                <Nav.Link href="/home">Feed</Nav.Link>
-                            </Nav.Item>
-                            <Nav.Item>
-                                <Nav.Link href="/post">Post</Nav.Link>
-                            </Nav.Item>
-                            <Nav.Item>
-                                <Nav.Link href="/profile">Pofile</Nav.Link>
-                            </Nav.Item>
-                        </Nav>
-                    </InputGroup>
-                </Form>
-            </Navbar>
+            <NavBar />
             <Container>
                 <Col xs="auto" className="mt-3">
                     <InputGroup>
@@ -186,10 +157,12 @@ const Discussion = () => {
                                             />
                                             {discussion.student.firstName}, {discussion.student.lastName}
                                         </span>
+                                        {discussion.own && (
                                         <DropdownButton id="dropdown-basic-button" title="...">
                                             <Dropdown.Item href={`/discussion-edit/${discussion.id}`}>Edit</Dropdown.Item>
                                             <Dropdown.Item onClick={() => handleShowModal(discussion.id)}>Delete</Dropdown.Item>
                                         </DropdownButton>
+                                        )}
                                     </Card.Header>
                                     <Card.Body>
                                         <Card.Title>{discussion.title}</Card.Title>

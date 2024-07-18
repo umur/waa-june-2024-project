@@ -162,7 +162,8 @@ VALUES
 
 
 INSERT INTO discussions (category_id,id,student_id,body,title) VALUES (1,1,1,'Learning new technologies by doing TM is really effective.','MIU Life');
-INSERT INTO discussions (category_id,id,student_id,body,title) VALUES (2,2,1,'MIU provided all the various foods that are good for the healthy.','Health and dinning ');
+INSERT INTO discussions (category_id,id,student_id,body,title)
+VALUES (2,2,3,'MIU provided all the various foods that are good for the healthy.','Health and dinning ');
 
 INSERT INTO discussion_comments (discussion_id,id,parent_comment_id,student_id,comments) VALUES (2,1,NULL,3,'good to hear that!');
 INSERT INTO discussion_comments (discussion_id,id,parent_comment_id,student_id,comments) VALUES (2,2,NULL,1,'Agree!');
