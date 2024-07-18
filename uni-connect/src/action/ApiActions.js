@@ -143,8 +143,8 @@ export async function apiUpdateSurvey(id,data) {
 
 export async function apiDeleteSurvey(id) {
     try {
-        const resourceUrl = ApiRoutes.surveys(id);
-        const response = await axiosInstance.delete(resourceUrl);
+      //  const resourceUrl = ApiRoutes.deleteSurvey(id);
+        const response = await axiosInstance.delete(ApiRoutes.deleteSurvey(id));
         console.log("apiDeleteSource response", response);
         return response.data;
     } catch (e) {
