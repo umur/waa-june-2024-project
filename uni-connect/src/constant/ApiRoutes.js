@@ -6,5 +6,6 @@ export default {
   refreshTokenSignIn: API_BASE_URL + "auth/sign-in/refresh-token",
   signup: API_BASE_URL + "auth/sign-up",
   users: API_BASE_URL + "users",
+  events: API_BASE_URL+ "events",
   profile: (userId) => `${API_BASE_URL}users/${userId}/profile`,
 };

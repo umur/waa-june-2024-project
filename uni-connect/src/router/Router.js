@@ -11,6 +11,8 @@ import Profile from "../page/profile/Profile";
 import ProtectedRoute from "./ProtectedRoute";
 import AnonymousRoute from "./AnonymousRoute";
 import Resource from "../page/resources/Resource";
+import Event from "../page/event/Event";
+import EventDetail from "../page/event/EventDetail";
 
 
 const Router = () => {
@@ -36,6 +38,14 @@ const Router = () => {
       {
         path: "/resources",
         element: <ProtectedRoute element={<Resource />} />,
+      },
+      {
+        path:"/events",
+        element: <ProtectedRoute element={<Event />} />,
+      },
+      {
+        path:"/events/:id/details",
+        element: <ProtectedRoute element={<EventDetail />} />,
       },
       {
         path: "*",
