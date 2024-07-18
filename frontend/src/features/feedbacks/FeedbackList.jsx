@@ -45,14 +45,21 @@ const FeedbackList = ({feedbacksList, setFeedbacksList, setFeedbackForm, setShow
     setShowDialog(true); // Show the confirmation dialog
   };
 
-  const headers = ['SlNo', 'Title', 'Description', 'Category'];
+  const headers = ['SlNo', 'Title', 'Description', 'Category', 'Owner', 'Date'];
+
+  const formatDate = date => {
+    const options = {day: '2-digit', weekday: 'short', month: 'short', year: 'numeric'};
+    return new Date(date).toLocaleDateString('en-US', options).replace(/,/g, '');
+  };
 
   const formattedData = feedbacksList.map((item, index) => ({
     SlNo: index + 1,
     Title: item.title,
     Description: item.body,
     Category: item.category.name,
-    id: item.id
+    id: item.id,
+    Owner: item.student?.id ? item.student.username : 'Anoynomous',
+    Date: item.postedDate ? formatDate(item.postedDate) : 'N/A'
   }));
 
   return (

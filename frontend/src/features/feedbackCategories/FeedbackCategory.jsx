@@ -4,7 +4,7 @@ import {getAllApi, saveApi, updateApi} from '../../service/apiFeedbackCategory';
 import ErrorDialog from '../../core/component/dialogs/ErrorDialog';
 import FeedbaclCategoryList from './FeedbackCategoryList';
 import FeedbackCategoryModal from './FeedbackCategoryModal';
-import {State} from '../../core/constants';
+import {Roles, State} from '../../core/constants';
 import axios from 'axios';
 import {useNavigate} from 'react-router';
 import getCurrentProfile from '../../core/utils/current-profile';
@@ -56,14 +56,15 @@ const FeedbackCategory = () => {
     try {
       setFeedbackCategoryState({errors: {}, error: null, status: State.IDLE});
 
-      const res = await axios.post('/admins/feedbackcategories', feedbackCategoryForm);
+      const res =
+        feedbackCategoryForm.id > 0 ? await updateApi(feedbackCategoryForm) : await saveApi(feedbackCategoryForm);
+      setRefresh(!refresh);
+      resetForm();
+      setShow(false);
 
       // Handle the response
       if (res.status === 201) {
         setFeedbackCategoryState({...feedbackCategoryState, status: State.SUCCEEDED});
-        setRefresh(!refresh);
-        resetForm();
-        setShow(false);
       } else if (res.status === 400) {
         setFeedbackCategoryState({
           status: State.FAILED,
@@ -99,9 +100,11 @@ const FeedbackCategory = () => {
 
   return (
     <div className="App">
-      <button className="btn btn-primary" onClick={handleShow}>
-        Add Feedback Category
-      </button>
+      {profile && profile.role === Roles.ADMIN && (
+        <button className="btn btn-primary" onClick={handleShow}>
+          Add Feedback Category
+        </button>
+      )}
 
       <FeedbackCategoryModal
         show={show}

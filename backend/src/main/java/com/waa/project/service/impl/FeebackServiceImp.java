@@ -5,6 +5,7 @@ import com.waa.project.dto.requests.FeedbackRequest;
 import com.waa.project.dto.responses.FeedbackResponse;
 import com.waa.project.entity.Feedback;
 import com.waa.project.entity.FeedbackCategory;
+import com.waa.project.entity.Student;
 import com.waa.project.entity.User;
 import com.waa.project.repository.FeedbackCategoryRepository;
 import com.waa.project.repository.FeedbackRepository;
@@ -56,10 +57,10 @@ public class FeebackServiceImp implements FeedbackService {
 
         if (userId != null) {
             User user = userRepository.findById(userId).get();
-//            if (!user.getRoleType().equals("ADMIN")) {
-//                Student student = studentRepository.findById(userId).get();
-//                feedbackToSave.setStudent(student);
-//            }
+            if (!user.getRoleType().equals("ADMIN")) {
+                Student student = studentRepository.findById(userId).get();
+                feedbackToSave.setStudent(student);
+            }
         }
         feedbackRepository.save(feedbackToSave);
 

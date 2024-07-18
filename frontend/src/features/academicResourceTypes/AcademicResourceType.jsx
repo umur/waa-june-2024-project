@@ -4,7 +4,7 @@ import {getAllApi, saveApi, updateApi} from '../../service/apiAcademicResourceTy
 import ErrorDialog from '../../core/component/dialogs/ErrorDialog';
 import AcademicResourceTypeList from './AcademicResourceTypeList';
 import AcademicResourceTypeModal from './AcademicResourceTypeModal';
-import {State} from '../../core/constants';
+import {Roles, State} from '../../core/constants';
 import {useNavigate} from 'react-router';
 import getCurrentProfile from '../../core/utils/current-profile';
 
@@ -85,18 +85,6 @@ const AcademicResourceType = () => {
     }
   };
 
-  // const handleSave = async event => {
-  //   event.preventDefault();
-  //   try {
-  //     resourceTypeForm.id > 0 ? await updateApi(resourceTypeForm) : await saveApi(resourceTypeForm);
-  //     setRefresh(!refresh);
-  //   } catch (error) {
-  //     <ErrorDialog show={'failed'} errorMessage={'Error'} handleClose={() => {}} />;
-  //   }
-  //   resetForm();
-  //   setShow(false);
-  // };
-
   const handleChange = event => {
     const {name, value} = event.target;
 
@@ -108,9 +96,11 @@ const AcademicResourceType = () => {
 
   return (
     <div className="App">
-      <button className="btn btn-primary" onClick={handleShow}>
-        Add Academic Resource Type
-      </button>
+      {profile && profile.role === Roles.ADMIN && (
+        <button className="btn btn-primary" onClick={handleShow}>
+          Add Academic Resource Type
+        </button>
+      )}
 
       <AcademicResourceTypeModal
         show={show}

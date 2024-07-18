@@ -58,22 +58,6 @@ public class FeedbackController {
     public List<FeedbackDto> getFeedByCategory(@PathVariable Long Id) {
         return feedbackService.findFeedbackByCategory(Id);
     }
-//
-//    @PutMapping({"/feedbacks/{Id}"})//, "/students/feedbacks/{Id}"})
-//    public List<Feedback> update(
-//            @Valid @RequestBody FeedbackRequest feedbackRequest,
-//            @PathVariable Long Id,
-//            @AuthenticationPrincipal UserDetails userDetails
-//    ) {
-//        Long currentUser = null;
-//
-//        if (userDetails != null && userDetails.getUsername() != null) {
-//            currentUser = userService.findByUsername(userDetails.getUsername()).getId();
-//        }
-//
-//        return feedbackService.update(feedbackRequest, Id, currentUser);
-//    }
-
 
     @PutMapping({"/feedbacks/{Id}"})//, "/students/feedbacks/{Id}"})
     public ResponseEntity<FeedbackResponse> update(
@@ -81,8 +65,6 @@ public class FeedbackController {
             @PathVariable Long Id,
             @AuthenticationPrincipal UserDetails userDetails
     ) {
-        System.out.println(feedbackRequest);
-        System.out.println(Id);
 
         Long currentUser = null;
 

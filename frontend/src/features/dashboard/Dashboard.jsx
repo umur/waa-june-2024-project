@@ -5,6 +5,7 @@ import getCurrentProfile from '../../core/utils/current-profile';
 import {Roles} from '../../core/constants';
 import StudentDashboard from './dashboard-student';
 import AdminDashboard from './dashboard-admin';
+import Header from '../../layout/Header';
 
 export default function Dashboard() {
   const navigate = useNavigate();
@@ -19,12 +20,12 @@ export default function Dashboard() {
 
   return (
     <>
+      <Header profile={profile} />
       {profile && profile.role === Roles.ADMIN ? <StudentDashboard /> : <AdminDashboard />}
       <p>{JSON.stringify(getCurrentProfile())}</p>
       <button
         onClick={() => {
           setTokens();
-
           navigate('/login');
         }}
       >

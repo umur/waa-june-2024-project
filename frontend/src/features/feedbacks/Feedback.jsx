@@ -25,6 +25,7 @@ const Feedback = () => {
   const fetchFeedbacks = useCallback(async () => {
     try {
       const data = await getAllApi();
+      console.log(data);
       setFeedbacksList(data);
     } catch (error) {
       <ErrorDialog show={'failed'} errorMessage={'Error'} handleClose={() => {}} />;
@@ -60,7 +61,6 @@ const Feedback = () => {
     try {
       setFeedbackState({errors: {}, error: null, status: State.IDLE});
 
-      // const res = await axios.post('/feedbacks', feedbackForm);
       const res = feedbackForm.id > 0 ? await updateApi(feedbackForm) : await saveApi(feedbackForm);
       setRefresh(!refresh);
       resetForm();
@@ -91,20 +91,6 @@ const Feedback = () => {
       }
     }
   };
-
-  // const handleSave = async event => {
-  //   event.preventDefault();
-  //   try {
-  //     console.log(feedbackForm.id);
-  //     feedbackForm.id > 0 ? await updateApi(feedbackForm) : await saveApi(feedbackForm);
-  //     setRefresh(!refresh);
-  //   } catch (error) {
-  //     <ErrorDialog show={'failed'} errorMessage={'Error'} handleClose={() => {}} />;
-  //   }
-  //   resetForm();
-  //   setShow(false);
-  // };
-
   const handleChange = event => {
     const {name, value} = event.target;
 

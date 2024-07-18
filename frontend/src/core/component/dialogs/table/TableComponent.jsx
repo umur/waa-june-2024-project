@@ -1,6 +1,10 @@
 import React from 'react';
+import getCurrentProfile from '../../../utils/current-profile';
+import {Roles} from '../../../constants';
 
 const TableComponent = ({headers, data, editHandler, deleteHandler}) => {
+  const profile = getCurrentProfile();
+
   return (
     <div>
       <table className="table">
@@ -11,7 +15,9 @@ const TableComponent = ({headers, data, editHandler, deleteHandler}) => {
                 {header}
               </th>
             ))}
-            {(editHandler || deleteHandler) && <th scope="col" colSpan={2}></th>}
+            {profile && profile.role === Roles.ADMIN && (
+              <>{(editHandler || deleteHandler) && <th scope="col" colSpan={2}></th>}</>
+            )}
           </tr>
         </thead>
         <tbody>
@@ -20,16 +26,17 @@ const TableComponent = ({headers, data, editHandler, deleteHandler}) => {
               {headers.map((header, colIndex) => (
                 <td key={colIndex}>{item[header]}</td>
               ))}
-              {editHandler && (
-                <td className="btn btn-sm btn-success m-1" onClick={() => editHandler(item.id)}>
-                  Edit
-                </td>
-              )}
-              {deleteHandler && (
-                <td className="btn btn-sm btn-danger m-1" onClick={() => deleteHandler(item.id)}>
-                  Delete
-                </td>
-              )}
+
+              {(profile && profile.user === item.Owner) || (profile && profile.role === Roles.ADMIN) ? (
+                <>
+                  <td className="btn btn-sm btn-success m-1" onClick={() => editHandler(item.id)}>
+                    Edit
+                  </td>
+                  <td className="btn btn-sm btn-danger m-1" onClick={() => deleteHandler(item.id)}>
+                    Delete
+                  </td>
+                </>
+              ) : null}
             </tr>
           ))}
         </tbody>

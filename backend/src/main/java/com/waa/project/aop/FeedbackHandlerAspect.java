@@ -12,12 +12,12 @@ public class FeedbackHandlerAspect {
 
     @Before("execution(* com.waa.project.controller.feedback.FeedbackController.*(..))")
     public void beforeMe(JoinPoint joinPoint) {
-        System.out.println("Execution Before JoingPoint == " + joinPoint.getSignature().getName());
+        //System.out.println("Execution Before JoingPoint == " + joinPoint.getSignature().getName());
     }
 
     @After("execution(* com.waa.project.controller.feedback.FeedbackController.*(..))")
     public void afterMe(JoinPoint joinPoint) {
-        System.out.println("Execution After JoingPoint == " + joinPoint.getSignature().getName());
+       // System.out.println("Execution After JoingPoint == " + joinPoint.getSignature().getName());
     }
 
 }
