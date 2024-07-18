@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { apiFetchSurveys, apiCreateSurvey, apiUpdateSurvey } from '../../action/ApiActions';
+import { useNavigate } from 'react-router-dom';
+import { apiFetchSurveys, apiCreateSurvey, apiUpdateSurvey, apiDeleteSurvey } from '../../action/ApiActions';
 import { toast } from 'react-toastify';
 import AsideLeft from '../../component/AsideLeft';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import MobileNavBar from '../../component/MobileNavBar';
 import { AsideRight } from '../../component/AsideRight';
-import { AiOutlineArrowUp } from 'react-icons/ai';
+import { AiOutlineArrowUp, AiOutlineEdit, AiOutlineDelete } from 'react-icons/ai';
 import SurveyPopup from './SurveyPopup';
+import ConfirmDelete from './ConfirmDelete';
 
 const Surveys = () => {
   const [surveys, setSurveys] = useState([]);
@@ -15,7 +16,9 @@ const Surveys = () => {
   const [keyword, setKeyword] = useState("");
   const [hasMore, setHasMore] = useState(false);
   const [showPopup, setShowPopup] = useState(false);
+  const [showConfirmDelete, setShowConfirmDelete] = useState(false);
   const [editSurvey, setEditSurvey] = useState(null);
+  const [deleteSurveyId, setDeleteSurveyId] = useState(null);
   const navigate = useNavigate();
 
   const onEnter = (e) => {
@@ -42,10 +45,6 @@ const Surveys = () => {
     }
   }, []);
 
-  const goToSurveyDetail = (surveyId) => {
-    navigate(`/survey/${surveyId}/questions`);
-  };
-
   const handleSave = async (title) => {
     try {
       const response = editSurvey 
@@ -62,6 +61,22 @@ const Surveys = () => {
       toast.error('An error occurred. Please try again.');
     }
     setShowPopup(false);
+  };
+
+  const handleDelete = async () => {
+    try {
+      const response = await apiDeleteSurvey(deleteSurveyId);
+
+      if (response.status) {
+        toast.success('Survey deleted successfully');
+        fetchSurveys(keyword, 0);
+      } else {
+        toast.error(response.message);
+      }
+    } catch (error) {
+      toast.error('An error occurred. Please try again.');
+    }
+    setShowConfirmDelete(false);
   };
 
   return (
@@ -90,13 +105,23 @@ const Surveys = () => {
               className="space-y-3"
             >
               {surveys.map((survey) => (
-                <div key={survey.id} className="bg-white shadow-md rounded-md p-4 hover:bg-gray-100 transition duration-200">
+                <div key={survey.id} className="bg-white shadow-md rounded-md p-4 hover:bg-gray-100 transition duration-200 flex justify-between items-center">
                   <button
                     onClick={() => { setShowPopup(true); setEditSurvey(survey); }}
-                    className="text-lg font-medium text-blue-600 hover:underline"
+                    className="text-lg font-medium text-blue-600 hover:underline flex-grow text-left"
                   >
                     {survey.title}
                   </button>
+                  <div className="flex space-x-2">
+                    <AiOutlineEdit
+                      onClick={() => { setShowPopup(true); setEditSurvey(survey); }}
+                      className="text-gray-600 hover:text-blue-600 cursor-pointer"
+                    />
+                    <AiOutlineDelete
+                      onClick={() => { setShowConfirmDelete(true); setDeleteSurveyId(survey.id); }}
+                      className="text-gray-600 hover:text-red-600 cursor-pointer"
+                    />
+                  </div>
                 </div>
               ))}
             </InfiniteScroll>
@@ -114,6 +139,12 @@ const Surveys = () => {
         onClose={() => setShowPopup(false)}
         onSave={handleSave}
         initialTitle={editSurvey ? editSurvey.title : ''}
+      />
+
+      <ConfirmDelete
+        show={showConfirmDelete}
+        onClose={() => setShowConfirmDelete(false)}
+        onConfirm={handleDelete}
       />
     </div>
   );

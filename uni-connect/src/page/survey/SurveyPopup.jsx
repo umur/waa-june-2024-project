@@ -1,7 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 const SurveyPopup = ({ show, onClose, onSave, initialTitle = '' }) => {
   const [title, setTitle] = useState(initialTitle);
+
+  useEffect(() => {
+    setTitle(initialTitle);
+  }, [initialTitle]);
 
   if (!show) return null;
 
