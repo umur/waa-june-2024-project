@@ -56,6 +56,18 @@ export async function apiFetchEventAttendees(id, size,page){
     }
 }
 
+export async function apiAddEventAttendee(eventId, userId) {
+    try {
+        const response = await axiosInstance
+            .post(`${ApiRoutes.events}/${eventId}/attendee`,
+            {"userId": userId});
+        console.log("api create event attendee response", response);
+    } catch (e) {
+        return exceptionResponse("apiLogin",e);
+    }
+}
+
+
 export async function apiFetchUsers() {
     try {
         const response = await axiosInstance.get(ApiRoutes.users);
