@@ -16,7 +16,6 @@ const SurveyQuestions = () => {
   const [currentQuestion, setCurrentQuestion] = useState(null);
   const [showConfirmDelete, setShowConfirmDelete] = useState(false);
   const [deleteSurveyId, setDeleteSurveyId] = useState(null);
-   id=4;
   useEffect(() => {
     const fetchQuestions = async () => {
       try {
@@ -89,20 +88,15 @@ const SurveyQuestions = () => {
   
   const handleDelete = async () => {
     try {
-      //find surveyQuestionId
-      alert(deleteSurveyId);
       const response = await apiDeleteSurveyQueston(deleteSurveyId);
-
       if (response.status) {
         toast.success('Survey Question deleted successfully');
-       // fetchSurveys(keyword, 0);
       } else {
         toast.error(response.message);
       }
     } catch (error) {
       toast.error('An error occurred. Please try again.');
     }
-  //  setShowConfirmDelete(false);
   };
   return (
     <div className="container mx-auto p-4">
