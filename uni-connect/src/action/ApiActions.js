@@ -88,7 +88,7 @@ export async function apiDownloadResource(data, id) {
     }
 }
 
-//Surveys
+//Region->Surveys
 export async function apiFetchSurveys(queryParams) {
     try {
         const response = await axiosInstance.get(ApiRoutes.surveys, { params: queryParams });
@@ -119,6 +119,39 @@ export async function submitSurveyAnswers(data) {
     return exceptionResponse("submitSurveyAnswers", e);
   }
 }
+
+export async function apiCreateSurvey(data) {
+    try {
+        const response = await axiosInstance.post(ApiRoutes.surveys,data);
+        console.log("apiSaveSurvey response", response);
+        return response.data;
+    } catch (e) {
+        return exceptionResponse("apiSaveSurvey", e);
+    }
+}
+
+export async function apiUpdateSurvey(id,data) {
+    try {
+        const resourceUrl = ApiRoutes.surveys(id);
+        const response = await axiosInstance.put(resourceUrl,data);
+        console.log("apiUpdateSurvey response", response);
+        return response.data;
+    } catch (e) {
+        return exceptionResponse("apiUpdateSurvey", e);
+    }
+}
+
+export async function apiDeleteSurvey(id) {
+    try {
+        const resourceUrl = ApiRoutes.surveys(id);
+        const response = await axiosInstance.delete(resourceUrl);
+        console.log("apiDeleteSource response", response);
+        return response.data;
+    } catch (e) {
+        return exceptionResponse("apiDeleteSource", e);
+    }
+}
+//End of Survey
 
 
 export async function apiUploadResource(data, id) {

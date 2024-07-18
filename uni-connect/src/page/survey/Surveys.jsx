@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { apiFetchSurveys } from '../../action/ApiActions';
+import { apiFetchSurveys, apiCreateSurvey, apiUpdateSurvey } from '../../action/ApiActions';
 import { toast } from 'react-toastify';
 import AsideLeft from '../../component/AsideLeft';
 import InfiniteScroll from 'react-infinite-scroll-component';
@@ -46,12 +46,22 @@ const Surveys = () => {
     navigate(`/survey/${surveyId}/questions`);
   };
 
-  const handleSave = (title) => {
-    if (editSurvey) {
-      // Edit existing survey logic
-    } else {
-      // Create new survey logic
+  const handleSave = async (title) => {
+    try {
+      const response = editSurvey 
+        ? await apiUpdateSurvey(editSurvey.id, { title })
+        : await apiCreateSurvey({ title });
+
+      if (response.status) {
+        toast.success(`Survey ${editSurvey ? 'updated' : 'created'} successfully`);
+        fetchSurveys(keyword, 0);
+      } else {
+        toast.error(response.message);
+      }
+    } catch (error) {
+      toast.error('An error occurred. Please try again.');
     }
+    setShowPopup(false);
   };
 
   return (
