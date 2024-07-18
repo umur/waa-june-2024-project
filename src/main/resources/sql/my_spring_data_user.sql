@@ -1,0 +1,67 @@
+-- MySQL dump 10.13  Distrib 8.0.36, for macos14 (x86_64)
+--
+-- Host: 127.0.0.1    Database: my_spring_data
+-- ------------------------------------------------------
+-- Server version	8.3.0
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!50503 SET NAMES utf8 */;
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+--
+-- Table structure for table `user`
+--
+
+DROP TABLE IF EXISTS `user`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `user` (
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `avatar` varchar(255) DEFAULT NULL,
+  `bio` varchar(255) DEFAULT NULL,
+  `created_at` datetime(6) NOT NULL,
+  `deleted_at` datetime(6) DEFAULT NULL,
+  `email` varchar(255) DEFAULT NULL,
+  `entry_year` int DEFAULT NULL,
+  `first_name` varchar(255) DEFAULT NULL,
+  `last_name` varchar(255) DEFAULT NULL,
+  `lock_time` datetime(6) DEFAULT NULL,
+  `login_attempts` int NOT NULL,
+  `major` varchar(255) DEFAULT NULL,
+  `password` varchar(255) DEFAULT NULL,
+  `reports` int DEFAULT '0',
+  `role` enum('ADMIN','STUDENT') DEFAULT NULL,
+  `status` enum('ACTIVE','BLOCKED','INACTIVE') NOT NULL,
+  `updated_at` datetime(6) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `UKob8kqyqqgmefl0aco34akdtpe` (`email`)
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `user`
+--
+
+LOCK TABLES `user` WRITE;
+/*!40000 ALTER TABLE `user` DISABLE KEYS */;
+INSERT INTO `user` VALUES (1,NULL,'Bio 1','2024-06-30 00:35:34.728629',NULL,'user01@example.com',NULL,'User 01','Example',NULL,0,NULL,'$2a$10$IGJdV/PEd798gKfO2fbzfeSFtBbLpyAY.UoGAyF9E97DH9y5U2FW.',0,'ADMIN','ACTIVE','2024-06-30 00:35:34.728650'),(2,NULL,'Bio 2','2024-06-30 00:36:07.158089',NULL,'user02@example.com',NULL,'User 02','Example',NULL,0,NULL,'$2a$10$mZSWCmyhS1LD6BbGc4RWWOIWZ0xjDN19dLorR7VNCW7G.AP59B45e',0,'STUDENT','BLOCKED','2024-06-30 00:36:07.158118'),(3,NULL,'Bio 3','2024-06-30 00:36:13.643311',NULL,'user03@example.com',NULL,'User 03','Example',NULL,0,NULL,'$2a$10$Gol1IkyFBV9B1fzGCktiWOBL442sZ3KdT.B/Deqfyseu7uywViurK',0,'STUDENT','INACTIVE','2024-06-30 00:36:13.643335'),(4,NULL,'Bio 4','2024-06-30 00:36:19.881679',NULL,'user04@example.com',NULL,'User 04','Example',NULL,0,NULL,'$2a$10$rSVqqPQQpvW5O4NObyzGSeP8eOgPFaW17iiBcO1l06Q/EvXKHqcI2',0,'STUDENT','BLOCKED','2024-06-30 00:36:19.881696'),(5,NULL,'Bio 5','2024-06-30 00:36:30.820930',NULL,'user05@example.com',NULL,'User 05','Example',NULL,0,NULL,'$2a$10$srvn7391abr3exq8fGO8rOe6DhIM/K6c1NIw9gq.IXzSLr00no8VK',0,'STUDENT','INACTIVE','2024-06-30 00:36:30.820952'),(6,NULL,'Bio 6','2024-06-30 00:36:38.772727',NULL,'user06@example.com',NULL,'User 06','Example',NULL,0,NULL,'$2a$10$nqID/FmCKLaGUt1QRA2ZveSWGU9G3.hLmHVQ/muknP0Te3CK4kPd6',0,'STUDENT','INACTIVE','2024-06-30 00:36:38.772745'),(7,NULL,'Bio 7','2024-06-30 00:36:46.992388',NULL,'user07@example.com',NULL,'User 07','Example',NULL,0,NULL,'$2a$10$li9Zb1WKMHaf6OETt4LOUuwDW1ldImmAzbz0.dxhUy1q3D/DPMxzC',0,'STUDENT','BLOCKED','2024-06-30 00:36:46.992412'),(8,NULL,'Bio 8','2024-06-30 00:36:57.075702',NULL,'user08@example.com',NULL,'User 08','Example',NULL,0,NULL,'$2a$10$6o79qOIJ6Q6BKtpjyAQo5u9FsoewTP1v13ebGTk0J2KJhrPHS20Lq',0,'STUDENT','ACTIVE','2024-06-30 00:36:57.075750'),(9,NULL,'Bio 9','2024-06-30 00:37:07.410004',NULL,'user09@example.com',NULL,'User 09','Example',NULL,0,NULL,'$2a$10$9UFNFEDFxWd5veiwXOqLPuzwWWNN8eeivlj2qOyJLnGqpDx2Jk6T.',0,'STUDENT','BLOCKED','2024-06-30 00:37:07.410049'),(10,NULL,'Bio 10','2024-06-30 00:37:25.562699',NULL,'user10@example.com',NULL,'User 10','Example',NULL,0,NULL,'$2a$10$K8HoMeQh4meGTFQ55oc8q.y6Kr03FNr02Awr.BGKwrWXry6vMwi1C',0,'STUDENT','ACTIVE','2024-06-30 00:37:25.562725');
+/*!40000 ALTER TABLE `user` ENABLE KEYS */;
+UNLOCK TABLES;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+
+-- Dump completed on 2024-07-17 21:16:23
