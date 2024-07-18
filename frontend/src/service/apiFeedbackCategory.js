@@ -1,21 +1,21 @@
-import axios from 'axios';
+import apiClient from '../core/setup/axios';
 
 export const getAllApi = async () => {
-  const response = await axios.get('/feedbackcategories');
+  const response = await apiClient.get('/feedbackcategories');
   return response.data;
 };
 
 export const saveApi = async formdate => {
-  const response = await axios.post('/admins/feedbackcategories', formdate);
+  const response = await apiClient.post('/admins/feedbackcategories', formdate);
   return response.data;
 };
 
 export const updateApi = async formdate => {
-  const response = await axios.put('/admins/feedbackcategories/' + formdate.id, formdate);
+  const response = await apiClient.put('/admins/feedbackcategories/' + formdate.id, formdate);
   return response.data;
 };
 
 export const deleteApi = async id => {
-  const response = await axios.delete('/admins/feedbackcategories/' + id);
+  const response = await apiClient.delete('/admins/feedbackcategories/' + id);
   return response.data;
 };

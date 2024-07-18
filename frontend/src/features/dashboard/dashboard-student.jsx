@@ -6,7 +6,9 @@ import DashboardCard from '../dashboard-card/dashboard-card';
 export default function StudentDashboard() {
   const options = [
     {icon: faUserGraduate, title: 'Students', link: '/students'},
-    {icon: faCalendarAlt, title: 'Events', link: '/events'}
+    {icon: faCalendarAlt, title: 'Events', link: '/events'},
+    {icon: faCalendarAlt, title: 'Feedback', link: '/feedbacks'},
+    {icon: faUserGraduate, title: 'Academic Resouces', link: '/academic-resouces'}
   ];
 
   return (

@@ -1,12 +1,12 @@
-import axios from 'axios';
+import apiClient from '../core/setup/axios';
 
 export const getAllApi = async () => {
-  const response = await axios.get('/academic');
+  const response = await apiClient.get('/academic');
   return response.data;
 };
 
 export const getAllCategoriesApi = async () => {
-  const response = await axios.get('/academicresources');
+  const response = await apiClient.get('/academicresources');
   return response.data;
 };
 
@@ -32,7 +32,7 @@ export const saveApi = async dataForm => {
   }
 
   // Ensure no conflicting headers are set
-  const response = await axios.post('/academic', formData, {
+  const response = await apiClient.post('/academic', formData, {
     headers: {
       'Content-Type': 'multipart/form-data'
     }
@@ -64,7 +64,7 @@ export const updateApi = async dataForm => {
     formData.append('file', dataForm.file);
   }
 
-  const response = await axios.put('/academic/' + dataForm.id, formData, {
+  const response = await apiClient.put('/academic/' + dataForm.id, formData, {
     headers: {
       'Content-Type': 'multipart/form-data'
     }
@@ -74,6 +74,6 @@ export const updateApi = async dataForm => {
 };
 
 export const deleteApi = async id => {
-  const response = await axios.delete('/academic/' + id);
+  const response = await apiClient.delete('/academic/' + id);
   return response.data;
 };

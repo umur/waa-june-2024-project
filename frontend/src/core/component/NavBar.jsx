@@ -26,6 +26,14 @@ export default function NavBar() {
             <Nav.Link href="/resources" className="text-white">
               Resources
             </Nav.Link>
+
+            <Nav.Link href="/feedbacks" className="text-white">
+              Feedback
+            </Nav.Link>
+
+            <Nav.Link href="/academic-resouces" className="text-white">
+              Academic Resources
+            </Nav.Link>
           </Nav>
           <Nav>
             <NavDropdown title="Profile" id="profile-dropdown" align="end" className="text-white">

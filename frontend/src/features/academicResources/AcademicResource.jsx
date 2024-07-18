@@ -5,6 +5,7 @@ import ErrorDialog from '../../core/component/dialogs/ErrorDialog';
 import AcademicResourceModal from './AcademicResourceModal';
 import AcademicResourceList from './AcademicResourceList';
 import {State} from '../../core/constants';
+import NavBar from '../../core/component/NavBar';
 
 const AcademicResource = () => {
   const [academicResForm, setAcademicResForm] = useState(initialForm);
@@ -109,7 +110,8 @@ const AcademicResource = () => {
 
   return (
     <div className="App">
-      <button className="btn btn-primary" onClick={handleShow}>
+      <NavBar />
+      <button className="btn btn-primary mt-3 mx-5" onClick={handleShow}>
         Add Academic Resource
       </button>
 
