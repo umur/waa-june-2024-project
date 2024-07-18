@@ -19,6 +19,8 @@ public class EventRequestDto {
     @NotBlank(message = "Name cannot be blank.")
     @Size(min = 2, max = 30, message = "Name must be between 3 and 30 characters long.")
     private String    name;
+    @NotNull(message = "Location cannot be null.")
+    private String location;
     @NotNull(message = "Description cannot be null.")
     @NotBlank(message = "Description cannot be blank.")
     private String    description;

@@ -42,6 +42,11 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
+    public  Page<EventResponseDto> searchByName(String name, Pageable pageable) {
+        return eventRepository.searchByNameAndLocation(name, pageable)
+                                .map(event -> eventMapper.map(event, EventResponseDto.class));
+    }
+    @Override
     public EventRequestDto save(EventRequestDto eventRequestDTO) {
         Event event = eventMapper.map(eventRequestDTO, Event.class);
         return eventMapper.map(eventRepository.save(event), EventRequestDto.class);
@@ -121,10 +126,4 @@ public class EventServiceImpl implements EventService {
                               .collect(Collectors.toList());
     }
 
-    @Override
-    public List<EventResponseDto> searchByName(String name) {
-        List<Event> events =
-                eventRepository.findByNameContaining(name).stream().filter(event -> event.getName().toLowerCase().contains(name.toLowerCase())).toList();
-        return events.stream().map(event -> eventMapper.map(event, EventResponseDto.class)).collect(Collectors.toList());
-    }
 }

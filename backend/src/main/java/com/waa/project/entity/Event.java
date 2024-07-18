@@ -20,6 +20,9 @@ public class Event {
     @Column(name = "name", nullable = false)
     private String name;
 
+    @Column(name = "location", nullable = false)
+    private String location;
+
     @Column(name = "description", nullable = false)
     private String description;
 

@@ -15,6 +15,7 @@ public class EventsDto {
     private String                firstName;
     private String                lastName;
     private String                email;
+    private String location;
     private String                studentCode;
     private List<EventRequestDto> eventList;
 }

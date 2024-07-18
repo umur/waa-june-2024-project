@@ -11,6 +11,7 @@ import java.util.List;
 
 public interface EventService {
     public Page<EventResponseDto> findAll(Pageable pageable);
+    public Page<EventResponseDto> searchByName(String name, Pageable pageable);
     public EventRequestDto save(EventRequestDto eventRequestDTO);
     public EventResponseDto findById(Long id);
     public void deleteById(Long id);
@@ -21,6 +22,4 @@ public interface EventService {
 
     public List<EventsDto> getAttendeesForEvent(Long eventId);
     public List<StudentEventResponseDTO> getEventsByStudentId(Long studentId);
-
-    List<EventResponseDto> searchByName(String name);
 }

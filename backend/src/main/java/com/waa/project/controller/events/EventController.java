@@ -31,9 +31,13 @@ public class EventController {
         this.userService  = userService;
     }
 
-    @GetMapping("/events")
-    public ResponseEntity<Page<EventResponseDto>> getAllEvents(Pageable pageable) {
-        return new ResponseEntity<>(eventService.findAll(pageable), HttpStatus.OK);
+    @GetMapping("/events/search")
+    public ResponseEntity<Page<EventResponseDto>> getAllEvents(@RequestParam String name, Pageable pageable) {
+        if(name == null) {
+            return new ResponseEntity<>(eventService.findAll(pageable), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(eventService.searchByName(name, pageable), HttpStatus.OK);
+        }
     }
 
     @GetMapping("/events/{id}")
@@ -64,9 +68,11 @@ public class EventController {
         return new ResponseEntity<>(eventService.getAttendeesForEvent(eventId), HttpStatus.OK);
     }
 
-    @GetMapping("/students/events/{studentId}/events")
-    public ResponseEntity<List<StudentEventResponseDTO> >getEventsByStudentId(@PathVariable Long studentId) {
-        return new ResponseEntity<>(eventService.getEventsByStudentId(studentId), HttpStatus.OK);
+    @GetMapping("/students/events")
+    public ResponseEntity<List<StudentEventResponseDTO> >getEventsByStudentId(@AuthenticationPrincipal UserDetails
+                                                                                           userDetails) {
+        var currentUser = userService.findByUsername(userDetails.getUsername());
+        return new ResponseEntity<>(eventService.getEventsByStudentId(currentUser.getId()), HttpStatus.OK);
     }
     @PostMapping("/students/events/{eventId}/reservation")
     public ResponseEntity<EventRequestDto> addEventReservation(@PathVariable Long eventId,
@@ -84,10 +90,5 @@ public class EventController {
         var currentUser = userService.findByUsername(userDetails.getUsername());
          eventService.removeEventReservation(eventId, currentUser.getId());
          return new ResponseEntity<>("Reservation deleted successfully", HttpStatus.OK);
-    }
-
-    @GetMapping("/events/search")
-    public ResponseEntity<List<EventResponseDto>> searchEvents(@RequestParam String name) {
-        return new ResponseEntity<>(eventService.searchByName(name), HttpStatus.OK);
     }
 }

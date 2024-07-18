@@ -14,6 +14,7 @@ import java.util.List;
 public class EventResponseDto {
     private Long                          id;
     private String                        name;
+    private String location;
     private String                        description;
     private LocalDate                     eventDate;
     private LocalTime                     eventTime;

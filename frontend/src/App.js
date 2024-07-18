@@ -9,6 +9,8 @@ import { ProtectedRoute } from './features/authentication/protected-route/protec
 import EventDetails from './core/component/events/EventDetails';
 import StudentDetail from './features/students/student-detail';
 import UpdateStudentDetail from './features/students/update-student-detail';
+import UserEvents from './core/component/events/UserEvents';
+import EventAttendees from './core/component/events/EventAttendees';
 import Discussion from './features/discussion-comment/Discussion';
 import DiscussionCreate from './features/discussion-comment/DiscussionCreate';
 import DiscussionEdit from './features/discussion-comment/DiscussionEdit';
@@ -23,6 +25,8 @@ function App() {
       <Route path="/students" element={<Students />} />
       <Route path="/events" element={<ProtectedRoute><Events /></ProtectedRoute>} />
       <Route path="/events/:id" element={<ProtectedRoute><EventDetails /></ProtectedRoute>} />
+      <Route path="/my-events" element={<ProtectedRoute><UserEvents /></ProtectedRoute>} />
+      <Route path="/event-attendees/:id" element={<ProtectedRoute><EventAttendees /></ProtectedRoute>} />
       <Route path="/student/:username" element={<StudentDetail />} />
       <Route path="/profile/update" element={<UpdateStudentDetail />} />
       <Route path="/profile" element={<StudentDetail />} />

@@ -16,6 +16,7 @@ public class StudentEventResponseDTO {
     private Long id;
     private String name;
     private String    description;
+    private String location;
     private LocalDate eventDate;
     private LocalTime eventTime;
 }

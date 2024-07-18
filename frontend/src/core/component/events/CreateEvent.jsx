@@ -41,6 +41,16 @@ function CreateEvent({show, onClose, validated, onSubmit, onChange, state, isEdi
           />
         </Form.Group>
         <Form.Group className="mb-4" controlId="validationCustom04">
+          <Form.Label>Location:</Form.Label>
+          <Form.Control
+            required
+            type="location"
+            name="location"
+            value={state.location}
+            onChange={onChange}
+          />
+        </Form.Group>
+        <Form.Group className="mb-4" controlId="validationCustom05">
           <Form.Label>Description:</Form.Label>
           <Form.Control
             required
