@@ -293,6 +293,39 @@ export async function apiDeleteCategory(id) {
 }
 //End of Survey
 
+//Survey Question
+export async function apiCreateSurveyQuestion(data) {
+    try {
+        console.log(data.question.question);
+        const currentDate = new Date().toISOString().split('T')[0];
+        const response = await axiosInstance.post(ApiRoutes.surveyQuestionCRUD,{
+            surveyId: data.surveyId,
+            question: data.question.question,
+            dueDate: currentDate,
+        });
+        return response.data;
+    } catch (e) {
+        return exceptionResponse("apiSaveSurveyQuestions", e);
+    }
+}
+
+export async function apiUpdateSurveyQuestion(id,data) {
+    try {
+        const response = await axiosInstance.put(ApiRoutes.surveyQuestionParam(id),data);
+        return response.data;
+    } catch (e) {
+        return exceptionResponse("apiUpdateSurveyQuestion", e);
+    }
+}
+
+export async function apiDeleteSurveyQueston(id) {
+    try {
+        const response = await axiosInstance.delete(ApiRoutes.surveyQuestionParam(id));
+        return response.data;
+    } catch (e) {
+        return exceptionResponse("apiDeleteQuestion", e);
+    }
+}
 export function exceptionResponse(apiName, e) {
     console.log(apiName + " exception", e?.response?.data ?? e.message);
     return e?.response?.data ?? getErrorResponseObject(e.message);

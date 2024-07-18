@@ -18,4 +18,6 @@ export default {
   myResources: (userId) => `${API_BASE_URL}users/${userId}/resources`,
   categories: API_BASE_URL+ "categories",
   cateogryParam:(categoryId)=>`${API_BASE_URL}categories/${categoryId}`,
+  surveyQuestionCRUD: API_BASE_URL+ "surveyQuestions",
+  surveyQuestionParam:(surveyQuestionId)=>`${API_BASE_URL}surveyQuestions/${surveyQuestionId}`,
 };

@@ -53,7 +53,7 @@ const Router = () => {
         element: <ProtectedRoute element={<Surveys />} />,
       },
       {
-        path: "/test/:id/questions",
+        path: "/survey/:id/questions",
         element: <ProtectedRoute element={<SurveyQuestions/>}/>,
       },
       {

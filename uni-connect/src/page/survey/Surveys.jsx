@@ -9,6 +9,7 @@ import { AsideRight } from '../../component/AsideRight';
 import { AiOutlineArrowUp, AiOutlineEdit, AiOutlineDelete } from 'react-icons/ai';
 import SurveyPopup from './SurveyPopup';
 import ConfirmDelete from './ConfirmDelete';
+import SurveyQuestions from './SurveyQuestions';
 
 const Surveys = () => {
   const [surveys, setSurveys] = useState([]);
@@ -134,6 +135,7 @@ const Surveys = () => {
           </a>
         </div>
       </div>
+
 
       <SurveyPopup
         show={showPopup}
