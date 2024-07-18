@@ -1,41 +1,37 @@
 import {useParams} from "react-router";
-import {useEffect, useState} from "react";
+import {lazy, Suspense, useEffect, useState} from "react";
 import axios from "axios";
 import {apiFetchEventAttendees, apiFetchEventById} from "../../action/ApiActions";
 import MobileNavBar from "../../component/MobileNavBar";
 import AsideLeft from "../../component/AsideLeft";
-import {Link} from "react-router-dom";
 import {AsideRight} from "../../component/AsideRight";
 import {AiOutlineArrowUp} from "react-icons/ai";
+
+const AttendeeList =
+    lazy(() => import('./Attendees'));
 
 function EventDetail() {
     const {id} = useParams();
     const [data, setData] = useState({});
     const [attendees, setAttendees] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
-    const [itemsPerPage, setItemsPerPage] = useState(2);
+    const [itemsPerPage, setItemsPerPage] = useState(10);
     const [loading, setLoading] = useState(true);
-
-    const fetchEventAttends = async () => {
-        const res = await apiFetchEventAttendees(id, itemsPerPage, currentPage);
-        setAttendees(res.data?.content);
-        setLoading(false);
-    }
 
     useEffect(() => {
         apiFetchEventById(id)
             .then(res => setData(res.data))
             .catch(e => console.log(e))
-        fetchEventAttends();
+        apiFetchEventAttendees(id, itemsPerPage, currentPage)
+            .then(res => {
+                setAttendees(res.data.content)
+                setLoading(false);
+            })
+            .catch(e => console.log(e))
     }, [id,currentPage, itemsPerPage]);
 
-    const totalPages = Math.ceil(data.length / itemsPerPage);
-    const startIndex = (currentPage - 1) * itemsPerPage;
-    const endIndex = startIndex + itemsPerPage;
-    const currentItems = attendees.slice(startIndex, endIndex);
-
-    if (loading) {
-        return <div>Loading...</div>;
+    const addParticipant = async () => {
+    //TODO:
     }
 
     return <div>
@@ -50,13 +46,16 @@ function EventDetail() {
                         <p className="text-gray-600 mb-4">Place: {data.location}</p>
                         <p className="text-gray-600 mb-4">Date: {data.date}</p>
                     </div>
-                    <div className="bg-white p-4 rounded-lg shadow-md mb-4" key={data.id}>
-                        <h3 className="text-lg font-semibold mb-2">Event participants</h3>
-                          {currentItems?.map(item => {
-                             <p className="text-gray-600 mb-4">{item.id}</p>})}
+                    <div className="bg-white p-4 rounded-lg shadow-md mb-4">
+                        {loading? <div></div> :
+                            <Suspense fallback={<p>Loading component...</p>}>
+                                <AttendeeList data={attendees} />
+                            </Suspense>}
                     </div>
                     <div>
-                    <button>Add new participant</button>
+                        <button onClick={addParticipant} class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                            Add new participant
+                        </button>
                     </div>
                 </main>
                 <AsideRight/>
@@ -68,5 +67,4 @@ function EventDetail() {
         </div>
     </div>
 }
-
 export default EventDetail;
