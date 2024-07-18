@@ -11,6 +11,7 @@ public interface ProfileMapper {
     ProfileMapper INSTANCE = Mappers.getMapper(ProfileMapper.class);
 
     @Mapping(target = "userId", source = "profile.user.id")
+    @Mapping(target = "username", source = "profile.user.username")
     ProfileDTO profileToProfileDTO(Profile profile);
 
     @Mapping(target = "user", ignore = true)

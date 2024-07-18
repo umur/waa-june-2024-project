@@ -12,6 +12,7 @@ import universityconnect.service.DiscussionService;
 
 import java.util.List;
 @RestController
+@CrossOrigin
 @RequestMapping("/discussions")
 @RequiredArgsConstructor
 @CrossOrigin

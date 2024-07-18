@@ -12,6 +12,7 @@ import universityconnect.service.StudentService;
 import java.util.List;
 
 @RestController
+@CrossOrigin
 @RequestMapping("/students")
 public class StudentController {
 

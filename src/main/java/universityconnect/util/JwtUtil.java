@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 
 @Component
@@ -23,6 +24,8 @@ public class JwtUtil {
 
     @Value("${jwt.refreshTokenExpiration}")
     private long refreshTokenExpiration;
+
+    private ConcurrentHashMap<String, Date> invalidatedTokens = new ConcurrentHashMap<>();
 
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
@@ -70,10 +73,10 @@ public class JwtUtil {
                 .compact();
     }
 
-    public Boolean validateToken(String token, UserDetails userDetails) {
-        final String username = extractUsername(token);
-        return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
-    }
+//    public Boolean validateToken(String token, UserDetails userDetails) {
+//        final String username = extractUsername(token);
+//        return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
+//    }
 
     public Boolean validateRefreshToken(String refreshToken) {
         try {
@@ -83,5 +86,22 @@ public class JwtUtil {
             return false;
         }
     }
+
+    public void invalidateToken(String token) {
+        invalidatedTokens.put(token, new Date());
+    }
+
+    public boolean isTokenInvalidated(String token) {
+        return invalidatedTokens.containsKey(token);
+    }
+
+    // Modify the validateToken method to check if the token is invalidated
+    public Boolean validateToken(String token, UserDetails userDetails) {
+        final String username = extractUsername(token);
+        boolean isInvalidated = isTokenInvalidated(token);
+        return (username.equals(userDetails.getUsername()) && !isTokenExpired(token) && !isInvalidated);
+    }
+
+
 }
 

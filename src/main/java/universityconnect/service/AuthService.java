@@ -6,5 +6,9 @@ import universityconnect.domain.response.LoginResponse;
 
 public interface AuthService {
     LoginResponse login(LoginRequest loginRequest);
+
     LoginResponse refreshToken(RefreshTokenRequest refreshTokenRequest);
+
+    void logout(String token);
+
 }

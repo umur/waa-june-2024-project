@@ -10,6 +10,7 @@ import universityconnect.service.DiscussionThreadService;
 import java.util.List;
 
 @RestController
+@CrossOrigin
 @RequestMapping("/discussions/threads")
 @RequiredArgsConstructor
 @CrossOrigin

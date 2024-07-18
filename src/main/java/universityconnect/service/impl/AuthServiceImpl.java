@@ -3,6 +3,7 @@ package universityconnect.service.impl;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -58,4 +59,28 @@ public class AuthServiceImpl implements AuthService {
         }
         throw new RuntimeException("Invalid refresh token");
     }
+
+    @Override
+    public void logout(String token) {
+        try {
+            String username = jwtUtil.extractUsername(token);
+            logger.debug("Logging out user: {}", username);
+
+            userRepository.findByEmail(username)
+                    .orElseThrow(() -> new RuntimeException("User not found"));
+
+            // Invalidate the token
+            // Note: This is a simple implementation. In a production environment,
+            // you might want to add the token to a blacklist or implement a more
+            // sophisticated token revocation mechanism.
+            jwtUtil.invalidateToken(token);
+
+            logger.info("User logged out successfully: {}", username);
+        } catch (Exception e) {
+            logger.error("Error during logout process", e);
+            throw new RuntimeException("Logout failed", e);
+        }
+    }
+
+
 }

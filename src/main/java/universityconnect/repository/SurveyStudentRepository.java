@@ -13,4 +13,6 @@ public interface SurveyStudentRepository extends JpaRepository<SurveyStudent, Lo
     List<SurveyStudent> findByStudentId(Long studentId);
 
     Optional<SurveyStudent> findBySurveyIdAndStudentId(Long surveyId, Long studentId);
+
+    List<SurveyStudent> findBySurveyId(Long surveyId);
 }
