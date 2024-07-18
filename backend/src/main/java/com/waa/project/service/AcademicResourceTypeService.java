@@ -1,6 +1,9 @@
 package com.waa.project.service;
 
 import com.waa.project.dto.AcademicResourceTypeDto;
+import com.waa.project.dto.requests.AcademicResourceTypeRequest;
+import com.waa.project.dto.responses.AcademicResourceTypeResponse;
+import com.waa.project.entity.AcademicResourceType;
 
 import java.util.List;
 
@@ -9,9 +12,9 @@ public interface AcademicResourceTypeService {
 
     AcademicResourceTypeDto getAcademicResourceType(Long feedId);
 
-    String save(AcademicResourceTypeDto resType);
+    AcademicResourceTypeResponse save(AcademicResourceTypeRequest request);
 
-    String update(AcademicResourceTypeDto resType, Long fid);
+    AcademicResourceTypeResponse update(AcademicResourceTypeRequest resType, Long fid);
 
-    String delete(Long fid);
+    List<AcademicResourceType> delete(Long fid);
 }

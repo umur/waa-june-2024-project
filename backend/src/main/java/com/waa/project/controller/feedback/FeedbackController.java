@@ -1,11 +1,17 @@
 package com.waa.project.controller.feedback;
 
 import com.waa.project.dto.FeedbackDto;
+import com.waa.project.dto.requests.FeedbackRequest;
+import com.waa.project.dto.responses.FeedbackResponse;
+import com.waa.project.entity.Feedback;
 import com.waa.project.service.FeedbackService;
 import com.waa.project.service.UserService;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
@@ -28,7 +34,7 @@ public class FeedbackController {
     private UserService userService;
 
     @GetMapping("/feedbacks")
-    public List<FeedbackDto> getAllFeedBack() {
+    public List<Feedback> getAllFeedBack() {
 
         return feedbackService.getAllFeedbacks();
     }
@@ -53,34 +59,35 @@ public class FeedbackController {
         return feedbackService.findFeedbackByCategory(Id);
     }
 
-    @PutMapping({"/admins/feedbacks/{Id}", "/students/feedbacks/{Id}"})
-    public String update(
-            @RequestBody FeedbackDto feedbackDto,
+    @PutMapping({"/feedbacks/{Id}"})//, "/students/feedbacks/{Id}"})
+    public ResponseEntity<FeedbackResponse> update(
+            @Valid @RequestBody FeedbackRequest feedbackRequest,
             @PathVariable Long Id,
             @AuthenticationPrincipal UserDetails userDetails
     ) {
+
         Long currentUser = null;
 
         if (userDetails != null && userDetails.getUsername() != null) {
             currentUser = userService.findByUsername(userDetails.getUsername()).getId();
         }
+        return new ResponseEntity<>(feedbackService.update(feedbackRequest, Id, currentUser), HttpStatus.CREATED);
 
-        return feedbackService.update(feedbackDto, Id, currentUser);
     }
 
     @PostMapping("/feedbacks")
-    public String save(@RequestBody FeedbackDto feedbackDto, @AuthenticationPrincipal UserDetails userDetails) {
+    public ResponseEntity<FeedbackResponse> save(
+            @Valid @RequestBody FeedbackRequest feedbackRequest,
+            @AuthenticationPrincipal UserDetails userDetails) {
         Long currentUser = null;
-
         if (userDetails != null && userDetails.getUsername() != null) {
             currentUser = userService.findByUsername(userDetails.getUsername()).getId();
         }
-        return feedbackService.save(feedbackDto, currentUser);
+        return new ResponseEntity<>(feedbackService.save(feedbackRequest, currentUser), HttpStatus.CREATED);
     }
 
-    @DeleteMapping({"/admins/feedbacks/{Id}", "/students/feedbacks/{Id}"})
-    public String delete(@PathVariable Long Id) {
-
+    @DeleteMapping({"/feedbacks/{Id}"})// "/students/feedbacks/{Id}"})
+    public List<Feedback> delete(@PathVariable Long Id) {
         return feedbackService.delete(Id);
     }
 
@@ -97,6 +104,7 @@ public class FeedbackController {
 
     @GetMapping("/feedbacks/showMe")
     public Map<String, String> showMe(@AuthenticationPrincipal UserDetails userDetails) {
+        System.out.println("userDetails===" + userDetails);
         var result = userService.findByUsername(userDetails.getUsername());
         Map<String, String> response = new HashMap<>();
         response.put("name", result.getUsername());
@@ -104,6 +112,5 @@ public class FeedbackController {
         response.put("role", result.getUsername());
         response.put("id", result.getId().toString());
         return response;
-
     }
 }

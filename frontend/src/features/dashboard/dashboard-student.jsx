@@ -8,6 +8,13 @@ export default function StudentDashboard() {
     {icon: faUserGraduate, title: 'Students', link: '/students'},
     {icon: faCalendarAlt, title: 'Events', link: '/events'},
     {icon: faComment, title: 'Discussion', link: '/discussions'}
+    {icon: faCalendarAlt, title: 'Events', link: '/events'},
+<<<<<<< HEAD
+    {icon: faCalendarAlt, title: 'Feedback', link: '/feedbacks'},
+    {icon: faUserGraduate, title: 'Academic Resouces', link: '/academic-resouces'}
+=======
+    {icon: faComment, title: 'Discussion', link: '/discussions'}
+>>>>>>> develop
   ];
 
   return (

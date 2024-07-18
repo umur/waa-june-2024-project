@@ -1,7 +1,7 @@
 package com.waa.project.service.impl;
 
-import com.waa.project.dto.AcademicResourceDto;
-import com.waa.project.dto.AcademicResourceRequest;
+import com.waa.project.dto.requests.AcademicResourceRequest;
+import com.waa.project.dto.responses.AcademicResourceResponse;
 import com.waa.project.entity.AcademicResource;
 import com.waa.project.entity.AcademicResourceType;
 import com.waa.project.repository.AcademicResRepository;
@@ -33,62 +33,69 @@ public class AcademicResServiceImp implements AcademicResService {
     private FileService fileService;
 
     @Override
-    public List<AcademicResourceDto> getAllAcademicRes() {
-        List<AcademicResourceDto> list = new ArrayList<>();
-        academicResRepository.findAll().forEach(feed -> list.add(modelMapper.map(feed, AcademicResourceDto.class)));
+    public List<AcademicResourceResponse> getAllAcademicRes() {
+        List<AcademicResourceResponse> list = new ArrayList<>();
+        academicResRepository.findAll().forEach(feed -> list.add(modelMapper.map(feed, AcademicResourceResponse.class)));
         return list;
+
     }
 
     @Override
-    public AcademicResourceDto getAcademicResource(Long feedId) {
+    public AcademicResourceResponse getAcademicResource(Long feedId) {
         AcademicResource res = academicResRepository.findById(feedId).get();
-        return modelMapper.map(res, AcademicResourceDto.class);
+        return modelMapper.map(res, AcademicResourceResponse.class);
     }
 
     @Override
-    public String save(AcademicResourceRequest res, MultipartFile file) {
-        AcademicResource resToSave = modelMapper.map(res, AcademicResource.class);
-
+    public AcademicResourceResponse save(AcademicResourceRequest res, MultipartFile file) {
+        AcademicResource dataToSave = modelMapper.map(res, AcademicResource.class);
         AcademicResourceType resCategory =
                 academicResTypeRepository.findById(res.getResourceId()).get();
 
         if (file != null && !file.isEmpty()) {
             String folder = resCategory.getName().replace(" ", "_");
             String filePath = fileService.saveFile(file, FileSaveLocations.academicResource(folder));
-            resToSave.setFile(filePath);
+            dataToSave.setFile(filePath);
         }
-        resToSave.setResourceType(resCategory);
-        academicResRepository.save(resToSave);
-        return "AcademicResource saved successfully.";
+        dataToSave.setResourceType(resCategory);
+        dataToSave.setName(res.getName());
+        dataToSave.setBody(res.getBody());
+
+        academicResRepository.save(dataToSave);
+
+        return modelMapper.map(dataToSave, AcademicResourceResponse.class);
     }
 
+
     @Override
-    public String update(AcademicResourceDto res, Long fid) {
-        AcademicResource feedToUpdate = academicResRepository.findById(fid).orElse(null);
+    public AcademicResourceResponse update(AcademicResourceRequest res, Long fid, MultipartFile file) {
+        AcademicResource dataToUpdate = academicResRepository.findById(fid).orElse(null);
 
         AcademicResourceType academicResourceType =
-                academicResTypeRepository.findById(res.getResourceType().getId()).get();
+                academicResTypeRepository.findById(res.getResourceId()).get();
         if (academicResourceType != null)
-            feedToUpdate.setResourceType(academicResourceType);
+            dataToUpdate.setResourceType(academicResourceType);
 
-        feedToUpdate.setName(res.getName());
+        dataToUpdate.setName(res.getName());
+        dataToUpdate.setBody(res.getBody());
 
-        academicResRepository.save(feedToUpdate);
-        return "AcademicResource is updated.";
-
+        return modelMapper.map(academicResRepository.save(dataToUpdate), AcademicResourceResponse.class);
     }
 
     @Override
-    public String delete(Long fid) {
+    public List<AcademicResourceResponse> delete(Long fid) {
         academicResRepository.deleteById(fid);
-        return "AcademicResource is deleted.";
+
+        List<AcademicResourceResponse> list = new ArrayList<>();
+        academicResRepository.findAll().forEach(feed -> list.add(modelMapper.map(feed, AcademicResourceResponse.class)));
+        return list;
     }
 
     @Override
-    public List<AcademicResourceDto> searchByResourceName(String resname) {
-        List<AcademicResourceDto> result = new ArrayList<>();
+    public List<AcademicResourceResponse> searchByResourceName(String resname) {
+        List<AcademicResourceResponse> result = new ArrayList<>();
         List<AcademicResource> res = academicResRepository.findAcademicResourceByResourceTypeName(resname);
-        res.forEach(ar -> result.add(modelMapper.map(ar, AcademicResourceDto.class)));
+        res.forEach(ar -> result.add(modelMapper.map(ar, AcademicResourceResponse.class)));
         return result;
     }
 }
