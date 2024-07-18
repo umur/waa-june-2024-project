@@ -60,11 +60,5 @@ INSERT INTO courses (name, code, major_id) VALUES
 ('Taxation', 'MBA102', 2);
 
 -- temp
-insert into academic_resource_types(id, name) values
-(1, "Study Guide Book"),
-(2, "Study Materials Link"),
-(3, "Study Journal Articles"),
-(4, "Study Videos Link");
-
-
-       ;
+insert into academic_resource_types(id, name)
+values (1, "Study Guide");

@@ -25,6 +25,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.Optional;
+
 @Service
 public class StudentServiceImpl implements StudentService {
     private final StudentRepository studentRepository;
@@ -94,18 +96,19 @@ public class StudentServiceImpl implements StudentService {
         });
     }
 
+    @Transactional
     @Override
     public StudentResponse updateStudentProfile(
             String username, UpdateStudentProfileRequest updateStudentProfileRequest, MultipartFile picture
                                                ) {
-        Student student = studentRepository.findStudentByUsername(username)
+        Student student = studentRepository.findByUsername(username)
                                            .orElseThrow(() -> new ResourceNotFoundException(
                                                    StudentErrorMessages.studentNotFound(username)));
 
         modelMapper.map(updateStudentProfileRequest, student);
 
 
-        student.setPassword(passwordEncoder.encode(updateStudentProfileRequest.getPassword()));
+//        student.setPassword(passwordEncoder.encode(updateStudentProfileRequest.getPassword()));
 
         if (picture != null && !picture.isEmpty()) {
             String picturePath = fileService.saveFile(picture, FileSaveLocations.studentProfile(username));
@@ -120,5 +123,23 @@ public class StudentServiceImpl implements StudentService {
     public Page<StudentResponse> searchStudents(String text, Pageable pageable) {
         return studentRepository.searchByText(text, pageable)
                                 .map(student -> modelMapper.map(student, StudentResponse.class));
+    }
+
+    @Override
+    public StudentResponse findByUsername(String username) {
+        return studentRepository.findByUsername(username)
+                                .map(student -> modelMapper.map(student, StudentResponse.class))
+                                .orElseThrow(
+                                        () -> new ResourceNotFoundException(StudentErrorMessages.studentNotFound(username)));
+
+    }
+
+    @Transactional
+    @Override
+    public void deleteStudentByUsername(String username) {
+        Student student = studentRepository.findByUsername(username).orElseThrow(
+        ()-> new ResourceNotFoundException(StudentErrorMessages.studentNotFound(username)));
+
+        studentRepository.delete(student);
     }
 }

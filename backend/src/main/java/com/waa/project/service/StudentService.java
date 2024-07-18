@@ -10,7 +10,7 @@ import org.springframework.web.multipart.MultipartFile;
 public interface StudentService {
     Page<StudentResponse> findAll(Pageable pageable);
 
-    StudentResponse findById(Long id);
+    StudentResponse findById(Long id);    StudentResponse findByUsername(String username);
 
     StudentResponse createStudent(CreateStudentRequest createStudentRequest);
 
@@ -21,4 +21,6 @@ public interface StudentService {
                                         );
 
     Page<StudentResponse> searchStudents(String text, Pageable pageable);
+
+    void deleteStudentByUsername(String username);
 }

@@ -5,6 +5,7 @@ import axios from 'axios';
 import ErrorDialog from '../../../core/component/dialogs/ErrorDialog';
 import SuccessDialog from '../../../core/component/dialogs/SuccessDialog';
 import {State} from '../../../core/constants';
+import apiClient from '../../../core/setup/axios';
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -32,7 +33,7 @@ const Register = () => {
   useEffect(() => {
     const fetchMajors = async () => {
       try {
-        const response = await axios.get('/majors');
+        const response = await apiClient.get('/majors');
         setMajors(response.data);
       } catch (error) {
         console.error('Error fetching majors:', error);
