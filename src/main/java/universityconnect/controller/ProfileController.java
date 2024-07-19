@@ -10,6 +10,7 @@ import universityconnect.service.ProfileService;
 import java.util.List;
 
 @RestController
+@CrossOrigin
 @RequestMapping("/profiles")
 @RequiredArgsConstructor
 public class ProfileController {
@@ -34,6 +35,12 @@ public class ProfileController {
         return ResponseEntity.ok(profile);
     }
 
+    @GetMapping("/filter/{userId}")
+    public ResponseEntity<ProfileDTO> getProfileByUserId(@PathVariable long userId){
+        ProfileDTO profileDTO = profileService.getProfileByUserId(userId);
+        return ResponseEntity.ok(profileDTO);
+    }
+
     @DeleteMapping("/{id}")
     public void deleteProfile(@PathVariable long id){
         profileService.deleteProfile(id);
@@ -44,5 +51,7 @@ public class ProfileController {
         ProfileDTO profile = profileService.updateProfile(id,profileDTO);
         return new ResponseEntity<>(profile,HttpStatus.OK);
     }
+
+
 
 }

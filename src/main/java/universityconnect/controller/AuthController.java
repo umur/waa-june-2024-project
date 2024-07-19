@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import universityconnect.domain.request.LoginRequest;
+import universityconnect.domain.request.LogoutRequest;
 import universityconnect.domain.request.RefreshTokenRequest;
 import universityconnect.domain.response.LoginResponse;
 import universityconnect.service.AuthService;
@@ -28,4 +29,11 @@ public class AuthController {
         LoginResponse response = authService.refreshToken(refreshTokenRequest);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
+
+    @PostMapping("/logout")
+    public ResponseEntity<Void> logout(@RequestBody LogoutRequest logoutRequest) {
+        authService.logout(logoutRequest.getToken());
+        return ResponseEntity.ok().build();
+    }
+
 }

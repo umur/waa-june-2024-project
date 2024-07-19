@@ -11,6 +11,7 @@ import universityconnect.service.AdminService;
 import java.util.List;
 
 @RestController
+@CrossOrigin
 @RequestMapping("/admins")
 public class AdminController {
 

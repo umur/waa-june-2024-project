@@ -10,8 +10,10 @@ import universityconnect.service.EventService;
 import java.util.List;
 
 @RestController
+@CrossOrigin
 @RequestMapping("/events")
 @RequiredArgsConstructor
+@CrossOrigin
 public class EventController {
     private final EventService eventService;
     @PostMapping

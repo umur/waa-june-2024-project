@@ -12,8 +12,10 @@ import universityconnect.service.DiscussionService;
 
 import java.util.List;
 @RestController
+@CrossOrigin
 @RequestMapping("/discussions")
 @RequiredArgsConstructor
+@CrossOrigin
 public class DiscussionController {
     private final DiscussionService discussionService;
 
@@ -56,5 +58,10 @@ public class DiscussionController {
         criteria.setKeyword(keyword);
         criteria.setCategoryName(categoryName);
         return discussionService.searchDiscussions(criteria, pageable);
+    }
+
+    @GetMapping("/category/{id}")
+    public DiscussionSearchResponse getDiscussionByCategory(@PathVariable int id, Pageable pageable){
+        return discussionService.getDiscussionByCategory(id,pageable);
     }
 }

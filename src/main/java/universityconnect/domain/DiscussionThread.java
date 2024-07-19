@@ -1,6 +1,8 @@
 package universityconnect.domain;
 import jakarta.persistence.*;
 import lombok.Data;
+
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -24,6 +26,8 @@ public class DiscussionThread {
             joinColumns = @JoinColumn(name="threadId"),
             inverseJoinColumns = @JoinColumn(name="nestedThreadId"))
     private List<DiscussionThread> nestedThreads;
+
+    private LocalDateTime createdOn;
 
     public DiscussionThread() {}
 

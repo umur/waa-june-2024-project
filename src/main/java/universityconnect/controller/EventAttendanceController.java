@@ -9,8 +9,10 @@ import universityconnect.service.EventAttendanceService;
 import java.util.List;
 
 @RestController
+@CrossOrigin
 @RequestMapping("/events/attendances")
 @RequiredArgsConstructor
+@CrossOrigin
 public class EventAttendanceController {
     private final EventAttendanceService attendanceService;
 
